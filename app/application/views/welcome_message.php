@@ -1,88 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
-
-	<style type="text/css">
-
-	::selection{ background-color: #E13300; color: white; }
-	::moz-selection{ background-color: #E13300; color: white; }
-	::webkit-selection{ background-color: #E13300; color: white; }
-
-	body {
-		background-color: #fff;
-		margin: 40px;
-		font: 13px/20px normal Helvetica, Arial, sans-serif;
-		color: #4F5155;
-	}
-
-	a {
-		color: #003399;
-		background-color: transparent;
-		font-weight: normal;
-	}
-
-	h1 {
-		color: #444;
-		background-color: transparent;
-		border-bottom: 1px solid #D0D0D0;
-		font-size: 19px;
-		font-weight: normal;
-		margin: 0 0 14px 0;
-		padding: 14px 15px 10px 15px;
-	}
-
-	code {
-		font-family: Consolas, Monaco, Courier New, Courier, monospace;
-		font-size: 12px;
-		background-color: #f9f9f9;
-		border: 1px solid #D0D0D0;
-		color: #002166;
-		display: block;
-		margin: 14px 0 14px 0;
-		padding: 12px 10px 12px 10px;
-	}
-
-	#body{
-		margin: 0 15px 0 15px;
-	}
-	
-	p.footer{
-		text-align: right;
-		font-size: 11px;
-		border-top: 1px solid #D0D0D0;
-		line-height: 32px;
-		padding: 0 10px 0 10px;
-		margin: 20px 0 0 0;
-	}
-	
-	#container{
-		margin: 10px;
-		border: 1px solid #D0D0D0;
-		-webkit-box-shadow: 0 0 8px #D0D0D0;
-	}
-	</style>
+<title>Trabajo Sw</title>
+<link rel="stylesheet"
+	href="http://cdn.jsdelivr.net/foundation/5.0.2/css/foundation.min.css">
+<script
+	src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
 </head>
 <body>
+	<div class="row">
+		<div class="large-12 columns">
 
-<div id="container">
-	<h1>Welcome to CodeIgniter!</h1>
+			<!-- Navigation -->
+			<nav class="top-bar" data-topbar>
+				<ul class="title-area">
+					<!-- Title Area -->
+					<li class="name">
+						<h1>
+							<a href="#"> Top Bar Title </a>
+						</h1>
+					</li>
+					<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+				</ul>
 
-	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
+				<section class="top-bar-section">
+					<ul class="left">
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+					</ul>
 
-		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
+					<ul class="right">
+						<li class="search">
+							<form>
+								<input type="search">
+							</form>
+						</li>
 
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/welcome.php</code>
+						<li class="has-button"><a class="small button" href="#">Search</a>
+						</li>
+					</ul>
+				</section>
+			</nav>
 
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+			<!-- End Navigation -->
+
+		</div>
 	</div>
 
-	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
-</div>
 
+	<div class="row">
+		<div class="large-12 columns">
+
+			<!-- Desktop Slider -->
+
+			<div class="hide-for-small">
+				<div id="featured">
+					<img src="http://placehold.it/1000x400&text=Slide Image"
+						alt="slide image">
+					<!-- <img src="http://placehold.it/1000x400&text=Slide Image" alt="slide image">
+              <img src="http://placehold.it/1000x400&text=Slide Image" alt="slide image"> -->
+				</div>
+			</div>
+
+			<!-- End Desktop Slider -->
+
+
+			<!-- Mobile Header -->
+
+
+			<div class="row">
+				<div class="small-12 show-for-small">
+					<br> <img src="http://placehold.it/1000x600&text=For Small Screens" />
+				</div>
+			</div>
+
+
+			<!-- End Mobile Header -->
+
+		</div>
+	</div>
+	<br>
+
+	<div class="row">
+		<div class="large-12 columns">
+			<div class="row">
+
+				<!-- Thumbnails -->
+
+				<div class="large-3 small-6 columns">
+					<img src="http://placehold.it/250x250&text=Thumbnail" />
+					<h6 class="panel">Description</h6>
+				</div>
+
+				<div class="large-3 small-6 columns">
+					<img src="http://placehold.it/250x250&text=Thumbnail" />
+					<h6 class="panel">Description</h6>
+				</div>
+
+				<div class="large-3 small-6 columns">
+					<img src="http://placehold.it/250x250&text=Thumbnail" />
+					<h6 class="panel">Description</h6>
+				</div>
+
+				<div class="large-3 small-6 columns">
+					<img src="http://placehold.it/250x250&text=Thumbnail" />
+					<h6 class="panel">Description</h6>
+				</div>
+
+				<!-- End Thumbnails -->
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="row">
+		<div class="large-12 columns">
+			<div class="row">
+
+				<!-- Content -->
+
+				<div class="large-8 columns">
+					<div class="panel radius">
+
+						<div class="row">
+							<div class="large-6 small-6 columns">
+
+								<h4>Header</h4>
+								<hr />
+								<h5 class="subheader">Risus ligula, aliquam nec fermentum vitae,
+									sollicitudin eget urna. Donec dignissim nibh fermentum odio
+									ornare sagittis.</h5>
+
+								<div class="show-for-small" align="center">
+									<a href="#" class="small radius button">Call To Action!</a><br>
+
+									<a href="#" class="small radius button">Call To Action!</a>
+								</div>
+
+							</div>
+							<div class="large-6 small-6 columns">
+
+								<p>Suspendisse ultrices ornare tempor. Aenean eget ultricies
+									libero. Phasellus non ipsum eros. Vivamus at dignissim massa.
+									Aenean dolor libero, blandit quis interdum et, malesuada nec
+									ligula. Nullam erat erat, eleifend sed pulvinar ac. Suspendisse
+									ultrices ornare tempor. Aenean eget ultricies libero.</p>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="large-4 columns hide-for-small">
+
+					<h4>Get In Touch!</h4>
+					<hr />
+
+					<a class="large button expand" href="#"> Call To Action! </a> <a
+						class="large button expand" href="#"> Call To Action! </a>
+
+
+				</div>
+
+				<!-- End Content -->
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+
+	<footer class="row">
+		<div class="large-12 columns">
+			<hr>
+			<div class="row">
+				<div class="large-6 columns">
+					<p>© Copyright no one at all. Go to town.</p>
+				</div>
+				<div class="large-6 columns">
+					<ul class="inline-list right">
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+						<li><a href="#">Link 3</a></li>
+						<li><a href="#">Link 4</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
 </body>
 </html>
