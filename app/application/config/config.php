@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://parker.boaboa.org/~genterata/';
+$config['base_url']	= 'http://alumnos.informatica.utem.cl/~pperez/sw/';
 
 /*
 |--------------------------------------------------------------------------

@@ -17,7 +17,7 @@
 					<!-- Title Area -->
 					<li class="name">
 						<h1>
-							<a href="<?php base_url();?>tesis">Trabajos de Titulacion</a>
+							<a href="<?php echo base_url();?>tesis">Trabajos de Titulacion</a>
 						</h1>
 					</li>
 					<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
