@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="small-3 columns">
+    <div class="small-2 columns">
         <h2>Test</h2>
     </div>
-    <div class="small-6 columns">
+    <div class="small-8 columns">
         <table>
             <thead>
                 <tr>
@@ -30,8 +30,20 @@
             </tbody>
         </table>
     </div>
-    <div class="small-3 columns">
-        <?= var_dump($defensas);?>
+    <div class="small-2 columns">
+        <div class="defensas">
+            <h2>Próximas Defensas</h2>
+        </div>
+        <?php if($defensas): ?>
+            <?php foreach ($defensas as $tesis): ?>
+                <p>tesis"<?= $tesis->titulo;?>"</p>
+                <p>por <?= $tesis->last_name . ', ' . $tesis->first_name;?></p>
+                <p>en <?= $tesis->fecha_evaluacion;?></p>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No hay defensas proximamente</p>
+        <?php endif; ?>
+
     </div>
 </div>
 

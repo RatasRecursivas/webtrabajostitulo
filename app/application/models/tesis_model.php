@@ -31,6 +31,15 @@ class Tesis_model extends CI_Model {
         parent::__construct();
     }
     
+    // Obtiene la fecha actual en formato por defecto postgres
+    private function _fecha_actual()
+    {
+        $this->load->helper('date');
+        $time = time();
+        $format = '%Y-%m-%d %h:%i:%s';
+        return mdate($format, $time);
+    }
+    
     public function insert($param) {
         return $this->db->insert($param);
     }
@@ -45,16 +54,14 @@ class Tesis_model extends CI_Model {
     
     public function getTodas()
     {
-        $query = $this->db->select('tesis.fecha_publicacion, tesis.id, tesis.titulo, users.first_name, users.last_name, tesis.abstract')->from($this->tabla)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->order_by('tesis.fecha_publicacion', 'desc')->get();
+        $now = $this->_fecha_actual();
+        $query = $this->db->select('tesis.fecha_publicacion, tesis.id, tesis.titulo, users.first_name, users.last_name, tesis.abstract')->from($this->tabla)->where('tesis.feha_disponibilidad < ', $now)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->order_by('tesis.fecha_publicacion', 'desc')->get();
         return $query->result();
     }
     
     public function getProximasDefensas($limit = 5)
     {
-        $this->load->helper('date');
-        $time = time();
-        $format = '%Y-%m-%d %h:%i:%s';
-        $now = mdate($format, $time);
+        $now = $this->_fecha_actual();
         $query = $this->db->select('tesis.titulo, tesis.fecha_evaluacion, users.first_name, users.last_name')->from($this->tabla)->where('tesis.fecha_evaluacion >', $now)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->limit($limit)->order_by('tesis.fecha_evaluacion', 'desc')->get();
         return $query->result();
     }
