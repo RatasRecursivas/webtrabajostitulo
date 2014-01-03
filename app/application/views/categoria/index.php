@@ -6,7 +6,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Nombre</th>
+                    <th>Nombre Categoría</th>
+                    <th>Nombre Facultdad</th>
                     <th>Modificar</th>
                     <th>Eliminar</th>
                 </tr>
@@ -15,6 +16,7 @@
                 <?php foreach ($categorias as $categoria): ?>
                 <tr>
                         <td><?= $categoria->nombre_categoria; ?></td>
+                        <td><?= $categoria->nombre_facultad; ?></td>
                         <td><a class="button tiny round" href="<?= site_url('/categoria/editar/'. $categoria->id) ; ?>">Modificar</a></td>
                         <td><a class="button tiny round alert" href="<?= site_url('/categoria/eliminar/'. $categoria->id) ; ?>">Eliminar</a></td>
                 </tr>
