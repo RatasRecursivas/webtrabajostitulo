@@ -1,76 +1,38 @@
 <div class="row">
-    <div class="large-12 columns">
+    <div class="large-10  columns">
         <?php
-        if (isset($query)) {
-            $nombre_carrera = array(
-                'type' => 'text',
-                'placeholder' => 'Ing...',
-                'name' => 'nombre_carrera',
-                'value' => $query->nombre_carrera
-            );
-
-            $button = array(
-                'value' => $action,
-                'class' => 'button tiny'
-            );
-            $attributes = array(
-                'class' => 'rigth inline',
-            );
-            $id = $query->id;
-        } else {
-            $nombre_carrera = array(
-                'type' => 'text',
-                'placeholder' => 'carrera',
-                'name' => 'nombre_carrera',
-                'value' => ''
-            );
-
-            $button = array(
-                'value' => $action,
-                'class' => 'button tiny'
-            );
-            $attributes = array(
-                'class' => 'rigth inline',
-            );
-            $id = '';
+        $nombre_carrera = array(
+            'type' => 'text',
+            'placeholder' => 'Ingeneria en informatica',
+            'name' => 'nombre_carrera',
+        );
+        $button = array(
+            'value' => $action,
+            'class' => 'button tiny'
+        );
+        $attributes = array(
+            'class' => 'rigth inline',
+        );
+        $nombre_codigo = array(
+            'type' => 'text',
+            'placeholder' => '21030',
+            'name' => 'codigo',
+        );
+        $selec_facultades = array();
+        foreach ($facultades as $facultad) {
+            $selec_facultades[$facultad->id] = $facultad->nombre_facultad;
         }
 
         if (isset($query)) {
-            $codigo = array(
-                'type' => 'text',
-                'placeholder' => 'codigo',
-                'name' => 'codigo',
-                'value' => $query->codigo
-            );
-
-            $button = array(
-                'value' => $action,
-                'class' => 'button tiny'
-            );
-            $attributes = array(
-                'class' => 'rigth inline',
-            );
-            $id = $query->id;
+            $nombre_carrera['value'] = $query->nombre_carrera;
+            $id = $query->codigo;
+            $nombre_codigo['value'] = $query->codigo;
+            $id_facultad = $query->facultad_id;
         } else {
-            $codigo = array(
-                'type' => 'text',
-                'placeholder' => 'codigo',
-                'name' => 'codigo',
-                'value' => ''
-            );
-
-            $button = array(
-                'value' => $action,
-                'class' => 'button tiny'
-            );
-            $attributes = array(
-                'class' => 'rigth inline',
-            );
+            $nombre_carrera['value'] = '';
             $id = '';
-            $selec_facultades = array();
-            foreach ($facultades as $facultad) {
-                $selec_facultades[$facultad->id] = $facultad->nombre_facultad;
-            }
+            $nombre_codgio['value'] = '';
+            $id_facultad = '';
         }
         ?>
         <?= form_open('carrera/' . strtolower($action)); ?>
@@ -79,26 +41,29 @@
             <div class="small-2 columns">
                 <?= form_label('Nombre carrera:', 'nombreCarrera', $attributes); ?>
             </div>
-            <div class="small-8 columns">
+            <div class="small-10 columns">
                 <?= form_input($nombre_carrera); ?>
-            </div>
-            <div class="small-2  columns">
             </div>
         </div>
         <div class="row">
             <div class="small-2 columns">
                 <?= form_label('Codigo:', 'numerocodigo', $attributes); ?>
             </div>
-            <div class="small-8 columns">
-                <?= form_input($codigo); ?>
-            </div>
-            <div class="small-2  columns">
-                <?= form_submit($button); ?>
+            <div class="small-10 columns">
+                <?= form_input($nombre_codigo); ?>
             </div>
 
         </div>
         <div class="row">
-            <?= form_dropdown('facultades', $selec_facultades); ?>
+            <div class="small-2 columns">
+                <?= form_label('Nombre Facultad:', 'nombreFacultad', $attributes); ?>
+            </div>
+            <div class="large-8 columns">
+                <?= form_dropdown('facultades', $selec_facultades,$id_facultad); ?>
+            </div>
+            <div class="small-2  columns">
+                <?= form_submit($button); ?>
+            </div>
         </div>
         <?= form_hidden('id', $id); ?>
         <?= form_fieldset_close(); ?>

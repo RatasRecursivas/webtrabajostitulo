@@ -36,7 +36,7 @@ class Carrera extends CI_Controller {
             $carrera = array(
                 'codigo' => $this->input->post('codigo', TRUE),
                 'nombre_carrera' => $this->input->post('nombre_carrera', TRUE),
-                'id_facultad' => $this->input->post('id_facultad', TRUE),
+                'id_facultad' => $this->input->post('facultades', TRUE),
             );
             if ($this->Carrera_model->agregar($carrera)) {
                 $this->session->set_flashdata('msg', 'Se agrego correctamente la Carrera');
@@ -46,9 +46,50 @@ class Carrera extends CI_Controller {
                 redirect('carrera');
             }
         } else {
-        $this->load->view('template/head', $data);
-        $this->load->view('carrera/formulario', $data);
-        $this->load->view('template/footer');
+            $this->load->view('template/head', $data);
+            $this->load->view('carrera/formulario', $data);
+            $this->load->view('template/footer');
+        }
+    }
+
+    public function editar($id = null) {
+        $data['title'] = 'Editor de carreras';
+        $data['action'] = 'Editar';
+        $data['facultades'] = $this->Facultad_model->getFacultades();
+
+        if ($this->input->post()) {
+            $id = $this->input->post('id', true);
+            $carrera = array(
+                'codigo' => $this->input->post('codigo', TRUE),
+                'nombre_carrera' => $this->input->post('nombre_carrera', true),
+                'id_facultad' => $this->input->post('facultades', TRUE),
+            );
+            if ($this->Carrera_model->editar($id, $carrera)) {
+                $this->session->set_flashdata('msg', 'Se modifico correctamente el registro');
+                redirect('carrera');
+            } else {
+                $data['values'] = $carrera;
+                $this->session->set_flashdata('msg', 'ocurrio un error');
+                $this->load->view('template/head', $data);
+                $this->load->view('carrera/formulario', $data);
+                $this->load->view('template/footer');
+            }
+        } else {
+            if (!$id) {
+                $this->session->set_flashdata('msg', 'No especifico Carrera');
+                redirect('carrera');
+            } else {
+                $data['query'] = $this->Carrera_model->getCarrera($id);
+                $data['action'] = 'Editar';
+                 if ($data) { 
+                    $this->load->view('template/head', $data);
+                    $this->load->view('carrera/formulario', $data);
+                    $this->load->view('template/footer');
+                } else {
+                    $this->session->set_flashdata('msg', 'La facultad a editar no es valida, intente nuevamente');
+                    redirect('carrera');
+                }
+            }
         }
     }
 

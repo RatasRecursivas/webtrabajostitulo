@@ -29,10 +29,11 @@ class Categoria extends CI_Controller{
         $data['facultades'] = $this->Facultad_model->getFacultades();
 
         if ($this->input->post()) {
-            $facultad = array(
-                'nombre_facultad' => $this->input->post('nombre_facultad', true)
+            $categoria = array(
+                'nombre_categoria' => $this->input->post('nombre_categoria', true),
+                'id_facultad' => $this->input->post('facultades',true)
             );
-            if ($this->Facultad_model->agregar($facultad)) {
+            if ($this->Categoria_model->agregar($categoria)) {
                 $this->session->set_flashdata('msg', 'Categoria agregada correctamente');
                 redirect('categoria');
             } else {
@@ -44,5 +45,46 @@ class Categoria extends CI_Controller{
             $this->load->view('categoria/formulario', $data);
             $this->load->view('template/footer');
         }
+    }
+    
+    public function editar($id = NULL) {
+        $data['title'] = 'Edición de Categoria';
+        
+        if ($this->input->post()) { // Llega por post
+            $id = $this->input->post('id', true); // El id es recibido mediante un campo oculto en el form
+            $categoria = array(
+                'nombre_categoria' => $this->input->post('nombre_categoria', true),
+                'id_facultad' => $this->input->post('facultades',true)
+            );
+            if ($this->Categoria_model->editar($id, $categoria)) {
+                $this->session->set_flashdata('msg', 'Se modifico correctamente el registro');
+                redirect('categoria');
+            } else {
+                $data['values'] = $facultad;
+                $this->session->set_flashdata('msg', 'Hubo un error modificando el registro');
+                $this->load->view('template/head', $data);
+                $this->load->view('categoria/formulario', $data);
+                $this->load->view('template/footer');
+            }
+        } else { // Llegamos por get solamente, nos llega un id
+            if (!$id) {
+                $this->session->set_flashdata('msg', 'No especifico la facultad a editar!');
+                redirect('categoria');
+            } else {
+                $data['query'] = $this->Categoria_model->getCategoria($id);
+                $data['facultades'] = $this->Facultad_model->getFacultades($id);
+                $data['action'] = 'Editar';
+
+                if ($data) { // Tenemos una facultad valida // Pasamos los parametros a la vista, comodidad ante todo :)
+                    $this->load->view('template/head', $data);
+                    $this->load->view('categoria/formulario', $data);
+                    $this->load->view('template/footer');
+                } else {
+                    $this->session->set_flashdata('msg', 'La facultad a editar no es valida, intente nuevamente');
+                    redirect('facultad');
+                }
+            }
+        }
+        
     }
 }
