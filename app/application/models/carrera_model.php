@@ -18,10 +18,30 @@ class Carrera_model extends CI_Model {
     function __construct() {
         parent::__construct();
     }
-    
+
     public function getCarreras() {
         $query = $this->db->order_by('codigo')->select('carrera.codigo,facultad.nombre_facultad, carrera.nombre_carrera')->from($this->tabla)->join('facultad', 'carrera.id_facultad = facultad.id')->get();
-        return $query-> result();
-        
+        return $query->result();
     }
+
+    public function agregar($data) {
+        return $this->db->insert($this->tabla, $data);
+    }
+
+    public function editar($id, $data) {
+        return $this->db->
+                where('codigo', $id)->
+                update($this->tabla, $data);
+    }
+
+    public function getCarrera($id) {
+        $query = $this->db->
+                select('carrera.codigo , carrera.nombre_carrera , facultad.id as facultad_id')->
+                from($this->tabla)->
+                where('carrera.codigo', $id)->
+                join('facultad', 'facultad.id = carrera.id_facultad')->
+                get()->row();
+        return $query;
+    }
+
 }
