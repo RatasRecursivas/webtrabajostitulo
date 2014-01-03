@@ -38,8 +38,11 @@
         <?= form_open('facultad/' . strtolower($action)); ?>
         <?= form_fieldset($action . ' Registro'); ?>
         <div class="row">
+            <div class="large-12 columns"> <?= validation_errors(); ?> </div>
+        </div>
+        <div class="row">
             <div class="small-2 columns">
-                <?= form_label('Nombre Facultad:', 'nombreFacultad', $attributes); ?>
+                <?= form_label('Nombre Facultad:', 'Nombre Facultdad', $attributes); ?>
             </div>
             <div class="small-8 columns">
                 <?= form_input($nombre_facultad); ?>
