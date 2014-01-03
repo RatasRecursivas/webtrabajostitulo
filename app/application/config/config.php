@@ -358,5 +358,19 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 
+/*
+|--------------------------------------------------------------------------
+| Dirdoc WS Settings
+|--------------------------------------------------------------------------
+|
+| Establece las credenciales de login por autenticacion
+| HTTP basica para el WS de dirdoc, tambien el url de este
+|
+*/
+
+$config['dirdoc_ws_url'] = 'http://informatica.utem.cl:8011/dirdoc-auth/ws/auth?wsdl';
+$config['dirdoc_ws_user'] = 'CHANGEME';
+$config['dirdoc_ws_password'] = 'CHANGEME';
+
 /* End of file config.php */
 /* Location: ./application/config/config.php */
