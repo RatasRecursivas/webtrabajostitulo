@@ -152,5 +152,20 @@ class Carrera extends CI_Controller {
         } 
         $this->mostrarVista('carrera/formulario');
     }
+     public function eliminar($id) {
+        $id = (int)$id;
+        $carrera = $this->Carrera_model->getCarrera($id);
+        if($carrera ){ // existe ?
+            $eliminado = $this->Carrera_model->eliminar($id);
+            if($eliminado == true){
+                $this->redireccionar_msg('carrera', 'Fue exitosamente eliminado!');
+            } else {
+                $this->redireccionar_msg('carrera', 'Intentelo nuevamente, Ooops :/');
+            }
+        }  else {
+            $this->redireccionar_msg('carrera', 'No existe esa Carrera');
+        }
+        
+    }
 
 }

@@ -25,33 +25,54 @@
  */
 class Facultad extends CI_Controller {
 
-    var $datos_view = array();
     var $facultad_id = array();
     var $facultad_datos = array();
+    var $facultad_titulo = '';
+    var $facultad_acction = '';
+    var $facultad_getfalcultad = null;
+    var $facultad_todasfacultades = array();
+    var $facultad_agregar_modificar = '';
+    
+    public function setFacultad_titulo($facultad_titulo) {
+        $this->facultad_titulo = $facultad_titulo;
+    }
 
-    function __construct() {
+    public function setFacultad_acction($facultad_acction) {
+        $this->facultad_acction = $facultad_acction;
+    }
+
+    public function setFacultad_getfalcultad($facultad_getfalcultad) {
+        $this->facultad_getfalcultad = $facultad_getfalcultad;
+    }
+
+    public function setFacultad_todasfacultades($facultad_todasfacultades) {
+        $this->facultad_todasfacultades = $facultad_todasfacultades;
+    }
+
+    public function setFacultad_agregar_modificar($facultad_agregar_modificar) {
+        $this->facultad_agregar_modificar = $facultad_agregar_modificar;
+    }
+
+        function __construct() {
         parent::__construct();
         $this->load->model('Facultad_model');
     }
 
-    private function llenarInfo($title, $acction, $agregar_editar, $ultimasFacultades = null, $getFacultad = null) {
-        $info = array(
-            'title' => $title,
-            'action' => $acction,
-            'facultades' => $ultimasFacultades,
-            'query' => $getFacultad,
-            'agregar_modificar'=> $agregar_editar,
+    public function mostrarVista($vista){
+         $info_view = array(
+            'title' => $this->facultad_titulo,
+            'action' => $this->facultad_acction,
+            'agregar_modificar' => $this->facultad_agregar_modificar,
+            'facultades' => $this->facultad_todasfacultades,
+            'query' => $this->facultad_getfalcultad,
+            
         );
-        $this->datos_view = $info;
-    }
-
-    public function mostrarVista($view) {
-        $this->load->view('template/head', $this->datos_view);
-        $this->load->view($view, $this->datos_view);
+        $this->load->view('template/head', $info_view);
+        $this->load->view($vista, $info_view);
         $this->load->view('template/footer');
     }
-
-    private function getDatosPost() {
+         
+        private function getDatosPost() {
         $facultad = array(
             'nombre_facultad' => $this->input->post('nombre_facultad', true)
         );
@@ -59,11 +80,11 @@ class Facultad extends CI_Controller {
     }
 
     private function getIdPost() {
-        $id = $this->input->post('id', true);
-        return $id;
+        $this->facultad_id  = $this->input->post('id', true);
+        
     }
 
-    private function ultimasTesis() {
+    private function ultimasFacultades() {
         return $this->Facultad_model->getFacultades();
     }
     
@@ -73,39 +94,46 @@ class Facultad extends CI_Controller {
     }
 
     public function index() {
-        $this->llenarInfo('Indice', null, null, $this->ultimasTesis());
+//        $this->llenarInfo('Indice', null, null, $this->ultimasTesis());
+        $this->setFacultad_titulo('Indice | Facultada');
+        $this->setFacultad_todasfacultades($this->ultimasFacultades());
         $this->mostrarVista('facultad/index');
     }
 
+    
     public function agregar() {
-        $this->llenarInfo('Agregar Facultad', 'Agregar','Guardar');
+        $this->setFacultad_titulo('Agregar|Facultad');
+        $this->setFacultad_acction('Agregar');
+        $this->setFacultad_agregar_modificar('Agregar');
+        $this->setFacultad_todasfacultades($this->ultimasFacultades());
+    
         if ($this->input->post()) {
             if ($this->form_validation->run('facultad/formulario')) {
-                
                 $this->getDatosPost();
-                
                 $guardado = $this->Facultad_model->agregar($this->facultad_datos);
+
                 if ($guardado == true) {
-                    $this->redireccionar_msg('facultad', 'Se agrego correctamente la facultdad');
+                    $this->redireccionar_msg('facultad ','Se agrego correctamente la Facu :)');
                 } else {
-                    $this->redireccionar_msg('facultad', 'Hubo un problema agregando la facultad');
+                    $this->redireccionar_msg('facultad', 'No se agrego correctamente ');
                 }
             }
         }
         $this->mostrarVista('facultad/formulario');
     }
 
+    
+
     public function editar($id = NULL) {
         $id = (int) $id;
         if (!$id) {
             $this->redireccionar_msg('facultad','No especifico la facultad a editar!');
         }
-        if ($this->input->post() ) { // Llega por post
-            if ($this->form_validation->run('facultad/formulario') ) {//validamos los datos
-                //ok obten toda info
+        if ($this->input->post() ) { 
+            if ($this->form_validation->run('facultad/formulario') ) {
                 $this->getIdPost(); 
                 $this->getDatosPost();
-                //editar entonces!
+                
                 $editado = $this->Facultad_model->editar($this->facultad_id, $this->facultad_datos);
                 
                 if ($editado == True) {
@@ -115,19 +143,22 @@ class Facultad extends CI_Controller {
                 }
             }
         }
-        $this->llenarInfo('Editar de Facultar', 'Editar/'.$id, 'Editar',null, $this->Facultad_model->getFacultad($id));
-        
-        if (!$this->datos_view['query']) { //Ups no existe ese ID 
+        $this->setFacultad_titulo('Editar|Facultad');
+        $this->setFacultad_acction('Editar/'.$id);
+        $this->setFacultad_getfalcultad($this->Facultad_model->getFacultad($id));
+        $this->setFacultad_agregar_modificar('Editar');
+
+        if ($this->facultad_getfalcultad ==  false) { //Ups no existe ese ID 
             $this->redireccionar_msg('facultad', 'La facultad a editar no es valida, intente nuevamente');
-        } 
-        $this->mostrarVista('facultad/formulario');
+        }else {
+            $this->mostrarVista('facultad/formulario');
+        }
     }
     
     public function eliminar($id) {
         $id = (int)$id;
         $facultad = $this->Facultad_model->getFacultad($id);
         if($facultad ){ // existe ?
-            echo 'holaa';
             $eliminado = $this->Facultad_model->eliminar($id);
             if($eliminado == true){
                 $this->redireccionar_msg('facultad', 'Fue exitosamente eliminado!');

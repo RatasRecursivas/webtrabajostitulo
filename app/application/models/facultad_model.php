@@ -56,7 +56,6 @@ class Facultad_model extends CI_Model{
      
     public function eliminar($id) {
         return $this->db->
-              
                 where('id',$id)->
                 delete($this->tabla);
     }

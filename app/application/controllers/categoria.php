@@ -151,5 +151,19 @@ class Categoria extends CI_Controller {
         $this->mostrarVista('categoria/formulario');
 
     }
-
+   public function eliminar($id) {
+        $id = (int)$id;
+        $carrera = $this->Categoria_model->getCategoria($id);
+        if($carrera ){ // existe ?
+            $eliminado = $this->Categoria_model->eliminar($id);
+            if($eliminado == true){
+                $this->redireccionar_msg('categoria', 'Fue exitosamente eliminado!');
+            } else {
+                $this->redireccionar_msg('categoria', ' Ooops :/ , hagalo nuevamente');
+            }
+        }  else {
+            $this->redireccionar_msg('categoria', 'No existe esa categoria');
+        }
+        
+    }
 }
