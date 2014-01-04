@@ -35,6 +35,7 @@ class Tesis_model extends CI_Model {
     private function _fecha_actual()
     {
         $this->load->helper('date');
+        date_default_timezone_set('America/Santiago');
         $time = time();
         $format = '%Y-%m-%d %h:%i:%s';
         return mdate($format, $time);
@@ -45,7 +46,16 @@ class Tesis_model extends CI_Model {
     }
     
     public function getTesis($id) {
-        return $this->db->select('ubicacion_fichero, titulo, abstract, fecha_publicacion, first_name, last_name')->from($this->tabla)->where('tesis.id', $id)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->get()->row();
+        $query =  $this->db->
+                select('ubicacion_fichero, titulo, abstract,fecha_evaluacion,feha_disponibilidad ,fecha_publicacion, first_name, last_name, tesis.id, estudiante_rut, profesor_guia_rut')->
+                from($this->tabla)->
+                where('tesis.id', $id)->
+                join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->
+                join('users', 'users.id = estudiante.user_id', 'inner')->
+                get()->
+                row();
+        //var_dump($query);
+        return $query;
     }
     
     public function contar() {
@@ -65,4 +75,13 @@ class Tesis_model extends CI_Model {
         $query = $this->db->select('tesis.titulo, tesis.fecha_evaluacion, users.first_name, users.last_name')->from($this->tabla)->where('tesis.fecha_evaluacion >', $now)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->limit($limit)->order_by('tesis.fecha_evaluacion', 'desc')->get();
         return $query->result();
     }
+     public function editar($id,$data){
+        return $this->db-> where('id', $id)->update($this->tabla, $data);
+    } 
+    
+    
+    public function agregar($data) {
+        return $this->db->insert($this->tabla, $data);
+    }
 }
+
