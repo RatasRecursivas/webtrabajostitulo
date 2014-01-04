@@ -104,7 +104,7 @@ class WS_Dirdoc {
                 'password' => $pw);
 
             $cliente = new SoapClient($url, $autenticacion);
-            $objeto = $cliente->consultarEstudiante($parametros);
+            $objeto = $cliente->consultarFichasEstudiantes($parametros);
             $resultado = $objeto->return;
         } catch (Exception $e) {
             $resultado = array();
