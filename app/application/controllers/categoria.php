@@ -8,10 +8,39 @@
 
 class Categoria extends CI_Controller {
 
-    var $datos_view = array();
-    var $categoria_datos = '';
-    var $categoria_id = '';
+    var $categoria_datos =  array();
+    var $categoria_id = array ();
+    var $categoria_titulo ='';
+    var $categoria_acction = '';
+    var $categoria_getcategoria = null;
+    var $categoria_facultades = array ();
+    var $categoria_todascategorias = array ();
+    var $categoria_agregar_modificar= '';
+    public function setCategoria_titulo($categoria_titulo) {
+        $this->categoria_titulo = $categoria_titulo;
+    }
 
+    public function setCategoria_acction($categoria_acction) {
+        $this->categoria_acction = $categoria_acction;
+    }
+
+    public function setCategoria_getcategoria($categoria_getcategoria) {
+        $this->categoria_getcategoria = $categoria_getcategoria;
+    }
+
+    public function setCategoria_facultades($categoria_facultades) {
+        $this->categoria_facultades = $categoria_facultades;
+    }
+
+    public function setCategoria_todascategorias($categoria_todascategorias) {
+        $this->categoria_todascategorias = $categoria_todascategorias;
+    }
+
+    public function setCategoria_agregar_modificar($categoria_agregar_modificar) {
+        $this->categoria_agregar_modificar = $categoria_agregar_modificar;
+    }
+
+    
     public function __construct() {
         parent::__construct();
         $this->load->model('Categoria_model');
@@ -19,22 +48,20 @@ class Categoria extends CI_Controller {
     }
 
     public function mostrarVista($vista) {
-        $this->load->view('template/head', $this->datos_view);
-        $this->load->view($vista, $this->datos_view);
+        $info_view = array (
+            'title'=> $this->categoria_titulo,
+            'action'=>  $this->categoria_acction,
+            'agregar_modificar'=> $this->categoria_agregar_modificar,
+            'categorias'=>$this->categoria_todascategorias,
+            'query'=> $this->categoria_getcategoria,
+            'facultades'=> $this->categoria_facultades,
+            
+        );
+        $this->load->view('template/head', $info_view);
+        $this->load->view($vista, $info_view);
         $this->load->view('template/footer');
     }
 
-    private function llenarInfo($titulo, $accion, $agregar_editar, $ultimascategoria = null, $todasFacultades = null, $getCategoria = null) {
-        $informacion = array(
-            'title' => $titulo,
-            'action' => $accion,
-            'categorias' => $ultimascategoria,
-            'facultades' => $todasFacultades,
-            'agregar_modificar' => $agregar_editar,
-            'query' => $getCategoria,
-        );
-        $this->datos_view = $informacion;
-    }
 
     private function getIdPost() {
         $id = $this->input->post('id', true);
@@ -63,12 +90,18 @@ class Categoria extends CI_Controller {
     }
 
     public function index() {
-        $this->llenarInfo('Indice', null, null, $this->ultimasCategorias());
+        $this->setCategoria_titulo('Indice|Categoria');
+        $this->setCategoria_todascategorias($this->ultimasCategorias());
         $this->mostrarVista('categoria/index');
     }
+    
 
     public function agregar() {
-        $this->llenarInfo('Agregar', 'Agregar', 'Agregar', null, $this->todasFacultades());
+        $this->setCategoria_titulo('Agregar|Categoria');
+        $this->setCategoria_acction('Agregar');
+        $this->setCategoria_agregar_modificar('Agregar');
+        $this->setCategoria_facultades($this->todasFacultades());
+        
 
         if ($this->input->post()) {
             if ($this->form_validation->run('categoria/formulario')) {
@@ -107,8 +140,12 @@ class Categoria extends CI_Controller {
                 }
             }
         }
-        $this->llenarInfo('Editar | Categoria', 'Editar/'.$id, 'Editar',null, $this->todasFacultades(), $this->Categoria_model->getCategoria($id));
-        if(!$this->datos_view['query'] ){ //Ups no existe tal id
+        $this->setCategoria_titulo('Editar|Categoria');
+        $this->setCategoria_acction('Editar/'.$id);
+        $this->setCategoria_agregar_modificar('Editar');
+        $this->setCategoria_facultades($this->todasFacultades());
+        $this->setCategoria_getcategoria($this->Categoria_model->getCategoria($id));
+        if($this->categoria_getcategoria == false){ //Ups no existe tal id
             $this->redireccionar_msg('categoria', 'La categoria a editar no es valida, intente nuevamente');
         }
         $this->mostrarVista('categoria/formulario');
