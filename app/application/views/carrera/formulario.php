@@ -18,7 +18,7 @@
             'placeholder' => '21030',
             'name' => 'codigo',
         );
-        $label_carrera = 'nombre carrera';
+        $label_carrera = 'Nombre Carrera';
         $label_codigo = 'Codigo' ;
         $selec_facultades = array();
         foreach ($facultades as $facultad) {
@@ -37,8 +37,8 @@
             $id_facultad = '';
         }
         ?>
-        <?= form_open('carrera/' . strtolower($action)); ?>
-        <?= form_fieldset($action . ' Registro'); ?>
+        <?= form_open('carrera/' . strtolower($acction)); ?>
+        <?= form_fieldset($agregar_modificar . ' Registro'); ?>
         <div class="row">
             <div class="small-2 columns">
                 <?= form_label('Nombre carrera:',$label_carrera , $attributes); ?>

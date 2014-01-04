@@ -24,41 +24,68 @@
  * @author pperez
  */
 class Tesis extends CI_Controller {
-
+    
+    var $datos_view = array();
+    var $tesis_id = array();
+    var $tesis_datos = array();
+    var $tesis_titulo = '';
+    var $tesis_acction = '';
+    var $tesis_profesores = array();
+    var $tesis_getTesis = array();
+    var $tesis_todasTesis = array();
+    var $tesis_proximasTesis = array();
+    
     function __construct() {
         parent::__construct();
         $this->load->model('Tesis_model');
         $this->load->model('Profesor_model');
     }
 
-    public function index() {
-        $data['title'] = 'Índice';
-        $data['query'] = $this->Tesis_model->getTodas();
-        $data['defensas'] = $this->Tesis_model->getProximasDefensas();
-        $this->load->view('template/head', $data);
-        $this->load->view('tesis/index', $data);
+    private function mostrar_vista($vista) {
+        $this->load->view('template/head', $this->datos_view);
+        $this->load->view($vista, $this->datos_view);
         $this->load->view('template/footer');
+    }
+    
+    public function redireccionar_msg($link,$mensaje) {
+        $this->session->set_flashdata('msg',$mensaje);
+        redirect($link);
+    }
+    public function llenarInfo($title,$acction,$agregar_modificar,$todasLastesis = null,$getProximasDefensas = null, $tesis){
+        $info_view = array(
+            'title' => $title,
+            'query' => $todasLastesis,
+            'defensas' => $getProximasDefensas,
+            'tesis' => $tesis,
+        );
+        $this->datos_view = $info_view;
+    }
+
+    public function index() {
+//        $data['title'] = 'Índice';
+//        $data['query'] = $this->Tesis_model->getTodas();
+//        $data['defensas'] = $this->Tesis_model->getProximasDefensas();
+        $this->llenarInfo('Indice', null, null,  $this->Tesis_model->getTodas(),  $this->Tesis_model->getProximasDefensas(),null);
+//        $this->load->view('template/head', $data);
+//        $this->load->view('tesis/index', $data);
+//        $this->load->view('template/footer');
+        $this->mostrar_vista('tesis/index');
     }
 
     public function ver($id = NULL) {
-        if ($id) {
-            $tesis = $this->Tesis_model->getTesis($id);
-            $data['tesis'] = $tesis;
-            $data['title'] = $tesis->titulo;
-
-            $this->load->view('template/head', $data);
-            $this->load->view('tesis/ver', $data);
-            $this->load->view('template/footer');
+        $id = (int)$id;
+        if (!$id) {
+            $this->redireccionar_msg('tesis','No especifico la tesis a mostrar!');
         }
+        $tesis = $this->Tesis_model->getTesis($id);
+        if($tesis){
+            $this->llenarInfo($tesis->titulo, null, null, null, null,$tesis);
+            $this->mostrar_vista('tesis/ver');
+        }  else {
+            $this->redireccionar_msg('tesis', 'Tesis no encontrada');
+        }
+        
     }
-
-    //public function prueba() {
-    // $query= $this->Profesor_model->getProfesores();
-    //echo var_dump($query);
-
-
-
-
 
     public function editar($id = null) {
         $data['title'] = 'Editar Tesis';
@@ -74,7 +101,7 @@ class Tesis extends CI_Controller {
                 'fecha_publicacion' => $this->input->post('fecha_publicacion', true),
                 'fecha_evaluacion' => $this->input->post('fecha_evaluacion', true),
                 'feha_disponibilidad' => $this->input->post('fecha_disponibilidad', true),
-                'profesor_guia_rut' => $this->input->post('profesor_date',true),
+                'profesor_guia_rut' => $this->input->post('profesor_date', true),
             );
             var_dump($tesis);
             if ($this->Tesis_model->editar($id, $tesis)) {
@@ -107,6 +134,7 @@ class Tesis extends CI_Controller {
             }
         }
     }
+
     public function agregar() {
         $data ['title'] = 'Agregar nueva Tesis';
         $data['action'] = 'Agregar';
@@ -121,7 +149,7 @@ class Tesis extends CI_Controller {
                 'fecha_publicacion' => $this->input->post('fecha_publicacion', true),
                 'fecha_evaluacion' => $this->input->post('fecha_evaluacion', true),
                 'feha_disponibilidad' => $this->input->post('fecha_disponibilidad', true),
-                'profesor_guia_rut' => $this->input->post('profesor_date',true), 
+                'profesor_guia_rut' => $this->input->post('profesor_date', true),
             );
             if ($this->Tesis_model->agregar($tesis)) {
                 $this->session->set_flashdata('msg', 'Se agrego correctamente');
@@ -136,7 +164,5 @@ class Tesis extends CI_Controller {
             $this->load->view('template/footer');
         }
     }
-    
-    
 
 }

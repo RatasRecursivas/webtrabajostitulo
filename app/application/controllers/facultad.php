@@ -26,8 +26,8 @@
 class Facultad extends CI_Controller {
 
     var $datos_view = array();
-    var $facultad_id = "";
-    var $facultad_datos = "";
+    var $facultad_id = array();
+    var $facultad_datos = array();
 
     function __construct() {
         parent::__construct();
@@ -88,7 +88,7 @@ class Facultad extends CI_Controller {
                 if ($guardado == true) {
                     $this->redireccionar_msg('facultad', 'Se agrego correctamente la facultdad');
                 } else {
-                    $this->redireccionar_msg('msg', 'Hubo un problema agregando la facultad');
+                    $this->redireccionar_msg('facultad', 'Hubo un problema agregando la facultad');
                 }
             }
         }

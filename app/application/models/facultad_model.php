@@ -38,7 +38,9 @@ class Facultad_model extends CI_Model{
     
     public function editar($id, $data)
     {
-        return $this->db->where('id', $id)->update($this->tabla, $data);
+        return $this->db->
+                where('id', $id)->
+                update($this->tabla, $data);
     }
     
     public function getFacultad($id)

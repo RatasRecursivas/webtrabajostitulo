@@ -1,16 +1,3 @@
-
-
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
-
-/**
-* Description of formulario
-*
-* @author natalia
-*/
 <div class="row">
     <div class="large-10  columns">
         <?php
@@ -56,7 +43,7 @@
          $label_abstract = 'abstract' ;
          $label_fechap = 'fecha de publicacion' ; 
          $label_fechad = 'fecha de disponibilidad';
-         $label_fechae ='fecha de evaluacion'
+         $label_fechae ='fecha de evaluacion';
            
         $selec_profesores = array();
         foreach ($profesores as $profesor) {
