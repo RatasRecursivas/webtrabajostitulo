@@ -34,12 +34,13 @@ class Facultad extends CI_Controller {
         $this->load->model('Facultad_model');
     }
 
-    private function llenarInfo($title, $acction, $ultimasFacultades = null, $getFacultad = null) {
+    private function llenarInfo($title, $acction, $agregar_editar, $ultimasFacultades = null, $getFacultad = null) {
         $info = array(
             'title' => $title,
             'action' => $acction,
             'facultades' => $ultimasFacultades,
             'query' => $getFacultad,
+            'agregar_modificar'=> $agregar_editar,
         );
         return $info;
     }
@@ -72,12 +73,12 @@ class Facultad extends CI_Controller {
     }
 
     public function index() {
-        $this->datos_view = $this->llenarInfo('Indice', null, $this->ultimasTesis());
+        $this->datos_view = $this->llenarInfo('Indice', null, null, $this->ultimasTesis());
         $this->mostrarVista('facultad/index', $this->datos_view);
     }
 
     public function agregar() {
-        $datos_view = $this->llenarInfo('Agregar Facultad', 'Agregar');
+        $datos_view = $this->llenarInfo('Agregar Facultad', 'Agregar','Guardar');
         if ($this->input->post()) {
             if ($this->form_validation->run('facultad/formulario')) {
                 $this->facultad_datos = $this->getDatosPost();
@@ -98,7 +99,7 @@ class Facultad extends CI_Controller {
             $this->redireccionar_msg('facultad','No especifico la facultad a editar!');
         }
         if ($this->input->post() ) { // Llega por post
-            if ( $this->form_validation->run('facultad/formulario') ) {//validamos los datos
+            if ($this->form_validation->run('facultad/formulario') ) {//validamos los datos
                 $this->facultad_id = $this->getIdPost(); //ok obten toda info, 
                 $this->facultad_datos = $this->getDatosPost();
                 //editar entonces!
@@ -110,7 +111,7 @@ class Facultad extends CI_Controller {
                 }
             }
         }
-        $this->datos_view = $this->llenarInfo('Editar de Facultar', 'Editar/'.$id, null, $this->Facultad_model->getFacultad($id));
+        $this->datos_view = $this->llenarInfo('Editar de Facultar', 'Editar/'.$id, 'Editar',null, $this->Facultad_model->getFacultad($id));
         if (!$this->datos_view['query']) { //Ups no existe ese ID 
             $this->redireccionar_msg('facultad', 'La facultad a editar no es valida, intente nuevamente');
         } 

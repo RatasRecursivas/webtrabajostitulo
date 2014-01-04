@@ -19,12 +19,19 @@ class Carrera extends CI_Controller {
         $this->load->model('Facultad_model');
     }
 
+    public function mostrarVista($vista,$data){
+        $this->load->view('template/head', $data);
+        $this->load->view('$vista', $data);
+        $this->load->view('template/footer');
+    }
+
     public function index() {
         $data['title'] = 'Carreras';
         $data['carreras'] = $this->Carrera_model->getCarreras();
-        $this->load->view('template/head', $data);
-        $this->load->view('carrera/index', $data);
-        $this->load->view('template/footer');
+        $this->mostrarVista('carrera/index', $data);
+//        $this->load->view('template/head', $data);
+//        $this->load->view('carrera/index', $data);
+//        $this->load->view('template/footer');
     }
 
     public function agregar() {
@@ -81,7 +88,7 @@ class Carrera extends CI_Controller {
             } else {
                 $data['query'] = $this->Carrera_model->getCarrera($id);
                 $data['action'] = 'Editar';
-                 if ($data) { 
+                if ($data) {
                     $this->load->view('template/head', $data);
                     $this->load->view('carrera/formulario', $data);
                     $this->load->view('template/footer');
