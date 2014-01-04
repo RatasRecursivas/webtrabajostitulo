@@ -13,31 +13,56 @@
  */
 class Carrera extends CI_Controller {
 
-    var $datos_view = array();
     var $carrera_id = array();
     var $carrera_datos = array();
+    var $carrera_titulo = '';
+    var $carrera_acction = '';
+    var $carrera_getCarrera = null;
+    var $carrera_falcultades = array();
+    var $carrera_todasCarreras = array();
+    var $carrera_agregar_modificar = '';
 
-    function __construct() {
+    public function setCarrera_titulo($carrera_titulo) {
+        $this->carrera_titulo = $carrera_titulo;
+    }
+
+    public function setCarrera_acction($carrera_acction) {
+        $this->carrera_acction = $carrera_acction;
+    }
+
+    public function setCarrera_getCarrera($carrera_getCarrera) {
+        $this->carrera_getCarrera = $carrera_getCarrera;
+    }
+
+    public function setCarrera_falcultades($carrera_falcultades) {
+        $this->carrera_falcultades = $carrera_falcultades;
+    }
+
+    public function setCarrera_todasCarreras($carrera_todasCarreras) {
+        $this->carrera_todasCarreras = $carrera_todasCarreras;
+    }
+
+    public function setCarrera_agregar_modificar($carrera_agregar_modificar) {
+        $this->carrera_agregar_modificar = $carrera_agregar_modificar;
+    }
+
+        function __construct() {
         parent::__construct();
         $this->load->model('Carrera_model');
         $this->load->model('Facultad_model');
     }
 
-    private function llenarInfo($titulo, $acction, $agregar_editar, $ultimasCarreras = null, $todasFacultades = null, $getCarrera = null) {
-        $info = array(
-            'title' => $titulo,
-            'acction' => $acction,
-            'agregar_modificar' => $agregar_editar,
-            'carreras' => $ultimasCarreras,
-            'facultades' => $todasFacultades,
-            'query' => $getCarrera,
-        );
-        $this->datos_view = $info;
-    }
-
     public function mostrarVista($vista) {
-        $this->load->view('template/head', $this->datos_view);
-        $this->load->view($vista, $this->datos_view);
+        $info_view = array(
+            'title' => $this->carrera_titulo,
+            'acction' => $this->carrera_acction,
+            'agregar_modificar' => $this->carrera_agregar_modificar,
+            'carreras' => $this->carrera_todasCarreras,
+            'query' => $this->carrera_getCarrera,
+            'facultades' => $this->carrera_falcultades,
+        );
+        $this->load->view('template/head', $info_view);
+        $this->load->view($vista, $info_view);
         $this->load->view('template/footer');
     }
 
@@ -69,26 +94,18 @@ class Carrera extends CI_Controller {
     }
 
     public function index() {
-
-        $this->llenarInfo('Indice', null, null, $this->ultimasCarreras());
+        $this->setCarrera_titulo('Indice | Carrera');
+        $this->setCarrera_todasCarreras($this->ultimasCarreras());
         $this->mostrarVista('carrera/index');
-//        $this->load->view('template/head', $data);
-//        $this->load->view('carrera/index', $data);
-//        $this->load->view('template/footer');
     }
 
     public function agregar() {
-//        $data['title'] = 'Agregar nueva carrera';
-//        $data['action'] = 'Agregar';
-//        $data['facultades'] = $this->Facultad_model->getFacultades();
-        $this->llenarInfo('Agregar Carrera', 'Agregar', 'Guardar', null, $this->todasFacultades());
+        $this->setCarrera_titulo('Agregar | Carrera');
+        $this->setCarrera_acction('Agregar');
+        $this->setCarrera_agregar_modificar('Agregar');
+        $this->setCarrera_falcultades($this->todasFacultades());
 
         if ($this->input->post()) {
-//            $carrera = array(
-//                'codigo' => $this->input->post('codigo', TRUE),
-//                'nombre_carrera' => $this->input->post('nombre_carrera', TRUE),
-//                'id_facultad' => $this->input->post('facultades', TRUE),
-//            );
             if ($this->form_validation->run('carrera/formulario')) {
 //                echo 'holaaa';
                 $this->getDatosPost();
@@ -96,11 +113,7 @@ class Carrera extends CI_Controller {
 
                 if ($guardado == true) {
                     $this->redireccionar_msg('carrera', 'Se agrego correctamente la Carrera');
-//                $this->session->set_flashdata('msg', 'Se agrego correctamente la Carrera');
-//                redirect('carrera');
                 } else {
-//                $this->session->set_flashdata('msg', 'No se agrego correctamente la Carrera');
-//                redirect('carrera');
                     $this->redireccionar_msg('carrera', 'No se agrego correctamente la Carrera');
                 }
             }
@@ -127,49 +140,17 @@ class Carrera extends CI_Controller {
                 }
             }
         }
-        $this->llenarInfo('Editar Carrera', 'Editar/'.$id, 'Editar',null,  $this->todasFacultades(),  $this->Carrera_model->getCarrera($id));
-        if (!$this->datos_view['query']) { //Ups no existe ese ID 
+        $this->setCarrera_titulo('Editar | Carrera');
+        $this->setCarrera_acction('editar/'.$id);
+        $this->setCarrera_falcultades($this->todasFacultades());
+        $this->setCarrera_getCarrera($this->Carrera_model->getCarrera($id));
+        $this->setCarrera_agregar_modificar('Editar');
+       
+        
+        if ($this->carrera_getCarrera == FALSE) { //Ups no existe ese ID 
             $this->redireccionar_msg('carrera', 'La carrera a editar no es valida, intente nuevamente');
         } 
         $this->mostrarVista('carrera/formulario');
-//        $data['title'] = 'Editor de carreras';
-//        $data['action'] = 'Editar';
-//        $data['facultades'] = $this->Facultad_model->getFacultades();
-//
-//        if ($this->input->post()) {
-//            $id = $this->input->post('id', true);
-//            $carrera = array(
-//                'codigo' => $this->input->post('codigo', TRUE),
-//                'nombre_carrera' => $this->input->post('nombre_carrera', true),
-//                'id_facultad' => $this->input->post('facultades', TRUE),
-//            );
-//            if ($this->Carrera_model->editar($id, $carrera)) {
-//                $this->session->set_flashdata('msg', 'Se modifico correctamente el registro');
-//                redirect('carrera');
-//            } else {
-//                $data['values'] = $carrera;
-//                $this->session->set_flashdata('msg', 'ocurrio un error');
-//                $this->load->view('template/head', $data);
-//                $this->load->view('carrera/formulario', $data);
-//                $this->load->view('template/footer');
-//            }
-//        } else {
-//            if (!$id) {
-//                $this->session->set_flashdata('msg', 'No especifico Carrera');
-//                redirect('carrera');
-//            } else {
-//                $data['query'] = $this->Carrera_model->getCarrera($id);
-//                $data['action'] = 'Editar';
-//                if ($data) {
-//                    $this->load->view('template/head', $data);
-//                    $this->load->view('carrera/formulario', $data);
-//                    $this->load->view('template/footer');
-//                } else {
-//                    $this->session->set_flashdata('msg', 'La facultad a editar no es valida, intente nuevamente');
-//                    redirect('carrera');
-//                }
-//            }
-//        }
     }
 
 }
