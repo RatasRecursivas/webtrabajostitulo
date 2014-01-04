@@ -45,7 +45,13 @@ class Tesis_model extends CI_Model {
     }
     
     public function getTesis($id) {
-        return $this->db->select('ubicacion_fichero, titulo, abstract, fecha_publicacion, first_name, last_name')->from($this->tabla)->where('tesis.id', $id)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->get()->row();
+        return $this->db->
+                select('ubicacion_fichero, titulo, abstract, fecha_publicacion, first_name, last_name')->
+                from($this->tabla)->where('tesis.id', $id)->
+                join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->
+                join('users', 'users.id = estudiante.user_id', 'inner')->
+                get()->
+                row();
     }
     
     public function contar() {

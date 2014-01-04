@@ -25,25 +25,28 @@
  */
 class Facultad extends CI_Controller {
 
-    var $facultad_datos = "";
+    var $datos_view = array();
     var $facultad_id = "";
+    var $facultad_facultades = "";
 
     function __construct() {
         parent::__construct();
         $this->load->model('Facultad_model');
     }
 
-    public function index() {
-        $data['title'] = 'Índice';
-        $data['facultades'] = $this->Facultad_model->getFacultades();
-        $this->load->view('template/head', $data);
-        $this->load->view('facultad/index', $data);
-        $this->load->view('template/footer');
+    private function llenarInfo($title, $acction, $ultimasFacultades = null, $getFacultad=null) {
+        $info = array(
+            'title' => $title,
+            'action' => $acction,
+            'facultades' => $ultimasFacultades,
+            'query' => $getFacultad,
+        );
+        return $info;
     }
 
     public function mostrarVista($view, $data) {
         $this->load->view('template/head', $data);
-        $this->load->view($view);
+        $this->load->view($view,$data);
         $this->load->view('template/footer');
     }
 
@@ -58,10 +61,19 @@ class Facultad extends CI_Controller {
         $id = $this->input->post('id', true);
         return $id;
     }
+    
+    private function ultimasTesis(){
+        return $this->Facultad_model->getFacultades();
+    }
+    
+
+    public function index() {
+        $this->datos_view = $this->llenarInfo('Indice', null, $this->ultimasTesis());
+        $this->mostrarVista('facultad/index', $this->datos_view);
+    }
 
     public function agregar() {
-        $data['title'] = 'Agregar nueva Facultad';
-        $data['action'] = 'Agregar';
+        $datos_view = $this->llenarInfo('Agregar Facultad', 'Agregar');
         if ($this->input->post()) {
             if ($this->form_validation->run('facultad/formulario')) {
                 $this->facultad_datos = $this->getDatosPost();
@@ -75,15 +87,14 @@ class Facultad extends CI_Controller {
                 }
             }
         }
-        $this->mostrarVista('facultad/formulario', $data);
+        $this->mostrarVista('facultad/formulario', $datos_view);
     }
 
     public function editar($id = NULL) {
-        $data['title'] = 'Edición de Facultad';
-
+        $this->datos_view = $this->llenarInfo('Editar de Facultar', 'Editar', null, $this->Facultad_model->getFacultad($id));
         if ($this->input->post()) { // Llega por post
-            if ($this->from_validation->run('facultad/formulario')) {
-                
+            if ($this->form_validation->run('facultad/formulario')) {
+
                 $this->facultad_id = $this->getIdPost();
                 $this->facultad_datos = $this->getDatosPost();
 
@@ -91,23 +102,17 @@ class Facultad extends CI_Controller {
                     $this->session->set_flashdata('msg', 'Se modifico correctamente el registro');
                     redirect('facultad');
                 } else {
-                    $data['values'] = $this->facultad_datos;
-                    
                     $this->session->set_flashdata('msg', 'Hubo un error modificando el registro');
-                    
-                    $this->mostrarVista('facultad/formulario', $data);
+                    redirect('facultad/editar/' . $id);
                 }
             }
-        } //else { // Llegamos por get solamente, nos llega un id
+        }
         if (!$id) {
             $this->session->set_flashdata('msg', 'No especifico la facultad a editar!');
             redirect('facultad');
         } else {
-            $data['query'] = $this->Facultad_model->getFacultad($id);
-            $data['action'] = 'Editar';
-
-            if ($data) { // Tenemos una facultad valida // Pasamos los parametros a la vista, comodidad ante todo :)
-                $this->mostrarVista('facultad/formulario', $data);
+            if ($this->datos_view['query']) { // Tenemos una facultad valida // Pasamos los parametros a la vista, comodidad ante todo :)
+                $this->mostrarVista('facultad/formulario', $this->datos_view);
             } else {
                 $this->session->set_flashdata('msg', 'La facultad a editar no es valida, intente nuevamente');
                 redirect('facultad');
