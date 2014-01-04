@@ -20,7 +20,7 @@
             'name' => 'titulo',
         );
         $button = array(
-            'value' => $action,
+            'value' => $agregar_modificar,
             'class' => 'button tiny'
         );
         $attributes = array(
@@ -51,10 +51,18 @@
             'placeholder' => 'fecha',
             'name' => 'fecha_disponibilidad',
         );
+         $label_tesis= 'titulo tesis' ;
+         $label_rut = 'rut autor' ;
+         $label_abstract = 'abstract' ;
+         $label_fechap = 'fecha de publicacion' ; 
+         $label_fechad = 'fecha de disponibilidad';
+         $label_fechae ='fecha de evaluacion'
+           
         $selec_profesores = array();
         foreach ($profesores as $profesor) {
             $selec_profesores[$profesor->rut] = $profesor->first_name . ' ' . $profesor->last_name;
         }
+        
 
         if (isset($query)) {
             $nombre_tesis['value'] = $query->titulo;
@@ -77,53 +85,59 @@
         }
         ?>
         <?= form_open('tesis/' . strtolower($action)); ?>
-        <?= form_fieldset($action . ' Registro'); ?>
+        <?= form_fieldset($agregar_modificar . ' Registro'); ?>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('Tesis :', 'nombre tesis', $attributes); ?>
+                <?= form_label('Tesis :', $label_tesis, $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_input($nombre_tesis); ?>
+                <?= form_error_small($label_tesis); ?>
             </div>
         </div>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('rut autor:', 'rut', $attributes); ?>
+                <?= form_label('rut autor:', $label_rut, $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_input($rut_autor); ?>
-            </div>
+                <?= form_error_small($label_rut); ?>
+           </div>
         </div>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('Abstract:', 'abstract', $attributes); ?>
+                <?= form_label('Abstract:', $label_abstract, $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_textarea($abstract); ?>
+                <?= form_error_small($label_abstract); ?>
             </div>
         </div>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('Fecha Publicacion:', 'fecha_p', $attributes); ?>
+                <?= form_label('Fecha Publicacion:', $label_fechap, $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_input($fecha_publicacion); ?>
+                <?= form_error_small($label_fechap); ?>
             </div>
         </div>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('fecha disponibilidad:', 'fecha_d', $attributes); ?>
+                <?= form_label('fecha disponibilidad:', $label_fechad, $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_input($fecha_disponibilidad); ?>
+                <?= form_error_small($label_fechad); ?>
             </div>
         </div>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('fecha evaluacion:', 'fecha_e', $attributes); ?>
+                <?= form_label('fecha evaluacion:', $label_fechae, $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_input($fecha_evaluacion); ?>
+                <?= form_error_small($label_fechae); ?>
             </div>
         </div>
         <div class="row"> 

@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="large-10  columns">
+    <div class="large-12 columns">
         <?php
         $nombre_carrera = array(
             'type' => 'text',
@@ -7,7 +7,7 @@
             'name' => 'nombre_carrera',
         );
         $button = array(
-            'value' => $action,
+            'value' => $agregar_modificar,
             'class' => 'button tiny'
         );
         $attributes = array(
@@ -18,6 +18,8 @@
             'placeholder' => '21030',
             'name' => 'codigo',
         );
+        $label_carrera = 'nombre carrera';
+        $label_codigo = 'Codigo' ;
         $selec_facultades = array();
         foreach ($facultades as $facultad) {
             $selec_facultades[$facultad->id] = $facultad->nombre_facultad;
@@ -39,18 +41,20 @@
         <?= form_fieldset($action . ' Registro'); ?>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('Nombre carrera:', 'nombreCarrera', $attributes); ?>
+                <?= form_label('Nombre carrera:',$label_carrera , $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_input($nombre_carrera); ?>
+                <?= form_error_small($label_carrera); ?>
             </div>
         </div>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('Codigo:', 'numerocodigo', $attributes); ?>
+                <?= form_label('Codigo:', $label_codigo , $attributes); ?>
             </div>
             <div class="small-10 columns">
                 <?= form_input($nombre_codigo); ?>
+                <?= form_error_small($label_codigo); ?>
             </div>
 
         </div>
