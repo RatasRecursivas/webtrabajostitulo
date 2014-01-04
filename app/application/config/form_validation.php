@@ -11,7 +11,7 @@ $config = array(
         array(
             'field' => 'nombre_facultad',
             'label'=> 'Nombre Facultad',
-            'rules' => 'required|is_unique[facultad.nombre_facultad]|xss_clean|max_length[50]|trim'
-        )
+            'rules' => 'required|xss_clean|max_length[50]|trim'
+        ),
     ),
 );
