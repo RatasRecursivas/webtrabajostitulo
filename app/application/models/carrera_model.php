@@ -48,5 +48,10 @@ class Carrera_model extends CI_Model {
                 get()->row();
         return $query;
     }
+    
+    public function eliminar($id) {
+        return $this->db-> 
+                where('codigo',$id)->delete($this->tabla);
+    }
 
 }

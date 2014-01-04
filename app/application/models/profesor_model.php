@@ -12,19 +12,20 @@
  * @author natalia
  */
 class Profesor_model extends CI_Model {
-    
+
     var $tabla = 'profesor';
 
     function __construct() {
         parent::__construct();
     }
+
     public function getProfesores() {
-         $query =  $this->db->
+        $query = $this->db->
                 select('first_name, last_name , rut, user_id')->
                 from($this->tabla)->
                 join('users', 'users.id= profesor.user_id')->
                 get();
         return $query->result();
     }
-        
-    }
+
+}

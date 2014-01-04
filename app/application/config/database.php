@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = 'info.boaboa.org';
 $db['default']['username'] = 'grupo08';
 $db['default']['password'] = 'grupo08';
 $db['default']['database'] = 'iswdb';
@@ -63,6 +63,7 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+$db['default']['port'] = 6432;
 
 
 /* End of file database.php */

@@ -24,29 +24,28 @@
  * @author pperez
  */
 class Tesis_model extends CI_Model {
-    
+
     var $tabla = 'tesis';
 
     function __construct() {
         parent::__construct();
     }
-    
+
     // Obtiene la fecha actual en formato por defecto postgres
-    private function _fecha_actual()
-    {
+    private function _fecha_actual() {
         $this->load->helper('date');
         date_default_timezone_set('America/Santiago');
         $time = time();
         $format = '%Y-%m-%d %h:%i:%s';
         return mdate($format, $time);
     }
-    
+
     public function insert($param) {
         return $this->db->insert($param);
     }
-    
+
     public function getTesis($id) {
-        $query =  $this->db->
+        $query = $this->db->
                 select('ubicacion_fichero, titulo, abstract,fecha_evaluacion,feha_disponibilidad ,fecha_publicacion, first_name, last_name, tesis.id, estudiante_rut, profesor_guia_rut')->
                 from($this->tabla)->
                 where('tesis.id', $id)->
@@ -56,31 +55,34 @@ class Tesis_model extends CI_Model {
                 row();
         return $query;
     }
-    
+
     public function contar() {
         return $this->db->count_all($this->tabla);
     }
-    
-    public function getTodas()
-    {
+
+    public function getTodas() {
         $now = $this->_fecha_actual();
         $query = $this->db->select('tesis.fecha_publicacion, tesis.id, tesis.titulo, users.first_name, users.last_name, tesis.abstract')->from($this->tabla)->where('tesis.feha_disponibilidad < ', $now)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->order_by('tesis.fecha_publicacion', 'desc')->get();
         return $query->result();
     }
-    
-    public function getProximasDefensas($limit = 5)
-    {
+
+    public function getProximasDefensas($limit = 5) {
         $now = $this->_fecha_actual();
         $query = $this->db->select('tesis.titulo, tesis.fecha_evaluacion, users.first_name, users.last_name')->from($this->tabla)->where('tesis.fecha_evaluacion >', $now)->join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->join('users', 'users.id = estudiante.user_id', 'inner')->limit($limit)->order_by('tesis.fecha_evaluacion', 'desc')->get();
         return $query->result();
     }
-     public function editar($id,$data){
-        return $this->db-> where('id', $id)->update($this->tabla, $data);
-    } 
-    
-    
+
+    public function editar($id, $data) {
+        return $this->db->where('id', $id)->update($this->tabla, $data);
+    }
+
     public function agregar($data) {
         return $this->db->insert($this->tabla, $data);
     }
-}
 
+    public function eliminar($id) {
+        return $this->db->
+                where('id', $id)->delete($this->tabla);
+    }
+
+}

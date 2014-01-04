@@ -122,5 +122,22 @@ class Facultad extends CI_Controller {
         } 
         $this->mostrarVista('facultad/formulario');
     }
+    
+    public function eliminar($id) {
+        $id = (int)$id;
+        $facultad = $this->Facultad_model->getFacultad($id);
+        if($facultad ){ // existe ?
+            echo 'holaa';
+            $eliminado = $this->Facultad_model->eliminar($id);
+            if($eliminado == true){
+                $this->redireccionar_msg('facultad', 'Fue exitosamente eliminado!');
+            } else {
+                $this->redireccionar_msg('falcultad', 'Intentelo nuevamente, Ups');
+            }
+        }  else {
+            $this->redireccionar_msg('facultad', 'No existe esa Falcultad');
+        }
+        
+    }
 
 }

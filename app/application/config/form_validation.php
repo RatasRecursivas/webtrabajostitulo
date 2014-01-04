@@ -57,7 +57,7 @@ $config = array(
         array(
             'field' => 'fecha_evaluacion',
             'label' => 'fecha de evaluacion',
-            'rules' => 'requerid|xss_clean|trim|value_fecha'
+            'rules' => 'requerid|xss_clean|trim|value_fecha_hora'
         ),
         array(
             'field' => 'fecha_disponibilidad',

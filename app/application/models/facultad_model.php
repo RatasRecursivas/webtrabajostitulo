@@ -53,4 +53,11 @@ class Facultad_model extends CI_Model{
     {
         return $this->db->insert($this->tabla, $data);
     }
+     
+    public function eliminar($id) {
+        return $this->db->
+              
+                where('id',$id)->
+                delete($this->tabla);
+    }
 }
