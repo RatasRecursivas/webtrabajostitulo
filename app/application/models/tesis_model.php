@@ -54,7 +54,6 @@ class Tesis_model extends CI_Model {
                 join('users', 'users.id = estudiante.user_id', 'inner')->
                 get()->
                 row();
-        //var_dump($query);
         return $query;
     }
     

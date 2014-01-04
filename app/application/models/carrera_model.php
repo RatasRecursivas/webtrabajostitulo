@@ -20,7 +20,12 @@ class Carrera_model extends CI_Model {
     }
 
     public function getCarreras() {
-        $query = $this->db->order_by('codigo')->select('carrera.codigo,facultad.nombre_facultad, carrera.nombre_carrera')->from($this->tabla)->join('facultad', 'carrera.id_facultad = facultad.id')->get();
+        $query = $this->db->
+                order_by('codigo')->
+                select('carrera.codigo,facultad.nombre_facultad, carrera.nombre_carrera')->
+                from($this->tabla)->
+                join('facultad', 'carrera.id_facultad = facultad.id')->
+                get();
         return $query->result();
     }
 

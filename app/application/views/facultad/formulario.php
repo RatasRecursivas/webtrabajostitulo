@@ -1,57 +1,41 @@
 <div class="row">
     <div class="large-12 columns">
         <?php
+        $nombre_facultad = array(
+            'type' => 'text',
+            'placeholder' => 'Ing...',
+            'name' => 'nombre_facultad',
+//            'class' => 'error'
+        );
+        $button = array(
+            'value' => $action,
+            'class' => 'medium button green'
+        );
+        $label_facultad = 'nombre_facultad';
         if (isset($query)) {
-            $nombre_facultad = array(
-                'type' => 'text',
-                'placeholder' => 'Ing...',
-                'name' => 'nombre_facultad',
-                'value' => $query->nombre_facultad
-            );
-
-            $button = array(
-                'value' => $action,
-                'class' => 'button tiny'
-            );
-            $attributes = array(
-                'class' => 'rigth inline',
-            );
             $id = $query->id;
+            $nombre_facultad['value'] = $query->nombre_facultad;
         } else {
-            $nombre_facultad = array(
-                'type' => 'text',
-                'placeholder' => 'Ing...',
-                'name' => 'nombre_facultad',
-                'value' => ''
-            );
-
-            $button = array(
-                'value' => $action,
-                'class' => 'button tiny'
-            );
-            $attributes = array(
-                'class' => 'rigth inline',
-            );
             $id = '';
+            $nombre_facultad['value'] = set_value('nombre_facultad');
         }
         ?>
         <?= form_open('facultad/' . strtolower($action)); ?>
         <?= form_fieldset($action . ' Registro'); ?>
         <div class="row">
-            <div class="large-12 columns"> <?= validation_errors(); ?> </div>
+            <div class="large-12 columns">
+                <?= form_label('Nombre Facultad:', $label_facultad); ?>
+                <?= form_input($nombre_facultad); ?>
+                <?= form_error_small($label_facultad); ?>  
+            </div>
         </div>
         <div class="row">
-            <div class="small-2 columns">
-                <?= form_label('Nombre Facultad:', 'Nombre Facultdad', $attributes); ?>
-            </div>
-            <div class="small-8 columns">
-                <?= form_input($nombre_facultad); ?>
-            </div>
-            <div class="small-2  columns">
+            <div class="large-12 columns">
                 <?= form_submit($button); ?>
             </div>
-            <?= form_hidden('id', $id); ?>
-            <?= form_fieldset_close(); ?>
-            <?= form_close(); ?>
         </div>
+
+        <?= form_hidden('id', $id); ?>
+        <?= form_fieldset_close(); ?>
+        <?= form_close(); ?>
     </div>
