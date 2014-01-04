@@ -95,8 +95,7 @@ class Facultad extends CI_Controller {
     public function editar($id = NULL) {
         $id = (int) $id;
         if (!$id) {
-            $this->session->set_flashdata('msg', 'No especifico la facultad a editar!');
-            redirect('facultad');
+            $this->redireccionar_msg('facultad','No especifico la facultad a editar!');
         }
         if ($this->input->post() ) { // Llega por post
             if ( $this->form_validation->run('facultad/formulario') ) {//validamos los datos
