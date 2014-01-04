@@ -25,18 +25,43 @@
  */
 
 class Estudiante extends CI_Controller {
+    var $rut;
     function __construct() {
         parent::__construct();
         $this->load->model('Estudiante_model');
     }
     
     public function index() {
-//        $data['estudiantes'] = $this->Estudiante_model->getEstudiantes();
-//        $this->load->library('ws_dirdoc');
-//        $estudiante = $this->ws_dirdoc->getEstudiante('178763075');
-//        echo var_dump($estudiante);
-        $this->Estudiante_model->getfromWS('178763075');
-        $test = $this->Estudiante_model->getEstudiante('17876307');
-        echo var_dump($test);
+        $data['title'] = 'Estudiantes';
+        $data['estudiantes'] = $this->Estudiante_model->getEstudiantes();
+        $this->load->view('template/head', $data);
+        $this->load->view('estudiante/index', $data);
+        $this->load->view('template/footer');
+    }
+    
+    public function obtener()
+    {
+        if($this->input->post()) // Si llega por post reviso el rut
+        {
+            // Form validation ..
+            $this->rut = $this->input->post('rut', true);
+            $estudiante = $this->Estudiante_model->getfromWS($this->rut); // Obtener desde el WS
+            
+            if($estudiante)
+            {
+                echo "Agregado bn";
+                // Funciona! msg + redirect
+            }
+            else
+            {
+                echo "fail!";
+                // No funciona
+            }
+        }
+        else // Epa! este metodo no es accesible por get
+        {
+            echo "No hay mano por get!";
+            // Redirect
+        }
     }
 }

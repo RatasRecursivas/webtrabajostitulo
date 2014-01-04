@@ -27,18 +27,28 @@ class Estudiante_model extends CI_Model {
 
     var $tabla_estudiante = 'estudiante'; // Almacena codigo carrera, año ingreso
     var $tabla_users = 'users'; // Almacena nombres, apellidos
+    var $tabla_carrera = 'carrera'; // Nombres/codigo de carrera
 
     function __construct() {
         parent::__construct();
     }
-    
+
+    public function getEstudiantes() {
+        return $this->db->order_by('rut')
+                        ->select('users.first_name, users.last_name, estudiante.rut, carrera.nombre_carrera AS carrera')
+                        ->from($this->tabla_estudiante)
+                        ->join($this->tabla_users, 'estudiante.user_id = users.id')
+                        ->join($this->tabla_carrera, 'estudiante.codigo_carrera = carrera.codigo')
+                        ->get()->result();
+    }
+
     public function getEstudiante($rut) {
         return $this->db->
-                select('users.first_name, users.last_name, estudiante.rut, estudiante.codigo_carrera')
-                ->where('estudiante.rut', $rut)
-                ->from($this->tabla_estudiante)
-                ->join($this->tabla_users, 'estudiante.user_id = users.id')->get()
-                ->result();
+                        select('users.first_name, users.last_name, estudiante.rut, estudiante.codigo_carrera')
+                        ->where('estudiante.rut', $rut)
+                        ->from($this->tabla_estudiante)
+                        ->join($this->tabla_users, 'estudiante.user_id = users.id')->get()
+                        ->result();
     }
 
     public function getfromWS($rut) { // Se va al WS y pesca al wilson
@@ -46,7 +56,7 @@ class Estudiante_model extends CI_Model {
         $this->load->library('ws_dirdoc');
         $estudiante = $this->ws_dirdoc->getEstudiante($rut);
         date_default_timezone_set('America/Santiago');
-        
+
         if ($estudiante) { // Obtuvimos un array no vacio, veamos ...
             $count = $this->db->select('rut')->from($this->tabla_estudiante)
                     ->where('rut', $estudiante->rut)
@@ -66,12 +76,11 @@ class Estudiante_model extends CI_Model {
                 'anio_ingreso' => $estudiante->anioIngreso,
                 'codigo_carrera' => $estudiante->codigoCarrera
             );
-            
-            if($count > 0) // El registro ya esta en db, actualizamos
-            {
+
+            if ($count > 0) { // El registro ya esta en db, actualizamos
                 $rut = $estudiante->rut;
                 $user_id = $this->db->select('user_id')->from($this->tabla_estudiante)->
-                        where('rut', $rut)->get()->row()->user_id;
+                                where('rut', $rut)->get()->row()->user_id;
                 $up1 = $this->db->where('id', $user_id)->update($this->tabla_users, $data_user);
                 $up2 = $this->db->where('rut', $rut)->update($this->tabla_estudiante, $data_estudiante);
                 $fail = !$up1 or !$up2; // Si hay un fail deberia ver ambos ...
@@ -79,7 +88,7 @@ class Estudiante_model extends CI_Model {
             } else { // Añado el registro
                 $ins1 = $this->db->insert($this->tabla_users, $data_user); // datos en tabla users
                 $user_id = $this->db->select('last_value')
-                    ->from('users_id_seq')->get()->row()->last_value; // Ehhh, obtenido despues del insert de arriba
+                                ->from('users_id_seq')->get()->row()->last_value; // Ehhh, obtenido despues del insert de arriba
                 $data_estudiante['user_id'] = $user_id;
                 $ins2 = $this->db->insert($this->tabla_estudiante, $data_estudiante); // datos en tabla estudiante
                 $fail = !$ins1 or !$ins2;
