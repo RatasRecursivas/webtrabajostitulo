@@ -31,8 +31,17 @@ class Estudiante_model extends CI_Model {
     function __construct() {
         parent::__construct();
     }
+    
+    public function getEstudiante($rut) {
+        return $this->db->
+                select('users.first_name, users.last_name, estudiante.rut, estudiante.codigo_carrera')
+                ->where('estudiante.rut', $rut)
+                ->from($this->tabla_estudiante)
+                ->join($this->tabla_users, 'estudiante.user_id = users.id')->get()
+                ->result();
+    }
 
-    function getfromWS($rut) { // Se va al WS y pesca al wilson
+    public function getfromWS($rut) { // Se va al WS y pesca al wilson
         // Puede añadir o actualizar a un individuo
         $this->load->library('ws_dirdoc');
         $estudiante = $this->ws_dirdoc->getEstudiante($rut);
