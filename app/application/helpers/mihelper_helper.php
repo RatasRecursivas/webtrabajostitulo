@@ -6,10 +6,3 @@
  * and open the template in the editor.
  */
 
-if ( ! function_exists('form_error_small'))
-{
-	function form_error_small($field)
-	{
-                return form_error($field, '<small class="error">', '</small>');
-	}
-}

@@ -36,33 +36,38 @@ $config = array(
     'tesis/formulario' => array(
         array(
             'field' => 'titulo',
-            'label' => 'titulo tesis',
-            'rules' => 'requerid|xss_clean|trim|max_length[200]'
+            'label' => 'Titulo Tesis',
+            'rules' => 'required|xss_clean|trim|max_length[200]'
         ),
         array(
             'field' => 'rut',
-            'label' => 'rut autor',
-            'rules' => 'requerid|xss_clean|trim|max_length[9]|interger|value_rut'
+            'label' => 'Rut Autor',
+            'rules' => 'required|xss_clean|trim|max_length[9]|interger'
         ),
         array(
             'field' => 'abstract',
-            'label' => 'abstract',
-            'rules' => 'requerid|xss_clean|trim|max_length[1000]'
+            'label' => 'Abstract',
+            'rules' => 'required|xss_clean|trim|max_length[1000]'
         ),
         array(
             'field' => 'fecha_publicacion',
-            'label' => 'fecha de publicacion',
-            'rules' => 'requerid|xss_clean|trim|value_fecha'
+            'label' => 'Fecha Publicación',
+            'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
         ),
         array(
             'field' => 'fecha_evaluacion',
-            'label' => 'fecha de evaluacion',
-            'rules' => 'requerid|xss_clean|trim|value_fecha_hora'
+            'label' => 'Fecha de Evaluación',
+            'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia_hora_minuto_segundo'
         ),
         array(
             'field' => 'fecha_disponibilidad',
-            'label' => 'fecha de disponibilidad',
-            'rules' => 'requerid|xss_clean|trim|value_fecha'
+            'label' => 'Fecha de Disponibilidad',
+            'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
+        ),
+        array(
+            'field' => 'fichero',
+            'label' => 'Fichero',
+            'rules' => 'required|xss_clean|trim|comprobar_fichero'
         ),
     ),
 );

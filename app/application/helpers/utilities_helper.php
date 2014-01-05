@@ -1,4 +1,4 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,4 +39,12 @@ if (!function_exists('decode_rut')) {
         return str_replace(array('.', '-'), '', $rut);
     }
 
+}
+
+if ( ! function_exists('form_error_small'))
+{
+	function form_error_small($field)
+	{
+                return form_error($field, '<small class="error">', '</small>');
+	}
 }

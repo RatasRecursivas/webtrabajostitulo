@@ -34,22 +34,24 @@ class Tesis extends CI_Controller {
     var $tesis_getTesis = null;
     var $tesis_todasTesis = null;
     var $tesis_proximasTesis = array();
+    var $tesis_categorias = array();
     var $tesis_mensajeFichero = '';
 
     function __construct() {
         parent::__construct();
         $this->load->model('Tesis_model');
         $this->load->model('Profesor_model');
+        $this->load->model('Categoria_model');
     }
 
     public function setTesis_titulo($tesis_titulo) {
         $this->tesis_titulo = $tesis_titulo;
     }
-    
+
     public function setTesis_mensajeFicher($tesis_mensajefichero) {
         $this->tesis_mensajeFichero = $tesis_mensajefichero;
     }
-    
+
     public function setTesis_agregar_modificar($agregar_modificar) {
         $this->tesis_agregar_modificar = $agregar_modificar;
     }
@@ -60,6 +62,10 @@ class Tesis extends CI_Controller {
 
     public function setTesis_profesores($tesis_profesores) {
         $this->tesis_profesores = $tesis_profesores;
+    }
+
+    public function setTesis_categorias($tesis_categorias) {
+        $this->tesis_categorias = $tesis_categorias;
     }
 
     public function setTesis_getTesis($tesis_getTesis) {
@@ -83,7 +89,7 @@ class Tesis extends CI_Controller {
             'action' => $this->tesis_acction,
             'tesis' => $this->tesis_getTesis,
             'agregar_modificar' => $this->tesis_agregar_modificar,
-            'error' => $this->tesis_mensajeFichero,
+            'categorias' => $this->tesis_categorias,
         );
         $this->load->view('template/head', $datos_enviar);
         $this->load->view($vista, $datos_enviar);
@@ -96,6 +102,19 @@ class Tesis extends CI_Controller {
     }
 
     private function getDatosPost() {
+        $config['upload_path'] = './uploads/';
+        $config['allowed_types'] = 'pdf|zip ';
+        $config['max_size'] = '100';
+        $this->load->library('upload', $config);
+        $fichero_ubicacion = '';
+
+        if ($this->upload->do_upload()) {
+            $fichero_ubicacion = $this->upload->data();
+            $fichero_ubicacion = $fichero_ubicacion['full_path'];
+        } else {
+            $fichero_ubicacion = false;
+        }
+
         $tesis = array(
             'titulo' => $this->input->post('titulo', TRUE),
             'estudiante_rut' => $this->input->post('rut', true),
@@ -104,7 +123,10 @@ class Tesis extends CI_Controller {
             'fecha_evaluacion' => $this->input->post('fecha_evaluacion', true),
             'feha_disponibilidad' => $this->input->post('fecha_disponibilidad', true),
             'profesor_guia_rut' => $this->input->post('profesor_date', true),
+            'ubicacion_fichero' => $fichero_ubicacion,
+            'id_categoria' => $this->input->post('categoria_id', true),
         );
+        var_dump($tesis);
         $this->tesis_datos_post = $tesis;
     }
 
@@ -142,30 +164,30 @@ class Tesis extends CI_Controller {
             $this->redireccionar_msg('tesis', 'Tesis no valida para editar');
         }
         if ($this->input->post()) {
+            if ($this->form_validation->run('tesis/formulario')) {
+                $this->getDatosPost();
+                $this->getIdPost();
 
-            $this->getDatosPost();
-            $this->getIdPost();
-
-            $editado = $this->Tesis_model->editar($this->tesis_id_post, $this->tesis_datos_post);
-            if($editado == true){
-                $this->redireccionar_msg('tesis', 'Exito al editar');
-            }  else {
-                $this->redireccionar_msg('tesis', 'Vuelva a procesar la peticion');
+                $editado = $this->Tesis_model->editar($this->tesis_id_post, $this->tesis_datos_post);
+                if ($editado == true) {
+                    $this->redireccionar_msg('tesis', 'Exito al editar');
+                } else {
+                    $this->redireccionar_msg('tesis', 'Vuelva a procesar la peticion');
+                }
             }
         }
         $this->setTesis_titulo('Editar | Tesis');
         $this->setTesis_profesores($this->Profesor_model->getProfesores());
+        $this->setTesis_categorias($this->Categoria_model->getCategorias());
         $this->setTesis_getTesis($this->Tesis_model->getTesis($id));
-        $this->setTesis_acction('Editar/'.$id);
+        $this->setTesis_acction('Editar/' . $id);
         $this->setTesis_agregar_modificar('Editar');
-        
+
         if ($this->tesis_getTesis) { //existe tesis
             $this->mostrar_vista('tesis/formulario');
         } else {
             $this->redireccionar_msg('tesis', 'Tesis no encontrada');
         }
-        
-        
     }
 
     public function agregar() {
@@ -173,36 +195,20 @@ class Tesis extends CI_Controller {
         $this->setTesis_agregar_modificar('Agregar');
         $this->setTesis_acction('Agregar');
         $this->setTesis_profesores($this->Profesor_model->getProfesores());
-        if($this->input->post()){
-            $this->getDatosPost();
-            
-            $guardado = $this->Tesis_model->agregar($this->tesis_datos_post);
-            if($guardado == true){
-                $this->redireccionar_msg('tesis', 'Se agrego una nueva tesis');
-            }  else {
-                $this->redireccionar_msg('tesis', 'Vuelva a intentarlo :(');
+        $this->setTesis_categorias($this->Categoria_model->getCategorias());
+        if ($this->input->post()) {
+            if ($this->form_validation->run('tesis/formulario')) {
+                $this->getDatosPost();
+
+                $guardado = $this->Tesis_model->agregar($this->tesis_datos_post);
+                if ($guardado == true) {
+                    $this->redireccionar_msg('tesis', 'Se agrego una nueva tesis');
+                } else {
+                    $this->redireccionar_msg('tesis', 'Vuelva a intentarlo :(');
+                }
             }
         }
         $this->mostrar_vista('tesis/formulario');
     }
-    
-    
-    public function subir_fichero(){
-        $config['upload_path'] = './archivos_tesis/';
-        $config['allowed_types'] = 'gif|jpg|png';
-        
-        
-        $this->load->library('upload', $config);
-        
-        if (!$this->upload->do_upload()) {
-//            $info = array('error' => $this->upload->display_errors());
-            $this->setTesis_mensajeFicher($this->upload->display_errors());
-        }  else {
-//            $info = array('error' => $this->upload->data());
-            $this->setTesis_mensajeFicher($this->upload->data());
-        }
-//        $this->load->view('tesis/formulario', $error);
-        $this->mostrar_vista('tesis/formulario');
-        
-    }
+
 }

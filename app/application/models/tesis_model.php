@@ -46,7 +46,7 @@ class Tesis_model extends CI_Model {
 
     public function getTesis($id) {
         $query = $this->db->
-                select('ubicacion_fichero, titulo, abstract,fecha_evaluacion,feha_disponibilidad ,fecha_publicacion, first_name, last_name, tesis.id, estudiante_rut, profesor_guia_rut')->
+                select('ubicacion_fichero, titulo, id_categoria, abstract,fecha_evaluacion,feha_disponibilidad ,fecha_publicacion, first_name, last_name, tesis.id, estudiante_rut, profesor_guia_rut')->
                 from($this->tabla)->
                 where('tesis.id', $id)->
                 join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->
