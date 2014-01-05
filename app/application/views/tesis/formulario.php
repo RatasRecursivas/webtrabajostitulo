@@ -1,75 +1,107 @@
 <div class="row">
     <div class="large-12 columns">
-         <?php
-         $nombre_tesis = array(
-             'type' => 'text',
-             'placeholder' => 'Titulo Tesis...',
-             'name' => 'titulo',
-         );
-         $button = array(
-             'value' => $agregar_modificar,
-             'class' => 'medium button green'
-         );
-         $rut_autor = array(
-             'type' => 'text',
-             'placeholder' => 'Rut...',
-             'name' => 'rut',
-         );
-         $abstract = array(
-             'type' => 'text',
-             'placeholder' => 'Reseña...',
-             'name' => 'abstract',
-         );
-         $fecha_publicacion = array(
-             'type' => 'date',
-             'placeholder' => '12/10/2012',
-             'name' => 'fecha_publicacion',
-         );
-         $fecha_evaluacion = array(
-             'type' => 'date',
-             'placeholder' => '12/10/2012 14:30',
-             'name' => 'fecha_evaluacion',
-         );
-         $fecha_disponibilidad = array(
-             'type' => 'date',
-             'placeholder' => '12/10/2012',
-             'name' => 'fecha_disponibilidad',
-         );
-         $dropdown_atrribut = 'class="medium"';
-         $label_tesis = 'titulo tesis';
-         $label_rut = 'rut autor';
-         $label_abstract = 'abstract';
-         $label_fechap = 'fecha de publicacion';
-         $label_fechad = 'fecha de disponibilidad';
-         $label_fechae = 'fecha de evaluacion';
+        <?php
+        $nombre_tesis = array(
+            'type' => 'text',
+            'placeholder' => 'Titulo Tesis...',
+            'name' => 'titulo',
+        );
+        $button = array(
+            'value' => $agregar_modificar,
+            'class' => 'medium button green'
+        );
+        $rut_autor = array(
+            'type' => 'text',
+            'placeholder' => 'Rut...',
+            'name' => 'rut',
+        );
+        $abstract = array(
+            'type' => 'text',
+            'placeholder' => 'Reseña...',
+            'name' => 'abstract',
+        );
+        $fecha_publicacion = array(
+            'type' => 'date',
+            'placeholder' => '12/10/2012',
+            'name' => 'fecha_publicacion',
+        );
+        $fecha_evaluacion = array(
+            'type' => 'date',
+            'placeholder' => '12/10/2012 14:30',
+            'name' => 'fecha_evaluacion',
+        );
+        $fecha_disponibilidad = array(
+            'type' => 'date',
+            'placeholder' => '12/10/2012',
+            'name' => 'fecha_disponibilidad',
+        );
+        $subir_input = array(
+            'type' => "file",
+            'name' => "userfile",
+            'size' => "20",
+                //'class' => "tiny round disabled button"
+        );
+        $subir_button = array(
+            'value' => "upload",
+            'class' => 'success button',
+        );
+        $attributes = 'rigth inline';
 
-         $selec_profesores = array();
-         foreach ($profesores as $profesor) {
-             $selec_profesores[$profesor->rut] = $profesor->first_name . ' ' . $profesor->last_name;
-         }
-         if (isset($tesis)) {
-             $nombre_tesis['value'] = $tesis->titulo;
-             $id = $tesis->id;
-             $rut_autor['value'] = $tesis->estudiante_rut;
-             $abstract ['value'] = $tesis->abstract;
-             $fecha_disponibilidad['value'] = $tesis->feha_disponibilidad;
-             $fecha_evaluacion ['value'] = $tesis->fecha_evaluacion;
-             $fecha_publicacion ['value'] = $tesis->fecha_publicacion;
-             $id_profesor = $tesis->profesor_guia_rut;
-         } else {
-             $nombre_tesis['value'] = '';
-             $id = '';
-             $id_profesor = "";
-             $rut_autor['value'] = '';
-             $abstract ['value'] = '';
-             $fecha_disponibilidad['value'] = '';
-             $fecha_evaluacion ['value'] = '';
-             $fecha_publicacion ['value'] = '';
-         }
-         ?>
-         <?= form_open('tesis/' . strtolower($action)); ?>
-         <?= form_fieldset($agregar_modificar . ' Registro'); ?>
-         <div class="row">
+        $dropdown_atrribut = 'class="medium"';
+        $label_tesis = 'titulo tesis';
+        $label_rut = 'rut autor';
+        $label_abstract = 'abstract';
+        $label_fechap = 'fecha de publicacion';
+        $label_fechad = 'fecha de disponibilidad';
+        $label_fechae = 'fecha de evaluacion';
+        $label_fichero = 'Fichero: ';
+
+        $selec_profesores = array();
+        foreach ($profesores as $profesor) {
+            $selec_profesores[$profesor->rut] = $profesor->first_name . ' ' . $profesor->last_name;
+        }
+        if (isset($tesis)) {
+            $nombre_tesis['value'] = $tesis->titulo;
+            $id = $tesis->id;
+            $rut_autor['value'] = $tesis->estudiante_rut;
+            $abstract ['value'] = $tesis->abstract;
+            $fecha_disponibilidad['value'] = $tesis->feha_disponibilidad;
+            $fecha_evaluacion ['value'] = $tesis->fecha_evaluacion;
+            $fecha_publicacion ['value'] = $tesis->fecha_publicacion;
+            $id_profesor = $tesis->profesor_guia_rut;
+        } else {
+            $nombre_tesis['value'] = '';
+            $id = '';
+            $id_profesor = "";
+            $rut_autor['value'] = '';
+            $abstract ['value'] = '';
+            $fecha_disponibilidad['value'] = '';
+            $fecha_evaluacion ['value'] = '';
+            $fecha_publicacion ['value'] = '';
+        }
+        ?>
+        <?= form_open_multipart('tesis/subir_fichero'); ?>
+        <?= form_fieldset('Subir Fichiero') ?>
+        <div class="row">
+            <div class="large-2 columns">
+                
+                <?= form_label('Adjunte el Fichero:'); ?>
+            </div>
+            <div class="large-8 columns">
+                <?= form_input($subir_input); ?>
+            </div>
+            <div class="large-2 columns">
+                <?= form_submit($subir_button); ?>
+            </div>
+        </div>
+        <?= form_fieldset_close() ?>
+        <?= form_close(); ?>
+
+
+
+        <?= form_open('tesis/' . strtolower($action)); ?>
+        <?= form_fieldset($agregar_modificar . ' Registro'); ?>
+        <div class="row">
             <div class="large-12 columns">
                 <?= form_label('Titulo Tesis :', $label_tesis); ?>
                 <?= form_input($nombre_tesis); ?>
@@ -115,7 +147,8 @@
             <div class="large-12 columns">
                 <?= form_submit($button); ?>
             </div>
-        </div>
+        </div>        
+
         <?= form_hidden('id', $id); ?>
         <?= form_fieldset_close(); ?>
         <?= form_close(); ?>

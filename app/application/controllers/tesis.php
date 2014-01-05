@@ -34,6 +34,7 @@ class Tesis extends CI_Controller {
     var $tesis_getTesis = null;
     var $tesis_todasTesis = null;
     var $tesis_proximasTesis = array();
+    var $tesis_mensajeFichero = '';
 
     function __construct() {
         parent::__construct();
@@ -43,6 +44,10 @@ class Tesis extends CI_Controller {
 
     public function setTesis_titulo($tesis_titulo) {
         $this->tesis_titulo = $tesis_titulo;
+    }
+    
+    public function setTesis_mensajeFicher($tesis_mensajefichero) {
+        $this->tesis_mensajeFichero = $tesis_mensajefichero;
     }
     
     public function setTesis_agregar_modificar($agregar_modificar) {
@@ -78,6 +83,7 @@ class Tesis extends CI_Controller {
             'action' => $this->tesis_acction,
             'tesis' => $this->tesis_getTesis,
             'agregar_modificar' => $this->tesis_agregar_modificar,
+            'error' => $this->tesis_mensajeFichero,
         );
         $this->load->view('template/head', $datos_enviar);
         $this->load->view($vista, $datos_enviar);
@@ -178,5 +184,25 @@ class Tesis extends CI_Controller {
             }
         }
         $this->mostrar_vista('tesis/formulario');
+    }
+    
+    
+    public function subir_fichero(){
+        $config['upload_path'] = './archivos_tesis/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        
+        
+        $this->load->library('upload', $config);
+        
+        if (!$this->upload->do_upload()) {
+//            $info = array('error' => $this->upload->display_errors());
+            $this->setTesis_mensajeFicher($this->upload->display_errors());
+        }  else {
+//            $info = array('error' => $this->upload->data());
+            $this->setTesis_mensajeFicher($this->upload->data());
+        }
+//        $this->load->view('tesis/formulario', $error);
+        $this->mostrar_vista('tesis/formulario');
+        
     }
 }
