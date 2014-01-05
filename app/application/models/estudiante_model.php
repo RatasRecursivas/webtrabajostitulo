@@ -34,7 +34,8 @@ class Estudiante_model extends CI_Model {
     }
 
     public function getEstudiantes() { // El rut 12345678 es el default, no lo mostramos
-        return $this->db->where('rut !=', '12345678')->order_by('rut')
+        return $this->db->order_by('rut')
+                        ->where('rut !=', '12345678')->order_by('rut')
                         ->select('users.email, users.first_name, users.last_name, estudiante.rut, carrera.nombre_carrera AS carrera')
                         ->from($this->tabla_estudiante)
                         ->join($this->tabla_users, 'estudiante.user_id = users.id')
@@ -43,8 +44,8 @@ class Estudiante_model extends CI_Model {
     }
 
     public function getEstudiante($rut) { // Recibe sin dv
-        return $this->db->
-                        select('users.first_name, users.last_name, estudiante.rut, estudiante.codigo_carrera')
+        return $this->db->order_by('rut')
+                        ->select('users.first_name, users.last_name, estudiante.rut, estudiante.codigo_carrera')
                         ->where('estudiante.rut', $rut)
                         ->from($this->tabla_estudiante)
                         ->join($this->tabla_users, 'estudiante.user_id = users.id')->get()
@@ -69,29 +70,25 @@ class Estudiante_model extends CI_Model {
                 'ip_address' => '127.0.0.1',
                 'username' => $estudiante->rut,
                 'password' => '', // I know, i know ... pero no hay logins para nosotros
-                'email' => (isset($estudiante->email)) ? $estudiante->email: '',
+                'email' => (isset($estudiante->email)) ? $estudiante->email : '',
                 'created_on' => time(),
                 'active' => 0 // Los estudiantes no pueden loggearse :)
             ); // Con esto ya podria llenar a un usuario
-            
-            if(is_integer($estudiante->codigoCarrera))
-            {
+
+            if (is_integer($estudiante->codigoCarrera)) {
                 $codigo_carrera = $estudiante->codigoCarrera;
-                
-                if(!$this->Carrera_model->checkCarrera($estudiante->codigoCarrera))
-                { // No esta en db, la agregamos, y que la modifiquen despues
+
+                if (!$this->Carrera_model->checkCarrera($estudiante->codigoCarrera)) { // No esta en db, la agregamos, y que la modifiquen despues
                     $data = array(
                         'nombre_carrera' => $estudiante->nombreCarrera,
                         'codigo' => $estudiante->codigoCarrera
                     );
                     $this->Carrera_model->agregar($data);
                 }
-            }
-            else
-            { // Data rara desde el WS, wow!
+            } else { // Data rara desde el WS, wow!
                 $codigo_carrera = 1; // El default
             }
-            
+
             $data_estudiante = array(
                 'rut' => $estudiante->rut,
                 'anio_ingreso' => $estudiante->anioIngreso,
@@ -119,31 +116,28 @@ class Estudiante_model extends CI_Model {
         }
         return !$fail; // Not fail :)
     }
-    
+
     public function eliminar($rut) {
         $this->load->helper('utilities_helper');
         $rut = decode_rut($rut);
         // Ver el usuario asociado al rut
-        if($this->checkEstudiante($rut))
-        {
+        if ($this->checkEstudiante($rut)) {
             $user_id = $this->db->where('rut', $rut)->select('user_id')
-                ->from($this->tabla_estudiante)->get()->row()->user_id;
+                            ->from($this->tabla_estudiante)->get()->row()->user_id;
             $d1 = $this->db->where('rut', $rut)->delete($this->tabla_estudiante);
             $d2 = $this->db->where('id', $user_id)->delete($this->tabla_users);
             $fail = !$d1 or !$d2;
-        }
-        else
-        {
+        } else {
             $fail = true;
         }
         return !$fail;
     }
-    
+
     // Retorna si un estudiante existe o no en db
     public function checkEstudiante($rut) {
         $count = $this->db->select('rut')->from($this->tabla_estudiante)
-                    ->where('rut', $rut)
-                    ->count_all_results();
+                ->where('rut', $rut)
+                ->count_all_results();
         return (bool) $count;
     }
 

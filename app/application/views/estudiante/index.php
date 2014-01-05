@@ -36,7 +36,7 @@ $submit_button = array(
                         <td><?= format_rut($estudiante->rut); ?></td>
                         <td><?= $estudiante->first_name . ' ' . $estudiante->last_name; ?></td>
                         <td><?= $estudiante->carrera; ?></td>
-                        <td><?= mailto($estudiante->email); ?></td>
+                        <td><?= ($estudiante->email) ? mailto($estudiante->email): 'No hay email registrado'; ?></td>
                         <td><?= anchor('estudiante/obtener/' . $estudiante->rut, 'Actualizar', 'class="button tiny"');?></td>
                         <td><?= anchor('estudiante/eliminar/' . $estudiante->rut, 'Eliminar', 'class="button tiny alert"');?></td>
                     </tr>
