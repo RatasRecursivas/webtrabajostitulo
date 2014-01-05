@@ -69,7 +69,7 @@ class Estudiante_model extends CI_Model {
                 'ip_address' => '127.0.0.1',
                 'username' => $estudiante->rut,
                 'password' => '', // I know, i know ... pero no hay logins para nosotros
-                'email' => $estudiante->email,
+                'email' => (isset($estudiante->email)) ? $estudiante->email: '',
                 'created_on' => time(),
                 'active' => 0 // Los estudiantes no pueden loggearse :)
             ); // Con esto ya podria llenar a un usuario
