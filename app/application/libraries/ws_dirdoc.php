@@ -42,7 +42,6 @@ class WS_Dirdoc {
      * Valida contra el webservices de la unidad de informática, si el rut (con dígito verificador) 
      * y la contraseña proporcionada (en mayúsculas y hasheada en sha256) es válida o no lo es.
      */
-    
     function autenticar($rut, $contrasena) {
         $resultado = false;
 
@@ -78,17 +77,16 @@ class WS_Dirdoc {
         }
         return $resultado;
     }
-    
+
     /**
      * @author pperez
      * @param string rut
      * @return array
      * Retorna los datos de un estudiante
      */
-    
     function getEstudiante($rut) {
         $resultado = array();
-        
+
         try {
             // Creacion de un arreglo       
             $parametros = array();
@@ -105,24 +103,32 @@ class WS_Dirdoc {
 
             $cliente = new SoapClient($url, $autenticacion);
             $objeto = $cliente->consultarFichasEstudiantes($parametros);
-            $resultado = $objeto->return;
+            if (!array_key_exists('return', $objeto)) { // Veo si hay respuesta!
+                $resultado = array(); // Vacio ...
+            } else {
+                if (is_array($objeto->return)) { // Veo si hay más de un match
+                    $resultado = $objeto->return[0]; // Obtengo la info del ultimo ingreso
+                } // Ruego porque esta sea la ultima la verdad ...
+                else { // Si no es un array, es el objeto en si
+                    $resultado = $objeto->return;
+                }
+            }
         } catch (Exception $e) {
             $resultado = array();
             error_log("Error en autenticacion: {$e->getMessage()}");
         }
         return $resultado;
     }
-    
+
     /**
      * @author pperez
      * @param string rut
      * @return array
      * Retorna los datos de un estudiante
      */
-    
     function getAcademico($rut) {
         $resultado = array();
-        
+
         try {
             // Creacion de un arreglo       
             $parametros = array();
@@ -139,7 +145,16 @@ class WS_Dirdoc {
 
             $cliente = new SoapClient($url, $autenticacion);
             $objeto = $cliente->consultarDocente($parametros);
-            $resultado = $objeto->return;
+            if (!array_key_exists('return', $objeto)) { // Veo si hay respuesta!
+                $resultado = array(); // Vacio ...
+            } else {
+                if (is_array($objeto->return)) { // Veo si hay más de un match
+                    $resultado = $objeto->return[0]; // Obtengo la info del ultimo ingreso
+                } // Ruego porque esta sea la ultima la verdad ...
+                else { // Si no es un array, es el objeto en si
+                    $resultado = $objeto->return;
+                }
+            }
         } catch (Exception $e) {
             $resultado = array();
             error_log("Error en autenticacion: {$e->getMessage()}");

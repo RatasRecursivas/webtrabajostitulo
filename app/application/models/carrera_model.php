@@ -35,23 +35,30 @@ class Carrera_model extends CI_Model {
 
     public function editar($id, $data) {
         return $this->db->
-                where('codigo', $id)->
-                update($this->tabla, $data);
+                        where('codigo', $id)->
+                        update($this->tabla, $data);
     }
 
     public function getCarrera($id) {
         $query = $this->db->
-                select('carrera.codigo , carrera.nombre_carrera , facultad.id as facultad_id')->
-                from($this->tabla)->
-                where('carrera.codigo', $id)->
-                join('facultad', 'facultad.id = carrera.id_facultad')->
-                get()->row();
+                        select('carrera.codigo , carrera.nombre_carrera , facultad.id as facultad_id')->
+                        from($this->tabla)->
+                        where('carrera.codigo', $id)->
+                        join('facultad', 'facultad.id = carrera.id_facultad')->
+                        get()->row();
         return $query;
     }
     
     public function eliminar($id) {
         return $this->db-> 
                 where('codigo',$id)->delete($this->tabla);
+    }
+
+    public function checkCarrera($codigo) {
+        $count = $this->db->select('codigo')->from($this->tabla)
+                ->where('codigo', $codigo)
+                ->count_all_results();
+        return (bool) $count;
     }
 
 }

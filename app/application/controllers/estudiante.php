@@ -34,6 +34,7 @@ class Estudiante extends CI_Controller {
     public function index() {
         $data['title'] = 'Estudiantes';
         $data['estudiantes'] = $this->Estudiante_model->getEstudiantes();
+        $this->load->helper('utilities_helper');
         $this->load->view('template/head', $data);
         $this->load->view('estudiante/index', $data);
         $this->load->view('template/footer');
@@ -41,27 +42,46 @@ class Estudiante extends CI_Controller {
     
     public function obtener()
     {
-        if($this->input->post()) // Si llega por post reviso el rut
+        if($this->input->get())
         {
-            // Form validation ..
-            $this->rut = $this->input->post('rut', true);
+            // Validar parametro
+            $this->rut = $this->input->get('rut', true);
             $estudiante = $this->Estudiante_model->getfromWS($this->rut); // Obtener desde el WS
-            
             if($estudiante)
             {
-                echo "Agregado bn";
-                // Funciona! msg + redirect
+                redirect('estudiante');
             }
             else
             {
-                echo "fail!";
-                // No funciona
+                redirect('estudiante');
+            }
+        }
+        else
+        {
+            redirect('estudiante');
+        }
+    }
+    
+    public function eliminar($rut = NULL)
+    {
+        if($rut) // Si llega por post reviso el rut
+        {
+            // Form validation ..
+            $estudiante = $this->Estudiante_model->checkEstudiante($rut);
+            
+            if($estudiante) // Veo si el estudiante esta en la db
+            {
+                $this->Estudiante_model->eliminar($rut);
+                redirect('estudiante');
+            }
+            else
+            {
+                redirect('estudiante');
             }
         }
         else // Epa! este metodo no es accesible por get
         {
-            echo "No hay mano por get!";
-            // Redirect
+            redirect('estudiante');
         }
     }
 }
