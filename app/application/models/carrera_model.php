@@ -61,4 +61,11 @@ class Carrera_model extends CI_Model {
         return (bool) $count;
     }
 
+    public function checkCarrera($codigo) {
+        $count = $this->db->select('codigo')->from($this->tabla)
+                ->where('codigo', $codigo)
+                ->count_all_results();
+        return (bool) $count;
+    }
+
 }
