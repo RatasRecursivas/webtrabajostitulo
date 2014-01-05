@@ -81,7 +81,7 @@ class Estudiante_model extends CI_Model {
                 if(!$this->Carrera_model->checkCarrera($estudiante->codigoCarrera))
                 { // No esta en db, la agregamos, y que la modifiquen despues
                     $data = array(
-                        'nombre_carrera' => '', // Placeholder
+                        'nombre_carrera' => $estudiante->nombreCarrera,
                         'codigo' => $estudiante->codigoCarrera
                     );
                     $this->Carrera_model->agregar($data);
