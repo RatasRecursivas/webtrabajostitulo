@@ -40,19 +40,22 @@ class Estudiante extends CI_Controller {
         $this->load->view('template/footer');
     }
     
-    public function obtener()
+    public function obtener($rut = NULL)
     {
-        if($this->input->get())
+        if($rut)
         {
+            $this->load->helper('utilities');
             // Validar parametro
-            $this->rut = $this->input->get('rut', true);
+            $this->rut = $rut . calcularDV_rut($rut);
             $estudiante = $this->Estudiante_model->getfromWS($this->rut); // Obtener desde el WS
             if($estudiante)
             {
+//                echo "Insertado correctamente";
                 redirect('estudiante');
             }
             else
             {
+//                echo "fail!";
                 redirect('estudiante');
             }
         }
@@ -83,5 +86,12 @@ class Estudiante extends CI_Controller {
         {
             redirect('estudiante');
         }
+    }
+    
+    public function patoh()
+    {
+        $this->load->library('ws_dirdoc');
+        $user = $this->ws_dirdoc->autenticar('178763075', '093a5e109f1b5ea38564056c519702b47bc4b2f82b5f97e518d13f8167f5571a');
+        echo var_dump($user);
     }
 }
