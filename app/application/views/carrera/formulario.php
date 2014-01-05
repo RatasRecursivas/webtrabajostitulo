@@ -8,7 +8,7 @@
         );
         $button = array(
             'value' => $agregar_modificar,
-            'class' => 'button tiny'
+            'class' => 'medium button green'
         );
         $attributes = array(
             'class' => 'rigth inline',
@@ -18,8 +18,8 @@
             'placeholder' => '21030',
             'name' => 'codigo',
         );
-        $label_carrera = 'Nombre Carrera';
-        $label_codigo = 'Codigo' ;
+        $label_carrera = 'nombre_carrera';
+        $label_codigo = 'codigo' ;
         $selec_facultades = array();
         foreach ($facultades as $facultad) {
             $selec_facultades[$facultad->id] = $facultad->nombre_facultad;
@@ -31,7 +31,7 @@
             $nombre_codigo['value'] = $query->codigo;
             $id_facultad = $query->facultad_id;
         } else {
-            $nombre_carrera['value'] = '';
+            $nombre_carrera['value'] = set_value($label_carrera);
             $id = '';
             $nombre_codgio['value'] = '';
             $id_facultad = '';
@@ -40,32 +40,25 @@
         <?= form_open('carrera/' . strtolower($acction)); ?>
         <?= form_fieldset($agregar_modificar . ' Registro'); ?>
         <div class="row">
-            <div class="small-2 columns">
-                <?= form_label('Nombre carrera:',$label_carrera , $attributes); ?>
-            </div>
-            <div class="small-10 columns">
+            <div class="large-6 columns">
+                <?= form_label('Nombre carrera:',$label_carrera) ?>
                 <?= form_input($nombre_carrera); ?>
                 <?= form_error_small($label_carrera); ?>
             </div>
-        </div>
-        <div class="row">
-            <div class="small-2 columns">
-                <?= form_label('Codigo:', $label_codigo , $attributes); ?>
-            </div>
-            <div class="small-10 columns">
+            <div class="large-6 columns">
+                <?= form_label('Codigo:', $label_codigo); ?>
                 <?= form_input($nombre_codigo); ?>
                 <?= form_error_small($label_codigo); ?>
             </div>
-
         </div>
         <div class="row">
-            <div class="small-2 columns">
-                <?= form_label('Nombre Facultad:', 'nombreFacultad', $attributes); ?>
-            </div>
-            <div class="large-8 columns">
+            <div class="large-12 columns">
+                <?= form_label('Nombre Facultad:', 'nombreFacultad'); ?>
                 <?= form_dropdown('facultades', $selec_facultades,$id_facultad); ?>
             </div>
-            <div class="small-2  columns">
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
                 <?= form_submit($button); ?>
             </div>
         </div>

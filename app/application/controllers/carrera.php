@@ -124,10 +124,10 @@ class Carrera extends CI_Controller {
     public function editar($id = null) {
         $id = (int) $id;
         if (!$id) {
-            $this->redireccionar_msg('facultad', 'No especifico la facultad a editar!');
+            $this->redireccionar_msg('carrera', 'No especifico la carrera a editar!');
         }
         if ($this->input->post()) {
-            if ($this->form_validation->run('carrera/formualrio')) {
+            if ($this->form_validation->run('carrera/formulario')) {
 
                 $this->getIdPost();
                 $this->getDatosPost();
