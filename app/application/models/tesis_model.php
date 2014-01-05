@@ -82,7 +82,28 @@ class Tesis_model extends CI_Model {
 
     public function eliminar($id) {
         return $this->db->
-                where('id', $id)->delete($this->tabla);
+                        where('id', $id)->delete($this->tabla);
+    }
+
+    public function getFiltrarTesis($array) {
+        $array = array(
+            'facultad.nombre_facultad' => 'turbochela',
+            'carrera.nombre_carrera' => 'Ingeniería en informática',
+            'users.first_name' => 'PATRICIO ALEJAN',
+            'categoria.nombre_categoria' => 'Soy especial'
+        );
+        $query = $this->db->
+                select('tesis.*')->
+                from($this->tabla)->
+                where($array)->
+                join('estudiante', 'tesis.estudiante_rut = estudiante.rut')->
+                join('carrera','carrera.codigo = estudiante.codigo_carrera')->
+                join('facultad','facultad.id = carrera.id_facultad')->
+                join('profesor','tesis.profesor_guia_rut = profesor.rut')->
+                join('categoria','tesis.id_categoria = categoria.id')->
+                join('users','profesor.user_id = users.id')->
+                get();
+        return $query->result();
     }
 
 }
