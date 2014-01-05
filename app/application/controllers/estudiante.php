@@ -42,6 +42,10 @@ class Estudiante extends CI_Controller {
     
     public function obtener($rut = NULL)
     {
+        if(array_key_exists('rut', $this->input->get()))
+        {
+            $rut = $this->input->get('rut', true);
+        }
         if($rut)
         {
             $this->load->helper('utilities');
@@ -88,10 +92,4 @@ class Estudiante extends CI_Controller {
         }
     }
     
-    public function patoh()
-    {
-        $this->load->library('ws_dirdoc');
-        $user = $this->ws_dirdoc->autenticar('178763075', '093a5e109f1b5ea38564056c519702b47bc4b2f82b5f97e518d13f8167f5571a');
-        echo var_dump($user);
-    }
 }
