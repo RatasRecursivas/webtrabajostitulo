@@ -41,11 +41,16 @@ class Estudiante extends CI_Controller {
     public function setEstudiante_titulo($estudiante_titulo) {
         $this->estudiante_titulo = $estudiante_titulo;
     }
+
     public function setError_rut($error_rut) {
         $this->error_rut = $error_rut;
     }
 
-        public function setEstidiante_todosEstudiante($estidiante_todosEstudiante) {
+    public function setEstudiante_rut($estudiante_rut) {
+        $this->estudiante_rut = $estudiante_rut;
+    }
+
+    public function setEstidiante_todosEstudiante($estidiante_todosEstudiante) {
         $this->estidiante_todosEstudiante = $estidiante_todosEstudiante;
     }
 
@@ -60,8 +65,8 @@ class Estudiante extends CI_Controller {
         $this->load->view($vista, $info_view);
         $this->load->view('template/footer');
     }
-    
-    public function redireccionar_msg($link,$menjase){
+
+    public function redireccionar_msg($link, $menjase) {
         $this->session->set_flashdata('msg', $menjase);
         redirect($link);
     }
@@ -79,10 +84,11 @@ class Estudiante extends CI_Controller {
         if ($rut) {
             $patron = "/^[[:digit:]]+$/";
             if (preg_match($patron, $rut)) {
-                $this->estudiante_rut = $rut . calcularDV_rut($rut);
+//                $this->estudiante_rut = $rut . calcularDV_rut($rut);
+                $this->setEstudiante_rut($rut.calcularDV_rut($rut));
                 $agregado = $this->Estudiante_model->getfromWS($this->estudiante_rut); // Obtener desde el WS
                 if ($agregado) {
-                    $this->redireccionar_msg('estudiante', 'El registro con rut '.esRut($this->estudiante_rut).' está ingresado en la base de datos');
+                    $this->redireccionar_msg('estudiante', 'El registro con rut ' . esRut($this->estudiante_rut) . ' está ingresado en la base de datos');
                 } else {
                     $this->redireccionar_msg('estudiante', 'Ups el rut ingresado no es un estudiante');
                 }
@@ -100,15 +106,16 @@ class Estudiante extends CI_Controller {
     public function eliminar($rut = NULL) {
         if ($rut) { // Si llega por post reviso el rut
             // Form validation ..
-            $rut = (int)$rut;
-            
+            $rut = (int) $rut;
+
             $estudiante = $this->Estudiante_model->checkEstudiante($rut);
 
             if ($estudiante) { // Veo si el estudiante esta en la db
                 $this->Estudiante_model->eliminar($rut);
-                $this->redireccionar_msg('estudiante', 'Estudiante con Rut: '.esRut($rut).' ha sido eliminado!');
+                $this->setEstudiante_rut($rut.calcularDV_rut($rut));
+                $this->redireccionar_msg('estudiante', 'Estudiante con Rut: ' . esRut($this->estudiante_rut) . ' ha sido eliminado!');
             } else {
-                $this->redireccionar_msg('estudiante', 'No existe el Rut: '. $rut .' en la base de datos');
+                $this->redireccionar_msg('estudiante', 'No existe el Rut: ' . $rut . ' en la base de datos');
             }
         } else { // Epa! este metodo no es accesible por get
             $this->redireccionar_msg('estudiante', 'Que esta haciendo ?');

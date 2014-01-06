@@ -37,7 +37,7 @@ class Tesis extends CI_Controller {
     var $tesis_categorias = array();
     var $tesis_carreras = array();
     var $tesis_facultades = array();
-    var $tesis_mensajeFichero = '';
+    var $tesis_fichero_ubicacion = null;
     var $validation = array();
     var $admin;
 
@@ -52,12 +52,12 @@ class Tesis extends CI_Controller {
         $this->admin = ($this->ion_auth->is_admin()) ? true : false;
     }
 
-    public function setTesis_titulo($tesis_titulo) {
-        $this->tesis_titulo = $tesis_titulo;
+    public function setTesis_fichero_ubicacion($tesis_fichero_ubicacion) {
+        $this->tesis_fichero_ubicacion = $tesis_fichero_ubicacion;
     }
 
-    public function setTesis_mensajeFicher($tesis_mensajefichero) {
-        $this->tesis_mensajeFichero = $tesis_mensajefichero;
+    public function setTesis_titulo($tesis_titulo) {
+        $this->tesis_titulo = $tesis_titulo;
     }
 
     public function setTesis_agregar_modificar($agregar_modificar) {
@@ -118,8 +118,6 @@ class Tesis extends CI_Controller {
         } else {
             $datosGet['profesor_default'] = null;
         }
-        
-        
 
         $datos_enviar = array(
             'title' => $this->tesis_titulo,
@@ -152,16 +150,18 @@ class Tesis extends CI_Controller {
         $config['max_size'] = '30000'; // 30 MB 
 
         $this->load->library('upload', $config);
-        $fichero_ubicacion = '';
 
         $fechapublicacion = strtotime($this->input->post('fecha_publicacion_putrido', true));
 
-        if ($this->upload->do_upload() && $fechapublicacion) {
+        if ($this->upload->do_upload()) {
+            
             $fichero_ubicacion = $this->upload->data();
             $fichero_ubicacion = $fichero_ubicacion['full_path'];
         } else {
-            $this->redireccionar_msg('tesis', 'Se le olvido adjuntar el fichero o no lo hemos recibido');
+            $fichero_ubicacion = null;
         }
+
+        $this->setTesis_fichero_ubicacion($fichero_ubicacion);
 
         $rut_format = esRut($this->input->post('rut', TRUE));
         $rut_format = str_replace('.', '', $rut_format); // replazamos los puntos
@@ -212,7 +212,7 @@ class Tesis extends CI_Controller {
             array(
                 'field' => 'abstract',
                 'label' => 'Abstract',
-                'rules' => 'required|xss_clean|trim|max_length[1000]'
+                'rules' => 'xss_clean|trim|max_length[1000]'
             ),
             array(
                 'field' => 'fecha_publicacion_putrido',
@@ -311,7 +311,11 @@ class Tesis extends CI_Controller {
 
                 $editado = $this->Tesis_model->editar($this->tesis_id_post, $this->tesis_datos_post);
                 if ($editado == true) {
-                    $this->redireccionar_msg('tesis', 'Exito al editar');
+                    if ($this->tesis_fichero_ubicacion == null) {
+                        $this->redireccionar_msg('tesis', 'Tesis editada, pero no se ha recibido fichero (Debio haberlo olvidado subirlo)');
+                    } else {
+                        $this->redireccionar_msg('tesis', 'Tesis editada con exito');
+                    }
                 } else {
                     $this->redireccionar_msg('tesis', 'Vuelva a procesar la peticion');
                 }
@@ -348,7 +352,12 @@ class Tesis extends CI_Controller {
 
                 $guardado = $this->Tesis_model->agregar($this->tesis_datos_post);
                 if ($guardado == true) {
-                    $this->redireccionar_msg('tesis', 'Se agrego una nueva tesis');
+
+                    if ($this->tesis_fichero_ubicacion == null) {
+                        $this->redireccionar_msg('tesis', 'Tesis agregada, pero no se ha recibido fichero (Debio haberlo olvidado subirlo)');
+                    } else {
+                        $this->redireccionar_msg('tesis', 'Se agrego una nueva tesis');
+                    }
                 } else {
                     $this->redireccionar_msg('tesis', 'Vuelva a intentarlo :(');
                 }

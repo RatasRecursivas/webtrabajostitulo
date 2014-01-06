@@ -1,13 +1,13 @@
+<html>
 <head>
-    <title>Formulario de Carga</title>
+<title>Formulario de Carga</title>
 </head>
 <body>
-    <h3>Su archivo fue exitosamente subido!</h3>
-    <ul>
-        <?php foreach ($upload_data as $item => $value): ?>
-            <li><?= $item; ?>: <?= $value; ?></li>
-        <?php endforeach; ?>
-    </ul>
-    <p><?= anchor('upload', 'Subir otro archivo!'); ?></p>
+<?=$error;?>
+<?=form_open_multipart('upload/do_upload'); ?>
+<input type="file" name="userfile" size="20" />
+<br /><br />
+<input type="submit" value="upload" />
+</form>
 </body>
 </html>

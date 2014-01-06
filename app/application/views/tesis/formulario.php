@@ -171,7 +171,7 @@
         <div class="row">
             <div class="large-2 columns">
 
-                <?= form_label('Adjunte el Fichero:'); ?>
+                <?= form_label('Adjunte el Fichero:','',array(),'No debe superar los 30 mb'); ?>
             </div>
             <div class="large-10 columns">
                 <?= form_upload($subir_input) ?>
