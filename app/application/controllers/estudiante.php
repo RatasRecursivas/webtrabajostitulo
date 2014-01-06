@@ -23,15 +23,19 @@
  *
  * @author pperez
  */
-
 class Estudiante extends CI_Controller {
+
     var $rut;
+
     function __construct() {
         parent::__construct();
         $this->load->model('Estudiante_model');
     }
-    
+
     public function index() {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $data['title'] = 'Estudiantes';
         $data['estudiantes'] = $this->Estudiante_model->getEstudiantes();
         $this->load->helper('utilities_helper');
@@ -39,57 +43,48 @@ class Estudiante extends CI_Controller {
         $this->load->view('estudiante/index', $data);
         $this->load->view('template/footer');
     }
-    
-    public function obtener($rut = NULL)
-    {
-        if(array_key_exists('rut', $this->input->get()))
-        {
+
+    public function obtener($rut = NULL) {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
+        if (array_key_exists('rut', $this->input->get())) {
             $rut = $this->input->get('rut', true);
         }
-        if($rut)
-        {
+        if ($rut) {
             $this->load->helper('utilities');
             // Validar parametro
             $this->rut = $rut . calcularDV_rut($rut);
             $estudiante = $this->Estudiante_model->getfromWS($this->rut); // Obtener desde el WS
-            if($estudiante)
-            {
+            if ($estudiante) {
 //                echo "Insertado correctamente";
                 redirect('estudiante');
-            }
-            else
-            {
+            } else {
 //                echo "fail!";
                 redirect('estudiante');
             }
-        }
-        else
-        {
+        } else {
             redirect('estudiante');
         }
     }
-    
-    public function eliminar($rut = NULL)
-    {
-        if($rut) // Si llega por post reviso el rut
-        {
+
+    public function eliminar($rut = NULL) {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
+        if ($rut) { // Si llega por post reviso el rut
             // Form validation ..
             $estudiante = $this->Estudiante_model->checkEstudiante($rut);
-            
-            if($estudiante) // Veo si el estudiante esta en la db
-            {
+
+            if ($estudiante) { // Veo si el estudiante esta en la db
                 $this->Estudiante_model->eliminar($rut);
                 redirect('estudiante');
-            }
-            else
-            {
+            } else {
                 redirect('estudiante');
             }
-        }
-        else // Epa! este metodo no es accesible por get
-        {
+        } else { // Epa! este metodo no es accesible por get
             redirect('estudiante');
         }
     }
-    
+
 }

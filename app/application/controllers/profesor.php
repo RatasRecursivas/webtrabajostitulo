@@ -33,6 +33,9 @@ class Profesor extends CI_Controller {
     }
 
     public function index() {
+        if ($this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $data['title'] = 'Profesores';
         $data['profesores'] = $this->Profesor_model->getProfesores();
         $this->load->helper('utilities');
@@ -42,6 +45,9 @@ class Profesor extends CI_Controller {
     }
 
     public function obtener($rut = NULL) {
+        if ($this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         if(array_key_exists('rut', $this->input->get()))
         {
             $rut = $this->input->get('rut', true); // Hackish
@@ -64,6 +70,9 @@ class Profesor extends CI_Controller {
     }
 
     public function eliminar($rut = NULL) {
+        if ($this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         if ($rut) {
             // Form validation ..
             $profesor = $this->Profesor_model->checkProfesor($rut);

@@ -94,12 +94,18 @@ class Carrera extends CI_Controller {
     }
 
     public function index() {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $this->setCarrera_titulo('Indice | Carrera');
         $this->setCarrera_todasCarreras($this->ultimasCarreras());
         $this->mostrarVista('carrera/index');
     }
 
     public function agregar() {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $this->setCarrera_titulo('Agregar | Carrera');
         $this->setCarrera_acction('Agregar');
         $this->setCarrera_agregar_modificar('Agregar');
@@ -122,6 +128,9 @@ class Carrera extends CI_Controller {
     }
 
     public function editar($id = null) {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $id = (int) $id;
         if (!$id) {
             $this->redireccionar_msg('carrera', 'No especifico la carrera a editar!');
@@ -153,6 +162,9 @@ class Carrera extends CI_Controller {
         $this->mostrarVista('carrera/formulario');
     }
      public function eliminar($id) {
+         if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $id = (int)$id;
         $carrera = $this->Carrera_model->getCarrera($id);
         if($carrera ){ // existe ?

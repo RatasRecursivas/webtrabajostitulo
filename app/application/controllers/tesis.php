@@ -175,6 +175,9 @@ class Tesis extends CI_Controller {
     }
 
     public function editar($id = null) {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $id = (int) $id;
         if (!$id) {
             $this->redireccionar_msg('tesis', 'Tesis no valida para editar');
@@ -207,6 +210,9 @@ class Tesis extends CI_Controller {
     }
 
     public function agregar() {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $this->setTesis_titulo('Agregar | Tesis');
         $this->setTesis_agregar_modificar('Agregar');
         $this->setTesis_acction('Agregar');

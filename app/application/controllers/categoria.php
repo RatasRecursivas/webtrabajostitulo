@@ -16,6 +16,8 @@ class Categoria extends CI_Controller {
     var $categoria_facultades = array ();
     var $categoria_todascategorias = array ();
     var $categoria_agregar_modificar= '';
+    
+    
     public function setCategoria_titulo($categoria_titulo) {
         $this->categoria_titulo = $categoria_titulo;
     }
@@ -90,6 +92,9 @@ class Categoria extends CI_Controller {
     }
 
     public function index() {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $this->setCategoria_titulo('Indice|Categoria');
         $this->setCategoria_todascategorias($this->ultimasCategorias());
         $this->mostrarVista('categoria/index');
@@ -97,6 +102,9 @@ class Categoria extends CI_Controller {
     
 
     public function agregar() {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $this->setCategoria_titulo('Agregar|Categoria');
         $this->setCategoria_acction('Agregar');
         $this->setCategoria_agregar_modificar('Agregar');
@@ -121,6 +129,9 @@ class Categoria extends CI_Controller {
     }
 
     public function editar($id = NULL) {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $id = (int) $id;
         if (!$id) {
             $this->redireccionar_msg('categoria', 'No especifico la categoria a editar!');
@@ -152,6 +163,9 @@ class Categoria extends CI_Controller {
 
     }
    public function eliminar($id) {
+       if (!$this->ion_auth->is_admin()) {
+            redirect('login');
+        }
         $id = (int)$id;
         $carrera = $this->Categoria_model->getCategoria($id);
         if($carrera ){ // existe ?
