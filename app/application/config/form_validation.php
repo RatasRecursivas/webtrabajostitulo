@@ -42,7 +42,7 @@ $config = array(
         array(
             'field' => 'rut',
             'label' => 'Rut Autor',
-            'rules' => 'required|xss_clean|trim|max_length[9]|interger'
+            'rules' => 'required|xss_clean|trim|value_rut'
         ),
         array(
             'field' => 'abstract',
@@ -57,17 +57,22 @@ $config = array(
         array(
             'field' => 'fecha_evaluacion',
             'label' => 'Fecha de Evaluación',
-            'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia_hora_minuto_segundo'
+            'rules' => 'xss_clean|trim|validate_fecha_anio_mes_dia'
+        ),
+        array(
+            'field' => 'hora_evaluacion',
+            'label' => 'Hora de envaluacion',
+            'rules' => 'xss_clean|trim|validate_hora_minuto_segundo'
         ),
         array(
             'field' => 'fecha_disponibilidad',
             'label' => 'Fecha de Disponibilidad',
             'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
         ),
-        array(
-            'field' => 'fichero',
-            'label' => 'Fichero',
-            'rules' => 'required|xss_clean|trim|comprobar_fichero'
-        ),
+//        array(
+//            'field' => 'fichero',
+//            'label' => 'Fichero',
+//            'rules' => 'comprombar_fichero'
+//        ),
     ),
 );

@@ -42,6 +42,7 @@ class Tesis extends CI_Controller {
         $this->load->model('Tesis_model');
         $this->load->model('Profesor_model');
         $this->load->model('Categoria_model');
+        $this->load->helper('utilities');
     }
 
     public function setTesis_titulo($tesis_titulo) {
@@ -102,9 +103,12 @@ class Tesis extends CI_Controller {
     }
 
     private function getDatosPost() {
-        $config['upload_path'] = './uploads/';
-        $config['allowed_types'] = 'pdf|zip ';
-        $config['max_size'] = '100';
+        
+        $config['upload_path'] = './archivos_tesis/';
+        $config['allowed_types'] = 'zip|pdf';
+        $config['max_size'] = '2048';
+        
+        
         $this->load->library('upload', $config);
         $fichero_ubicacion = '';
 
@@ -112,21 +116,32 @@ class Tesis extends CI_Controller {
             $fichero_ubicacion = $this->upload->data();
             $fichero_ubicacion = $fichero_ubicacion['full_path'];
         } else {
-            $fichero_ubicacion = false;
+            $this->redireccionar_msg('tesis', 'Se le olvido adjuntar el fichero o no lo hemos recibido');
         }
-
+        
+        $rut_format = esRut($this->input->post('rut',TRUE));
+        $rut_format = str_replace('.', '', $rut_format); // replazamos los puntos
+        $rut_format = substr($rut_format, 0,-2); //cortamos el digito verificador y el '-' 
+        
+        if($this->input->post('fecha_evaluacion',true) == false || $this->input->post('hora_evaluacion',true) == false)
+        {
+            $fecha_evaluacion = null;
+        } else {
+            $fecha_evaluacion = $this->input->post('fecha_evaluacion', true).' '.$this->input->post('hora_evaluacion',true);
+        }
+        
         $tesis = array(
             'titulo' => $this->input->post('titulo', TRUE),
-            'estudiante_rut' => $this->input->post('rut', true),
+            'estudiante_rut' => $rut_format,
             'abstract' => $this->input->post('abstract', TRUE),
             'fecha_publicacion' => $this->input->post('fecha_publicacion', true),
-            'fecha_evaluacion' => $this->input->post('fecha_evaluacion', true),
+            'fecha_evaluacion' => $fecha_evaluacion,
             'feha_disponibilidad' => $this->input->post('fecha_disponibilidad', true),
             'profesor_guia_rut' => $this->input->post('profesor_date', true),
             'ubicacion_fichero' => $fichero_ubicacion,
             'id_categoria' => $this->input->post('categoria_id', true),
         );
-        var_dump($tesis);
+        //var_dump($tesis);
         $this->tesis_datos_post = $tesis;
     }
 

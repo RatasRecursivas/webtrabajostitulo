@@ -1,18 +1,19 @@
 <div class="row">
     <div class="large-12 columns">
         <?php
-        
         $label_tesis = 'titulo';
         $label_rut = 'rut';
         $label_abstract = 'abstract';
         $label_fechap = 'fecha_publicacion';
         $label_fechad = 'fecha_disponibilidad';
-        $label_fechae = 'fecha_evaluacion';
+        $label_fechae_anio = 'fecha_evaluacion';
         $label_fichero = 'fichero';
-        
+        $label_fechae_hora = 'hora_evaluacion';
+
+
         $nombre_tesis = array(
             'type' => 'text',
-            'placeholder' => 'Titulo Tesis...',
+            'placeholder' => 'Ingenieria de Software...',
             'name' => 'titulo',
         );
         $button = array(
@@ -21,34 +22,36 @@
         );
         $rut_autor = array(
             'type' => 'text',
-            'placeholder' => 'Rut...',
+            'placeholder' => '18.048.821-9',
             'name' => 'rut',
         );
         $abstract = array(
             'type' => 'text',
-            'placeholder' => 'Reseña...',
+            'placeholder' => 'Ingrese aquí el abstract de la tesis',
             'name' => 'abstract',
         );
         $fecha_publicacion = array(
-            'type' => 'date',
-            'placeholder' => '12/10/2012',
+            'type' => 'text',
+            'placeholder' => '08 de Enero de 2014',
             'name' => 'fecha_publicacion',
         );
         $fecha_evaluacion = array(
-            'type' => 'date',
-            'placeholder' => '12/10/2012 14:30',
+            'type' => 'text',
+            'placeholder' => '2014-05-23',
             'name' => 'fecha_evaluacion',
+        );
+        $hora_evaluacion = array(
+            'type' => 'text',
+            'placeholder' => '14:00:00',
+            'name' => 'hora_evaluacion'
         );
         $fecha_disponibilidad = array(
             'type' => 'date',
-            'placeholder' => '12/10/2012',
+            'placeholder' => '08 de Enero de 2014',
             'name' => 'fecha_disponibilidad',
         );
         $subir_input = array(
-            'type' => "file",
             'name' => "userfile",
-            'size' => "20",
-                //'class' => "tiny round disabled button"
         );
         $subir_button = array(
             'value' => "upload",
@@ -63,17 +66,41 @@
             $selec_profesores[$profesor->rut] = $profesor->first_name . ' ' . $profesor->last_name;
         }
         $selec_categorias = array();
-        foreach ($categorias as $categoria){
+        foreach ($categorias as $categoria) {
             $selec_categorias[$categoria->id] = $categoria->nombre_categoria;
         }
-        
+
         if (isset($tesis)) {
             $nombre_tesis['value'] = $tesis->titulo;
             $id = $tesis->id;
-            $rut_autor['value'] = $tesis->estudiante_rut;
+            
+            $rut_autor['value'] = esRut($tesis->estudiante_rut.calcularDV_rut($tesis->estudiante_rut));
             $abstract ['value'] = $tesis->abstract;
             $fecha_disponibilidad['value'] = $tesis->feha_disponibilidad;
-            $fecha_evaluacion ['value'] = $tesis->fecha_evaluacion;
+            $fecha_evaluacion['value'] = strptime($tesis->fecha_evaluacion, 'Y-m-d');
+            $hora_evaluacion['value'] = strptime($tesis->fecha_evaluacion, 'H-i-s');
+
+            if (isset($tesis->fecha_evaluacion)) {
+                $formate = strptime($tesis->fecha_evaluacion, '%Y-%m-%d %H:%M:%S');
+
+                $anio = (int) $formate['tm_year'] + 1900;
+                $mes = (int) $formate['tm_mon'] + 1;
+                $dia = (int) $formate['tm_mday'];
+                $f_e_ano_mes_dia = $anio . '-' . $mes . '-' . $dia;
+
+                $hora = (int) $formate['tm_hour'];
+                $minu = (int) $formate['tm_min'];
+                $seg = '00';
+
+                $f_e_hora = $hora . ':' . $minu . ':' . $seg;
+
+                $fecha_evaluacion['value'] = $f_e_ano_mes_dia;
+                $hora_evaluacion['value'] = $f_e_hora;
+            }else{
+                $f_e_ano_mes_dia = '';
+                $f_e_hora= '';
+            }
+
             $fecha_publicacion ['value'] = $tesis->fecha_publicacion;
             $id_profesor = $tesis->profesor_guia_rut;
             $id_categoria = $tesis->id_categoria;
@@ -84,8 +111,9 @@
             $rut_autor['value'] = set_value($label_rut);
             $abstract ['value'] = set_value($label_abstract);
             $fecha_disponibilidad['value'] = set_value($label_fechad);
-            $fecha_evaluacion ['value'] = set_value($label_fechae);
-            $fecha_publicacion ['value'] = set_value($label_fechap);
+            $fecha_evaluacion['value'] = set_value($label_fechae_anio);
+            $fecha_publicacion['value'] = set_value($label_fechap);
+            $hora_evaluacion['value'] = set_value($label_fechae_hora);
             $id_categoria = '';
         }
         ?>
@@ -95,12 +123,12 @@
             <div class="large-12 columns">
                 <?= form_label('Titulo Tesis :', $label_tesis); ?>
                 <?= form_input($nombre_tesis); ?>
-                <?=  form_error_small($label_tesis); ?>
+                <?= form_error_small($label_tesis); ?>
             </div>
         </div>
         <div class="row">
             <div class="large-4 columns">
-                <?= form_label('Rut Estudiante:', $label_rut); ?>
+                <?= form_label('Rut Estudiante: (Con digito verificador)', $label_rut); ?>
                 <?= form_input($rut_autor); ?>
                 <?= form_error_small($label_rut); ?>
             </div>
@@ -110,7 +138,7 @@
             </div>
             <div class="large-4 columns">
                 <?= form_label('Nombre Categoria:', $label_rut); ?>
-                <?= form_dropdown('categoria_id',$selec_categorias,$id_categoria,$dropdown_atrribut); ?>
+                <?= form_dropdown('categoria_id', $selec_categorias, $id_categoria, $dropdown_atrribut); ?>
             </div>
         </div>
         <div class="row">
@@ -125,10 +153,20 @@
                 <?= form_error_small($label_fechad); ?>
             </div>
             <div class="large-4 columns">
-                <?= form_label('Fecha Evaluacion:', $label_fechae); ?>
-                <?= form_input($fecha_evaluacion); ?>
-                <?= form_error_small($label_fechae); ?>
+                <div class="row">
+                    <?= form_label('Fecha Evaluacion:') ?>
+                    <div class="large-6 columns">
+                        <?= form_input($fecha_evaluacion); ?>
+                        <?= form_error_small($label_fechae_anio); ?>
+                    </div>
+                    <div class="large-6 columns">
+                        <?= form_input($hora_evaluacion); ?>
+                        <?= form_error_small($label_fechae_hora); ?>
+                    </div>
+                </div>
             </div>
+            <!--<div class="large-4 columns">-->
+            <!--</div>-->
         </div>
         <div class="row">
             <div class="large-12 columns">
@@ -139,11 +177,11 @@
         </div>
         <div class="row">
             <div class="large-2 columns">
-                
+
                 <?= form_label('Adjunte el Fichero:'); ?>
             </div>
             <div class="large-10 columns">
-                <?= form_input($subir_input); ?>
+                <?= form_upload($subir_input) ?>
             </div>
         </div>
         <div class="row">
