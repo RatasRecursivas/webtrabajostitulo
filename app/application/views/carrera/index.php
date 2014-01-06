@@ -13,6 +13,7 @@
                     <th>Eliminar</th>
                 </tr>
             </thead>
+            
             <tbody>
                 <?php foreach ($carreras as $carrera): ?>
                     <tr>

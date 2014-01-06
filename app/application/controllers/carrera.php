@@ -60,6 +60,7 @@ class Carrera extends CI_Controller {
             'carreras' => $this->carrera_todasCarreras,
             'query' => $this->carrera_getCarrera,
             'facultades' => $this->carrera_falcultades,
+            'msg' => $this->session->flashdata('msg')
         );
         $this->load->view('template/head', $info_view);
         $this->load->view($vista, $info_view);
@@ -95,7 +96,7 @@ class Carrera extends CI_Controller {
 
     public function index() {
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
         $this->setCarrera_titulo('Indice | Carrera');
         $this->setCarrera_todasCarreras($this->ultimasCarreras());

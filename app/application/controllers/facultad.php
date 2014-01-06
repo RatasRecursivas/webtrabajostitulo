@@ -32,7 +32,7 @@ class Facultad extends CI_Controller {
     var $facultad_getfalcultad = null;
     var $facultad_todasfacultades = array();
     var $facultad_agregar_modificar = '';
-    
+
     public function setFacultad_titulo($facultad_titulo) {
         $this->facultad_titulo = $facultad_titulo;
     }
@@ -53,26 +53,26 @@ class Facultad extends CI_Controller {
         $this->facultad_agregar_modificar = $facultad_agregar_modificar;
     }
 
-        function __construct() {
+    function __construct() {
         parent::__construct();
         $this->load->model('Facultad_model');
     }
 
-    public function mostrarVista($vista){
-         $info_view = array(
+    public function mostrarVista($vista) {
+        $info_view = array(
             'title' => $this->facultad_titulo,
             'action' => $this->facultad_acction,
             'agregar_modificar' => $this->facultad_agregar_modificar,
             'facultades' => $this->facultad_todasfacultades,
             'query' => $this->facultad_getfalcultad,
-            
+            'msg' => $this->session->flashdata('msg')
         );
         $this->load->view('template/head', $info_view);
         $this->load->view($vista, $info_view);
         $this->load->view('template/footer');
     }
-         
-        private function getDatosPost() {
+
+    private function getDatosPost() {
         $facultad = array(
             'nombre_facultad' => $this->input->post('nombre_facultad', true)
         );
@@ -80,46 +80,44 @@ class Facultad extends CI_Controller {
     }
 
     private function getIdPost() {
-        $this->facultad_id  = $this->input->post('id', true);
-        
+        $this->facultad_id = $this->input->post('id', true);
     }
 
     private function ultimasFacultades() {
         return $this->Facultad_model->getFacultades();
     }
-    
-    public function redireccionar_msg($link,$mensaje) {
-        $this->session->set_flashdata('msg',$mensaje);
+
+    public function redireccionar_msg($link, $mensaje) {
+        $this->session->set_flashdata('msg', $mensaje);
         redirect($link);
     }
 
     public function index() {
 //        $this->llenarInfo('Indice', null, null, $this->ultimasTesis());
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
         $this->setFacultad_titulo('Indice | Facultada');
         $this->setFacultad_todasfacultades($this->ultimasFacultades());
         $this->mostrarVista('facultad/index');
     }
 
-    
     public function agregar() {
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
         $this->setFacultad_titulo('Agregar|Facultad');
         $this->setFacultad_acction('Agregar');
         $this->setFacultad_agregar_modificar('Agregar');
         $this->setFacultad_todasfacultades($this->ultimasFacultades());
-    
+
         if ($this->input->post()) {
             if ($this->form_validation->run('facultad/formulario')) {
                 $this->getDatosPost();
                 $guardado = $this->Facultad_model->agregar($this->facultad_datos);
 
                 if ($guardado == true) {
-                    $this->redireccionar_msg('facultad ','Se agrego correctamente la Facu :)');
+                    $this->redireccionar_msg('facultad ', 'Se agrego correctamente la Facu :)');
                 } else {
                     $this->redireccionar_msg('facultad', 'No se agrego correctamente ');
                 }
@@ -128,23 +126,21 @@ class Facultad extends CI_Controller {
         $this->mostrarVista('facultad/formulario');
     }
 
-    
-
     public function editar($id = NULL) {
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
         $id = (int) $id;
         if (!$id) {
-            $this->redireccionar_msg('facultad','No especifico la facultad a editar!');
+            $this->redireccionar_msg('facultad', 'No especifico la facultad a editar!');
         }
-        if ($this->input->post() ) { 
-            if ($this->form_validation->run('facultad/formulario') ) {
-                $this->getIdPost(); 
+        if ($this->input->post()) {
+            if ($this->form_validation->run('facultad/formulario')) {
+                $this->getIdPost();
                 $this->getDatosPost();
-                
+
                 $editado = $this->Facultad_model->editar($this->facultad_id, $this->facultad_datos);
-                
+
                 if ($editado == True) {
                     $this->redireccionar_msg('facultad', 'Se modifico correctamente el registro');
                 } else {
@@ -153,34 +149,33 @@ class Facultad extends CI_Controller {
             }
         }
         $this->setFacultad_titulo('Editar|Facultad');
-        $this->setFacultad_acction('Editar/'.$id);
+        $this->setFacultad_acction('Editar/' . $id);
         $this->setFacultad_getfalcultad($this->Facultad_model->getFacultad($id));
         $this->setFacultad_agregar_modificar('Editar');
 
-        if ($this->facultad_getfalcultad ==  false) { //Ups no existe ese ID 
+        if ($this->facultad_getfalcultad == false) { //Ups no existe ese ID 
             $this->redireccionar_msg('facultad', 'La facultad a editar no es valida, intente nuevamente');
-        }else {
+        } else {
             $this->mostrarVista('facultad/formulario');
         }
     }
-    
+
     public function eliminar($id) {
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
-        $id = (int)$id;
+        $id = (int) $id;
         $facultad = $this->Facultad_model->getFacultad($id);
-        if($facultad ){ // existe ?
+        if ($facultad) { // existe ?
             $eliminado = $this->Facultad_model->eliminar($id);
-            if($eliminado == true){
+            if ($eliminado == true) {
                 $this->redireccionar_msg('facultad', 'Fue exitosamente eliminado!');
             } else {
                 $this->redireccionar_msg('falcultad', 'Intentelo nuevamente, Ups');
             }
-        }  else {
+        } else {
             $this->redireccionar_msg('facultad', 'No existe esa Falcultad');
         }
-        
     }
 
 }

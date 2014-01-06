@@ -10,9 +10,9 @@
         <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.date.css'; ?>" id="theme_date">
         <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.time.css'; ?>" id="theme_time">
         <meta charset="utf-8" />
- 
-        
-    
+
+
+
     </head>
     <body>
         <div class="row">
@@ -47,8 +47,17 @@
                         </ul>
                     </section>
                 </nav>
-
-                <!-- End Navigation -->
-
             </div>
         </div>
+        <?php if ($msg): ?>
+            <div class="row">
+                <div class="large-12 columns">
+                    <div class="small-6 small-centered">
+                        <div data-alert class="alert-box info radius">
+                            <?= $msg; ?>
+                            <a href="#" class="close">&times;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>

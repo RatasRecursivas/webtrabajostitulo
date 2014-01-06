@@ -57,7 +57,7 @@ class Categoria extends CI_Controller {
             'categorias'=>$this->categoria_todascategorias,
             'query'=> $this->categoria_getcategoria,
             'facultades'=> $this->categoria_facultades,
-            
+            'msg' => $this->session->flashdata('msg')
         );
         $this->load->view('template/head', $info_view);
         $this->load->view($vista, $info_view);

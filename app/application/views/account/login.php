@@ -1,37 +1,28 @@
-<div class="row">
-    <div class="large-12 columns">
-        <?php
-        $label_user = 'user';
-        $input_usuer = array(
-            'type' => 'text',
-            'placeholder' => 'Admin',
-            'name' => $label_user,
-        );
-        $label_password = 'password';
-        $input_password = array(
-            'type' => 'password',
-            'name' => $label_password,
-        );
-        $submit_form = array(
-            'class' => 'medium button green',
-        );
-        ?>
+<h1><?php echo lang('login_heading');?></h1>
+<p><?php echo lang('login_subheading');?></p>
 
-        <?= form_open('login/'); ?>
-        <?= form_fieldset('Ingresar Datos') ?>
-        <div class="row">
-            <?= '<h1>' . validation_errors() . '</h1>' ?>
-            <div class="large-12 columns">
-                <?= form_label('Usuario', $label_user) ?>
-                <?= form_input($input_usuer) ?>
-            </div>
-            <div class="large-12 columns">
-                <?= form_label('Password', $label_password) ?>
-                <?= form_input($input_password) ?>
-            </div>
-            <div class="large-12 columns">
-                <?= form_submit($submit_form) ?>
-            </div>
-        </div>
-    </div>
-</div>
+<div id="infoMessage"><?php echo $message;?></div>
+
+<?php echo form_open("account/login");?>
+
+  <p>
+    <?php echo lang('login_identity_label', 'identity');?>
+    <?php echo form_input($identity);?>
+  </p>
+
+  <p>
+    <?php echo lang('login_password_label', 'password');?>
+    <?php echo form_input($password);?>
+  </p>
+
+  <p>
+    <?php echo lang('login_remember_label', 'remember');?>
+    <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
+  </p>
+
+
+  <p><?php echo form_submit('submit', lang('login_submit_btn'));?></p>
+
+<?php echo form_close();?>
+
+<p><a href="forgot_password"><?php echo lang('login_forgot_password');?></a></p>

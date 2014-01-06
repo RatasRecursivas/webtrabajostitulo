@@ -91,6 +91,7 @@ class Tesis extends CI_Controller {
             'tesis' => $this->tesis_getTesis,
             'agregar_modificar' => $this->tesis_agregar_modificar,
             'categorias' => $this->tesis_categorias,
+            'msg' => $this->session->flashdata('msg')
         );
         $this->load->view('template/head', $datos_enviar);
         $this->load->view($vista, $datos_enviar);
@@ -152,7 +153,6 @@ class Tesis extends CI_Controller {
     }
 
     public function index() {
-
         $this->setTesis_titulo('Indice | Tesis');
         $this->setTesis_todasTesis($this->Tesis_model->getTodas());
         $this->setTesis_proximasTesis($this->Tesis_model->getProximasDefensas());
@@ -176,7 +176,7 @@ class Tesis extends CI_Controller {
 
     public function editar($id = null) {
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
         $id = (int) $id;
         if (!$id) {
@@ -211,7 +211,7 @@ class Tesis extends CI_Controller {
 
     public function agregar() {
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
         $this->setTesis_titulo('Agregar | Tesis');
         $this->setTesis_agregar_modificar('Agregar');

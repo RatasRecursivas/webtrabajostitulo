@@ -23,6 +23,7 @@
  *
  * @author pperez
  */
+
 class Estudiante extends CI_Controller {
 
     var $rut;
@@ -70,8 +71,9 @@ class Estudiante extends CI_Controller {
 
     public function eliminar($rut = NULL) {
         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
+            redirect('account/login');
         }
+        
         if ($rut) { // Si llega por post reviso el rut
             // Form validation ..
             $estudiante = $this->Estudiante_model->checkEstudiante($rut);
