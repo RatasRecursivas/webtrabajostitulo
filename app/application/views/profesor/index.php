@@ -57,6 +57,7 @@ $submit_button = array(
             </div>
             <div class="small-6 columns">
                 <?= form_input($rut); ?>
+                <?php if($error_rut): echo '<small class="error">Ingrese bien el rut Sin digito verificar ni puntos ni guion</small>';  endif?>
             </div>
             <div class="small-4 columns">
                 <?= form_submit($submit_button); ?>
