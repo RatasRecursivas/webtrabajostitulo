@@ -12,7 +12,6 @@
             </tr>
             </thead>
             <tbody>
-                <?php $id = 1; ?>
                 <?php foreach ($query as $tesis): ?>
                     <tr>
                         <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $tesis->titulo ?></a></td>
@@ -20,7 +19,6 @@
                         <td><?php echo $tesis->fecha_publicacion; ?></td>
                         <td><a class="button tiny round" href="<?= site_url() . '/tesis/editar/' . $tesis->id; ?>">Modificar</a></td>
                         <td><a class="button tiny round alert" href="<?= site_url() . '/tesis/eliminar/' . $tesis->id; ?>">Eliminar</a></td>
-                        <?php $id = $id + 1 ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

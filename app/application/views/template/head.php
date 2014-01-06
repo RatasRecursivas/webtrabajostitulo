@@ -4,7 +4,7 @@
         <title>Trabajos de titulo | <?php echo $title; ?></title>
         <link rel="stylesheet" href="<?= base_url() . '/css/foundation.css'; ?>">
         <link rel="stylesheet" href="<?= base_url() . '/css/main.css'; ?>">
-        <script src="<?= base_url() . '/js/modernizr.js';?>"></script>
+        <script src="<?= base_url() . '/js/modernizr.js'; ?>"></script>
         <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.css'; ?>" id="theme_base">
         <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.date.css'; ?>" id="theme_date">
         <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.time.css'; ?>" id="theme_time">
@@ -19,7 +19,7 @@
                         <!-- Title Area -->
                         <li class="name">
                             <h1>
-                                <a href="<?php echo base_url(); ?>tesis">Trabajos de Titulacion</a>
+                                <a href="<?php echo site_url(); ?>">Trabajos de Titulacion</a>
                             </h1>
                         </li>
                         <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
@@ -27,38 +27,31 @@
 
                     <section class="top-bar-section">
                         <ul class="left">
-                            <li><a href="<?php base_url(); ?>tesis/agregar">Agregar</a></li>
+                            <li><?= anchor('/tesis', 'Home'); ?></li>
+                            <?php if ($this->ion_auth->is_admin()): ?>
+                                <li><?= anchor('/estudiante', 'Estudiantes'); ?></li>
+                                <li><?= anchor('/profesor', 'Profesores'); ?></li>
+                                <li><?= anchor('#', 'Otros &raquo;', array('data-options' => 'is_hover:true', 'data-dropdown' => 'otros_drop')); ?></li>
+                                <ul id="otros_drop" class="tiny f-dropdown" data-dropdown-content>
+                                    <li><?= anchor('/carrera', 'Carreras'); ?></li>
+                                    <li><?= anchor('/categoria', 'Categorias'); ?></li>
+                                    <li><?= anchor('/facultad', 'Facultades'); ?></li>
+                                </ul>
+                            <?php endif; ?>
                         </ul>
-
-                        <ul class="right">
-                            <li class="search">
-                                <form>
-                                    <input type="search">
-                                </form>
-                            </li>
-
-                            <li class="has-button"><a class="small button" href="#">Search</a>
-                            </li>
-                        </ul>
+                        <?php if ($this->ion_auth->is_admin()): ?>
+                            <ul class="right">
+                                <li><?= anchor('#', $this->ion_auth->user()->row()->username . ' &raquo;', array('data-options' => 'is_hover:true', 'data-dropdown' => 'account_drop')); ?></li>
+                                <ul id="account_drop" class="tiny f-dropdown" data-dropdown-content>
+                                    <li><?= anchor('/account/cambiar_password', 'Cambiar password'); ?></li>
+                                    <li><?= anchor('/account/logout', 'Logout'); ?></li>
+                                </ul>
+                            </ul>
+                        <?php endif; ?>
                     </section>
                 </nav>
             </div>
         </div>
-        <?php if ($this->ion_auth->is_admin()): ?>
-            <div class="row">
-                <div class="small-6 columns right panel callout">
-                    <nav class="user-bar right">
-                        <p>Hola <?= $this->ion_auth->user()->row()->username; ?>
-                            <?= anchor('#', 'Logout', array('data-dropdown' => 'drop', 'class' => 'tiny secondary button dropdown')); ?>
-                        <ul id="drop" data-dropdown-content class="f-dropdown">
-                            <li><?= anchor('/account/cambiar_password', 'Cambiar password'); ?></li>
-                            <li><?= anchor('/account/logout', 'Logout'); ?></li>
-                        </ul>
-                        </p>
-                    </nav>
-                </div>
-            </div>
-        <?php endif; ?>
 
         <?php if (isset($msg) and $msg): ?>
             <div class="row">

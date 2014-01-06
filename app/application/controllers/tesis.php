@@ -37,6 +37,7 @@ class Tesis extends CI_Controller {
     var $tesis_categorias = array();
     var $tesis_mensajeFichero = '';
     var $validation = array();
+    var $admin;
 
     function __construct() {
         parent::__construct();
@@ -44,6 +45,7 @@ class Tesis extends CI_Controller {
         $this->load->model('Profesor_model');
         $this->load->model('Categoria_model');
         $this->load->helper('utilities');
+        $this->admin = ($this->ion_auth->is_admin()) ? true : false;
     }
 
     public function setTesis_titulo($tesis_titulo) {
@@ -199,7 +201,6 @@ class Tesis extends CI_Controller {
 
     public function index() {
         $this->setTesis_titulo('Indice | Tesis');
-        $admin = ($this->ion_auth->is_admin()) ? true : false;
         if ($this->input->get() == true) {
             $consulta = array();
             if ($this->input->get('categoria')) {
@@ -216,14 +217,14 @@ class Tesis extends CI_Controller {
 //            var_dump($tesis);
             $this->setTesis_todasTesis($tesis);
         } else {
-            $this->setTesis_todasTesis($this->Tesis_model->getTodas($admin));
+            $this->setTesis_todasTesis($this->Tesis_model->getTodas($this->admin));
         }
-        $this->setTesis_todasTesis($this->Tesis_model->getTodas($admin));
+        $this->setTesis_todasTesis($this->Tesis_model->getTodas($this->admin));
         $this->setTesis_proximasTesis($this->Tesis_model->getProximasDefensas());
         
         // Si es admin le muestro una vista especial, donde se ven los botones de
         // modificar y eliminar
-        $vista = ($this->ion_auth->is_admin()) ? 'index_admin' : 'index';
+        $vista = ($this->admin) ? 'index_admin' : 'index';
         $this->mostrar_vista('tesis/' . $vista);
     }
 
@@ -232,7 +233,7 @@ class Tesis extends CI_Controller {
         if (!$id) {
             $this->redireccionar_msg('tesis', 'No especifico la tesis a mostrar!');
         }
-        $this->setTesis_getTesis($this->Tesis_model->getTesis($id));
+        $this->setTesis_getTesis($this->Tesis_model->getTesis($id, $this->admin));
         if ($this->tesis_getTesis) { //existe tesis
             $this->setTesis_titulo($this->tesis_getTesis->titulo);
             $this->mostrar_vista('tesis/ver');
