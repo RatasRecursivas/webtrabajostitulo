@@ -33,4 +33,11 @@ $config = array(
             'rules' => 'required|xss_clean|trim|max_length[50]'
         ),
     ),
+//    'estudiante/obtener' => array(
+//        array(
+//            'field' => 'rut',
+//            'label' => 'RUT',
+//            'rules' => 'required|xss_clean|trim',
+//        ),
+//    ),
 );

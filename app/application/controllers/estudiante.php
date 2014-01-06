@@ -23,65 +23,95 @@
  *
  * @author pperez
  */
-
 class Estudiante extends CI_Controller {
 
-    var $rut;
+    var $estudiante_rut;
+    var $estudiante_titulo;
+    var $estidiante_todosEstudiante;
+    var $error_rut = null;
 
     function __construct() {
         parent::__construct();
         $this->load->model('Estudiante_model');
-          if (!$this->ion_auth->is_admin()) {
+        if (!$this->ion_auth->is_admin()) {
             redirect('account/login');
         }
     }
 
-    public function index() {
-      
-        $data['title'] = 'Estudiantes';
-        $data['estudiantes'] = $this->Estudiante_model->getEstudiantes();
-        $this->load->helper('utilities_helper');
-        $this->load->view('template/head', $data);
-        $this->load->view('estudiante/index', $data);
+    public function setEstudiante_titulo($estudiante_titulo) {
+        $this->estudiante_titulo = $estudiante_titulo;
+    }
+    public function setError_rut($error_rut) {
+        $this->error_rut = $error_rut;
+    }
+
+        public function setEstidiante_todosEstudiante($estidiante_todosEstudiante) {
+        $this->estidiante_todosEstudiante = $estidiante_todosEstudiante;
+    }
+
+    public function mostrar_view($vista) {
+        $info_view = array(
+            'title' => $this->estudiante_titulo,
+            'estudiantes' => $this->estidiante_todosEstudiante,
+            'msg' => $this->session->flashdata('msg'),
+            'error_rut' => $this->error_rut,
+        );
+        $this->load->view('template/head', $info_view);
+        $this->load->view($vista, $info_view);
         $this->load->view('template/footer');
+    }
+    
+    public function redireccionar_msg($link,$menjase){
+        $this->session->set_flashdata('msg', $menjase);
+        redirect($link);
+    }
+
+    public function index() {
+        $this->setEstudiante_titulo('Estudiantes');
+        $this->setEstidiante_todosEstudiante($this->Estudiante_model->getEstudiantes());
+        $this->mostrar_view('estudiante/index');
     }
 
     public function obtener($rut = NULL) {
-        
         if (array_key_exists('rut', $this->input->get())) {
             $rut = $this->input->get('rut', true);
         }
         if ($rut) {
-            $this->load->helper('utilities');
-            // Validar parametro
-            $this->rut = $rut . calcularDV_rut($rut);
-            $estudiante = $this->Estudiante_model->getfromWS($this->rut); // Obtener desde el WS
-            if ($estudiante) {
-//                echo "Insertado correctamente";
-                redirect('estudiante');
+            $patron = "/^[[:digit:]]+$/";
+            if (preg_match($patron, $rut)) {
+                $this->estudiante_rut = $rut . calcularDV_rut($rut);
+                $agregado = $this->Estudiante_model->getfromWS($this->estudiante_rut); // Obtener desde el WS
+                if ($agregado) {
+                    $this->redireccionar_msg('estudiante', 'El registro con rut '.esRut($this->estudiante_rut).' está ingresado en la base de datos');
+                } else {
+                    $this->redireccionar_msg('estudiante', 'Ups el rut ingresado no es un estudiante');
+                }
             } else {
-//                echo "fail!";
-                redirect('estudiante');
+                $this->setError_rut('Rut mal ingresado ');
             }
+            $this->setEstudiante_titulo('Estudiante');
+            $this->setEstidiante_todosEstudiante($this->Estudiante_model->getEstudiantes());
+            $this->mostrar_view('estudiante/index');
         } else {
-            redirect('estudiante');
+            $this->redireccionar_msg('estudiante', 'No se ha ingresado el rut!');
         }
     }
 
     public function eliminar($rut = NULL) {
-        
         if ($rut) { // Si llega por post reviso el rut
             // Form validation ..
+            $rut = (int)$rut;
+            
             $estudiante = $this->Estudiante_model->checkEstudiante($rut);
 
             if ($estudiante) { // Veo si el estudiante esta en la db
                 $this->Estudiante_model->eliminar($rut);
-                redirect('estudiante');
+                $this->redireccionar_msg('estudiante', 'Estudiante con Rut: '.esRut($rut).' ha sido eliminado!');
             } else {
-                redirect('estudiante');
+                $this->redireccionar_msg('estudiante', 'No existe el Rut: '. $rut .' en la base de datos');
             }
         } else { // Epa! este metodo no es accesible por get
-            redirect('estudiante');
+            $this->redireccionar_msg('estudiante', 'Que esta haciendo ?');
         }
     }
 
