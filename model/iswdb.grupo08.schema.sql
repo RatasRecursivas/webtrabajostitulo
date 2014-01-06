@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.1.11
 -- Dumped by pg_dump version 9.1.11
--- Started on 2014-01-06 10:49:38 CLST
+-- Started on 2014-01-06 17:21:56 CLST
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -96,7 +96,7 @@ COMMENT ON COLUMN categoria.id_facultad IS 'Identifica a que facultad pertenece 
 
 --
 -- TOC entry 317 (class 1259 OID 1539663)
--- Dependencies: 318 14
+-- Dependencies: 14 318
 -- Name: categoria_id_seq; Type: SEQUENCE; Schema: grupo08; Owner: grupo08
 --
 
@@ -169,7 +169,7 @@ ALTER TABLE grupo08.facultad OWNER TO grupo08;
 
 --
 -- TOC entry 320 (class 1259 OID 1539687)
--- Dependencies: 321 14
+-- Dependencies: 14 321
 -- Name: facultad_id_seq; Type: SEQUENCE; Schema: grupo08; Owner: grupo08
 --
 
@@ -250,7 +250,7 @@ ALTER TABLE grupo08.login_attempts OWNER TO grupo08;
 
 --
 -- TOC entry 324 (class 1259 OID 1539706)
--- Dependencies: 325 14
+-- Dependencies: 14 325
 -- Name: login_attempts_id_seq; Type: SEQUENCE; Schema: grupo08; Owner: grupo08
 --
 
@@ -521,7 +521,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 --
 -- TOC entry 2364 (class 2604 OID 1539668)
--- Dependencies: 317 318 318
+-- Dependencies: 318 317 318
 -- Name: id; Type: DEFAULT; Schema: grupo08; Owner: grupo08
 --
 
@@ -557,7 +557,7 @@ ALTER TABLE ONLY login_attempts ALTER COLUMN id SET DEFAULT nextval('login_attem
 
 --
 -- TOC entry 2372 (class 2604 OID 1539735)
--- Dependencies: 327 328 328
+-- Dependencies: 328 327 328
 -- Name: id; Type: DEFAULT; Schema: grupo08; Owner: grupo08
 --
 
@@ -566,7 +566,7 @@ ALTER TABLE ONLY tesis ALTER COLUMN id SET DEFAULT nextval('tesis_id_seq'::regcl
 
 --
 -- TOC entry 2377 (class 2604 OID 1539746)
--- Dependencies: 329 330 330
+-- Dependencies: 330 329 330
 -- Name: id; Type: DEFAULT; Schema: grupo08; Owner: grupo08
 --
 
@@ -575,7 +575,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 --
 -- TOC entry 2378 (class 2604 OID 1539757)
--- Dependencies: 332 331 332
+-- Dependencies: 331 332 332
 -- Name: id; Type: DEFAULT; Schema: grupo08; Owner: grupo08
 --
 
@@ -693,7 +693,7 @@ CREATE UNIQUE INDEX uc_users_groups ON users_groups USING btree (user_id, group_
 
 --
 -- TOC entry 2402 (class 2606 OID 1588757)
--- Dependencies: 319 316 2379 2510
+-- Dependencies: 319 2379 316 2510
 -- Name: carrera_estudiante_fk; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
@@ -703,7 +703,7 @@ ALTER TABLE ONLY estudiante
 
 --
 -- TOC entry 2405 (class 2606 OID 1588775)
--- Dependencies: 2381 318 328 2510
+-- Dependencies: 2381 328 318 2510
 -- Name: categoria_tesis_fk; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
@@ -713,7 +713,7 @@ ALTER TABLE ONLY tesis
 
 --
 -- TOC entry 2406 (class 2606 OID 1588780)
--- Dependencies: 319 2383 328 2510
+-- Dependencies: 328 319 2383 2510
 -- Name: estudiante_tesis_fk; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
@@ -723,7 +723,7 @@ ALTER TABLE ONLY tesis
 
 --
 -- TOC entry 2403 (class 2606 OID 1588763)
--- Dependencies: 319 2395 330 2510
+-- Dependencies: 2395 330 319 2510
 -- Name: estudiante_user_id_fkey; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
@@ -733,7 +733,7 @@ ALTER TABLE ONLY estudiante
 
 --
 -- TOC entry 2400 (class 2606 OID 1588743)
--- Dependencies: 2385 321 316 2510
+-- Dependencies: 321 2385 316 2510
 -- Name: facultad_carrera_fk; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
@@ -743,7 +743,7 @@ ALTER TABLE ONLY carrera
 
 --
 -- TOC entry 2401 (class 2606 OID 1588769)
--- Dependencies: 321 2385 318 2510
+-- Dependencies: 321 318 2385 2510
 -- Name: facultad_categoria_fk; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
@@ -753,7 +753,7 @@ ALTER TABLE ONLY categoria
 
 --
 -- TOC entry 2407 (class 2606 OID 1588785)
--- Dependencies: 2391 328 326 2510
+-- Dependencies: 326 2391 328 2510
 -- Name: profesor_tesis_fk; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
@@ -763,15 +763,26 @@ ALTER TABLE ONLY tesis
 
 --
 -- TOC entry 2404 (class 2606 OID 1588794)
--- Dependencies: 326 2395 330 2510
+-- Dependencies: 2395 326 330 2510
 -- Name: profesor_user_id_fkey; Type: FK CONSTRAINT; Schema: grupo08; Owner: grupo08
 --
 
 ALTER TABLE ONLY profesor
     ADD CONSTRAINT profesor_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET DEFAULT;
 
+-- Datos iniciales
+INSERT INTO facultad (id, nombre_facultad) VALUES (1, 'Sin Facultad');
+INSERT INTO carrera (id, nombre_carrera, id_facultad) VALUES (1, 'Sin Carrera', 1);
+INSERT INTO categoria (id, nombre_categoria, id_facultad) VALUES (1, 'Sin Categoria', 1);
+INSERT INTO groups (id, name, description) VALUES (1, 'admin', 'Administradores');
+INSERT INTO users (id, ip_address, username, password, salt, email, activation_code, forgotten_password_code, created_on, last_login, active, first_name, last_name, company, phone) VALUES
+    (1, '127.0.0.1','ptorrealba','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','9462e8eee0','ptorrealba@utem.cl','',NULL,'1268889823','1268889823','1','Pamela','Torrealba','UTEM','0');
+INSERT INTO users_groups (user_id, group_id) VALUES (1, 1);
+INSERT INTO estudiante (rut, anio_ingreso, codigo_carrera, user_id) VALUES (12345678, 1970, 1, 1);
+INSERT INTO profesor (rut, user_id) VALUES (12345678, 1);
 
--- Completed on 2014-01-06 10:49:41 CLST
+
+-- Completed on 2014-01-06 17:21:58 CLST
 
 --
 -- PostgreSQL database dump complete

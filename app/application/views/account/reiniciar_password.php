@@ -2,7 +2,7 @@
 
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open('account/reset_password/' . $code);?>
+<?php echo form_open('account/reiniciar_password/' . $code);?>
 
 	<p>
 		<label for="new_password"><?php echo sprintf(lang('reset_password_new_password_label'), $min_password_length);?></label> <br />
