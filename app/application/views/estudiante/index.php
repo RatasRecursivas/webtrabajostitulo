@@ -17,35 +17,39 @@ $submit_button = array(
 
 
 <div class="row">
-    <div class="small-10 columns small-centered">
-        <?php if($estudiantes): ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>RUT</th>
-                    <th>Nombre</th>
-                    <th>Carrera</th>
-                    <th>Email</th>
-                    <th>Actualizar desde Dirdoc</th>
-                    <th>Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($estudiantes as $estudiante): ?>
+    <div class="large-10 columns large-centered">
+        <?php if (count($estudiantes) > 1): ?>
+            <table>
+                <thead>
                     <tr>
-                        <td><?= format_rut($estudiante->rut); ?></td>
-                        <td><?= $estudiante->first_name . ' ' . $estudiante->last_name; ?></td>
-                        <td><?= $estudiante->carrera; ?></td>
-                        <td><?= ($estudiante->email) ? mailto($estudiante->email): 'No hay email registrado'; ?></td>
-                        <td><?= anchor('estudiante/obtener/' . $estudiante->rut, 'Actualizar', 'class="button tiny"');?></td>
-                        <td><?= anchor('estudiante/eliminar/' . $estudiante->rut, 'Eliminar', 'class="button tiny alert"');?></td>
+                        <th>RUT</th>
+                        <th>Nombre</th>
+                        <th>Carrera</th>
+                        <th>Email</th>
+                        <th>Actualizar desde Dirdoc</th>
+                        <th>Eliminar</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($estudiantes as $estudiante): ?>
+                        <?php if ($estudiante->rut != 12345678): ?>
+                            <tr>
+                                <td><?= format_rut($estudiante->rut); ?></td>
+                                <td><?= $estudiante->first_name . ' ' . $estudiante->last_name; ?></td>
+                                <td><?= $estudiante->carrera; ?></td>
+                                <td><?= ($estudiante->email) ? mailto($estudiante->email) : 'No hay email registrado'; ?></td>
+                                <td><?= anchor('estudiante/obtener/' . $estudiante->rut, 'Actualizar', 'class="button tiny"'); ?></td>
+                                <td><?= anchor('estudiante/eliminar/' . $estudiante->rut, 'Eliminar', 'class="button tiny alert"'); ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <h3>No se encontraron estudiantes, que tal si agrega uno?</h3>
+        <?php endif; ?>
     </div>
 </div>
-<?php endif; ?>
 
 <div class="row">
     <div class="small-6 columns large-centered">

@@ -17,31 +17,35 @@ $submit_button = array(
 
 
 <div class="row">
-    <div class="small-10 columns small-centered">
-        <?php if($profesores): ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>RUT</th>
-                    <th>Nombre</th>
-                    <th>Actualizar desde Dirdoc</th>
-                    <th>Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($profesores as $profesor): ?>
+    <div class="large-10 columns large-centered">
+        <?php if (count($profesores) > 1): ?>
+            <table>
+                <thead>
                     <tr>
-                        <td><?= format_rut($profesor->rut); ?></td>
-                        <td><?= $profesor->first_name . ' ' . $profesor->last_name; ?></td>
-                        <td><?= anchor('profesor/obtener/' . $profesor->rut, 'Actualizar', 'class="button tiny"');?></td>
-                        <td><?= anchor('profesor/eliminar/' . $profesor->rut, 'Eliminar', 'class="button tiny alert"');?></td>
+                        <th>RUT</th>
+                        <th>Nombre</th>
+                        <th>Actualizar desde Dirdoc</th>
+                        <th>Eliminar</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($profesores as $profesor): ?>
+                        <?php if ($profesor->rut != 12345678): ?>
+                            <tr>
+                                <td><?= format_rut($profesor->rut); ?></td>
+                                <td><?= $profesor->first_name . ' ' . $profesor->last_name; ?></td>
+                                <td><?= anchor('profesor/obtener/' . $profesor->rut, 'Actualizar', 'class="button tiny"'); ?></td>
+                                <td><?= anchor('profesor/eliminar/' . $profesor->rut, 'Eliminar', 'class="button tiny alert"'); ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <h3>No se encontraron profesores, que tal si agrega uno?</h3>
+        <?php endif; ?>
     </div>
 </div>
-<?php endif; ?>
 
 <div class="row">
     <div class="small-6 columns large-centered">

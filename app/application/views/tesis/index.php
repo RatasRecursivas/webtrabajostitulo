@@ -1,9 +1,8 @@
-<!--<div class="row">-->
 <div class="large-3 columns">
     <h2>Filtros</h2>
 
 </div>
-<div class="large-6 columns">
+<div class="large-6 columns large-centered">
     <table>
         <thead>
         <h2> Tesis </h2>
@@ -59,4 +58,3 @@
         </tbody>
     </table>
 </div>
-<!--</div>-->

@@ -49,9 +49,8 @@ class Carrera_model extends CI_Model {
         return $query;
     }
     
-    public function eliminar($id) {
-        return $this->db-> 
-                where('codigo',$id)->delete($this->tabla);
+    public function eliminar($id) { // No permitir la eliminación de la carrera default
+        return $id != 1 and $this->db->where('codigo',$id)->delete($this->tabla);
     }
 
     public function checkCarrera($codigo) {

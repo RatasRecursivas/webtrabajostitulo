@@ -32,8 +32,8 @@ class Profesor_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getProfesores() { // El rut 12345678 es el default, no lo mostramos
-        return $this->db->where('rut !=', '12345678')->order_by('rut')
+    public function getProfesores() {
+        return $this->db->order_by('rut')
                         ->select('users.email, users.first_name, users.last_name, profesor.rut')
                         ->from($this->tabla_profesor)
                         ->join($this->tabla_users, 'profesor.user_id = users.id')
@@ -97,6 +97,9 @@ class Profesor_model extends CI_Model {
     }
     
     public function eliminar($rut) {
+        if($rut == 12345678) // Vandal!
+            return false;
+        
         $this->load->helper('utilities');
         $rut = decode_rut($rut);
         // Ver el usuario asociado al rut

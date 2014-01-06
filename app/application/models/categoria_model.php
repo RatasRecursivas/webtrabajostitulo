@@ -44,6 +44,6 @@ class Categoria_model extends CI_Model {
                 update($this->tabla, $data);
     }
     public function eliminar($id) {
-        return $this->db-> where('id',$id)->delete($this->tabla);
+        return $id != 1 and $this->db-> where('id',$id)->delete($this->tabla);
     }
 }
