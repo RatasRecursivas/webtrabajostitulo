@@ -34,8 +34,7 @@ class Estudiante_model extends CI_Model {
     }
 
     public function getEstudiantes() { // El rut 12345678 es el default, no lo mostramos
-        return $this->db->order_by('rut')
-                        ->where('rut !=', '12345678')->order_by('rut')
+        return $this->db->order_by('rut')->order_by('rut')
                         ->select('users.email, users.first_name, users.last_name, estudiante.rut, carrera.nombre_carrera AS carrera')
                         ->from($this->tabla_estudiante)
                         ->join($this->tabla_users, 'estudiante.user_id = users.id')
@@ -118,6 +117,9 @@ class Estudiante_model extends CI_Model {
     }
 
     public function eliminar($rut) {
+        if($rut == 12345678) // Hackish hasta la ...
+            return false;
+        
         $this->load->helper('utilities_helper');
         $rut = decode_rut($rut);
         // Ver el usuario asociado al rut

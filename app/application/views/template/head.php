@@ -51,8 +51,8 @@
         </div>
         <?php if ($msg): ?>
             <div class="row">
-                <div class="large-12 columns">
-                    <div class="small-6 small-centered">
+                <div class="large-12 columns large-centered">
+                    <div class="small-6">
                         <div data-alert class="alert-box info radius">
                             <?= $msg; ?>
                             <a href="#" class="close">&times;</a>
