@@ -86,7 +86,7 @@ class Account extends CI_Controller {
 
         // Y lo devolvemos al login
         $this->session->set_flashdata('message', $this->ion_auth->messages());
-        redirect('account/login', 'refresh');
+        redirect('/', 'refresh');
     }
 
     public function cambiar_password() {

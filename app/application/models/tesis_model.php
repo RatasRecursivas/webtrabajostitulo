@@ -44,22 +44,28 @@ class Tesis_model extends CI_Model {
         return $this->db->insert($param);
     }
 
-    public function getTesis($id) {
-        $query = $this->db->
+    public function getTesis($id, $is_admin) {
+        $this->db->
                 select('ubicacion_fichero, titulo, id_categoria, abstract,fecha_evaluacion, feha_disponibilidad, '
                         . 'fecha_publicacion, usersprofe.first_name as first_name_profe, usersprofe.last_name as last_name_profe,'
                         . 'tesis.id, estudiante_rut, profesor_guia_rut,'
                         . 'usersestudiante.first_name as first_name_estudiante, usersestudiante.last_name as last_name_estudiante,'
                         . 'categoria.nombre_categoria')->
                 from($this->tabla)->
-                where('tesis.id', $id)->
-                join('estudiante', 'tesis.estudiante_rut = estudiante.rut')->
-                join('carrera','carrera.codigo = estudiante.codigo_carrera')->
-                join('facultad','facultad.id = carrera.id_facultad')->
-                join('profesor','tesis.profesor_guia_rut = profesor.rut')->
-                join('categoria','tesis.id_categoria = categoria.id')->
-                join('users as usersestudiante','estudiante.user_id = usersestudiante.id')->
-                join('users as usersprofe','profesor.user_id = usersprofe.id')->
+                where('tesis.id', $id);
+
+        if (!$is_admin) {// Si no es admin solo debe ver las tesis disponibles
+            $this->db->where('tesis.feha_disponibilidad < ', $now);
+        }
+        
+        $query = $this->db->
+        join('estudiante', 'tesis.estudiante_rut = estudiante.rut')->
+                join('carrera', 'carrera.codigo = estudiante.codigo_carrera')->
+                join('facultad', 'facultad.id = carrera.id_facultad')->
+                join('profesor', 'tesis.profesor_guia_rut = profesor.rut')->
+                join('categoria', 'tesis.id_categoria = categoria.id')->
+                join('users as usersestudiante', 'estudiante.user_id = usersestudiante.id')->
+                join('users as usersprofe', 'profesor.user_id = usersprofe.id')->
                 get()->
                 row();
         return $query;
@@ -69,15 +75,18 @@ class Tesis_model extends CI_Model {
         return $this->db->count_all($this->tabla);
     }
 
-    public function getTodas() {
+    public function getTodas($is_admin) {
         $now = $this->_fecha_actual();
+        $this->db->
+                        select('tesis.fecha_publicacion, tesis.id, tesis.titulo, users.first_name as first_name_estudiante, users.last_name as last_name_estudiante, tesis.abstract')->
+                        from($this->tabla);
+        if (!$is_admin) {// Si no es admin solo debe ver las tesis disponibles
+            $this->db->where('tesis.feha_disponibilidad < ', $now);
+        }
         $query = $this->db->
-                select('tesis.fecha_publicacion, tesis.id, tesis.titulo, users.first_name as first_name_estudiante, users.last_name as last_name_estudiante, tesis.abstract')->
-                from($this->tabla)->
-                where('tesis.feha_disponibilidad < ', $now)->
-                join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->
-                join('users', 'users.id = estudiante.user_id', 'inner')->
-                order_by('tesis.fecha_publicacion', 'desc')->get();
+                        join('estudiante', 'tesis.estudiante_rut = estudiante.rut', 'inner')->
+                        join('users', 'users.id = estudiante.user_id', 'inner')->
+                        order_by('tesis.fecha_publicacion', 'desc')->get();
         return $query->result();
     }
 
@@ -111,12 +120,12 @@ class Tesis_model extends CI_Model {
                 from($this->tabla)->
                 where($array)->
                 join('estudiante', 'tesis.estudiante_rut = estudiante.rut')->
-                join('carrera','carrera.codigo = estudiante.codigo_carrera')->
-                join('facultad','facultad.id = carrera.id_facultad')->
-                join('profesor','tesis.profesor_guia_rut = profesor.rut')->
-                join('categoria','tesis.id_categoria = categoria.id')->
-                join('users as usersestudiante','estudiante.user_id = usersestudiante.id')->
-                join('users as usersprofe','profesor.user_id = usersprofe.id')->
+                join('carrera', 'carrera.codigo = estudiante.codigo_carrera')->
+                join('facultad', 'facultad.id = carrera.id_facultad')->
+                join('profesor', 'tesis.profesor_guia_rut = profesor.rut')->
+                join('categoria', 'tesis.id_categoria = categoria.id')->
+                join('users as usersestudiante', 'estudiante.user_id = usersestudiante.id')->
+                join('users as usersprofe', 'profesor.user_id = usersprofe.id')->
                 get();
         return $query->result();
     }

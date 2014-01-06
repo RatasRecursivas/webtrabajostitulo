@@ -199,6 +199,7 @@ class Tesis extends CI_Controller {
 
     public function index() {
         $this->setTesis_titulo('Indice | Tesis');
+        $admin = ($this->ion_auth->is_admin()) ? true : false;
         if ($this->input->get() == true) {
             $consulta = array();
             if ($this->input->get('categoria')) {
@@ -215,11 +216,15 @@ class Tesis extends CI_Controller {
 //            var_dump($tesis);
             $this->setTesis_todasTesis($tesis);
         } else {
-            $this->setTesis_todasTesis($this->Tesis_model->getTodas());
+            $this->setTesis_todasTesis($this->Tesis_model->getTodas($admin));
         }
+        $this->setTesis_todasTesis($this->Tesis_model->getTodas($admin));
         $this->setTesis_proximasTesis($this->Tesis_model->getProximasDefensas());
-
-        $this->mostrar_vista('tesis/index');
+        
+        // Si es admin le muestro una vista especial, donde se ven los botones de
+        // modificar y eliminar
+        $vista = ($this->ion_auth->is_admin()) ? 'index_admin' : 'index';
+        $this->mostrar_vista('tesis/' . $vista);
     }
 
     public function ver($id = NULL) {
