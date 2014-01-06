@@ -159,7 +159,7 @@ class Account extends CI_Controller {
 
             // Mostramos los errores
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            $this->_render_page('account/recordar_password', $this->data);
+            $this->load->view('account/recordar_password', $this->data);
         } else {
             $config_tables = $this->config->item('tables', 'ion_auth');
 
