@@ -23,6 +23,11 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <div class="row">
+                <div class="small-4 columns large-centered">
+                    <?= anchor('/categoria/agregar', 'Agregar nueva categoria', array('class' => 'button')); ?>
+                </div>
+            </div>
         <?php else: ?>
             <h3>No se encontraron categorias, que tal si <?= anchor('categoria/agregar', 'agrega una?'); ?></h3>
         <?php endif; ?>

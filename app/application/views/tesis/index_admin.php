@@ -23,6 +23,11 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <div class="row">
+            <div class="small-4 columns large-centered">
+                <?= anchor('/tesis/agregar', 'Agregar nuevo trabajo de título', array('class' => 'button')); ?>
+            </div>
+        </div>
     <?php else: ?>
         <h3>No se encontraron trabajos de titulo, que tal si <?= anchor('/tesis/agregar', 'agrega uno?'); ?></h3>
     <?php endif; ?>
