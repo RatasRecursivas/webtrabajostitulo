@@ -17,6 +17,7 @@ if (!defined('BASEPATH'))
 class MY_Form_validation extends CI_Form_validation {
 
     public function __construct($config = array()) {
+        
         parent::__construct($config);
     }
 
@@ -32,6 +33,36 @@ class MY_Form_validation extends CI_Form_validation {
         } else {
             return TRUE;
         }
+    }
+    
+    public function compararFecha($fecha_dis,$otra_fecha_pu) {
+        
+        $dispo = strptime($fecha_dis,'%Y-%m-%d');
+        $publ = strptime($otra_fecha_pu, '%Y-%m-%d');
+        
+        $mes_dis = (int)$dispo['tm_mon']+1;
+        $anio_dis = (int)$dispo['tm_year']+1900;
+        $mes_pub = (int)$publ['tm_mon']+1;
+        $anio_pub = (int)$publ['tm_year']+1900;
+
+        $fecha_dis = $dispo['tm_mday'].'-'. $mes_dis. '-'.$anio_dis;
+        $fecha_pu = $publ['tm_mday'].'-'.$mes_pub.'-'.$anio_pub;
+        
+//        var_dump($fecha_dis);
+        $fecha_disponibilidad = strtotime($fecha_dis);
+        $fecha_publica = strtotime($fecha_pu);
+//        var_dump($fecha_disponibilidad);
+//        var_dump($fecha_publica <= $fecha_disponibilidad);
+        if($fecha_publica > $fecha_disponibilidad){
+                $this->set_message('compararFecha','NOOOOOOOOOOOOO el campo debe ser mayor');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
+    public function valide_fichero($fichero,$fecha_publicacion){
+        redirect($fecha_publicacion);
     }
 
     public function validate_fecha_anio_mes_dia($str) {

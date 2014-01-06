@@ -4,9 +4,9 @@
         $label_tesis = 'titulo';
         $label_rut = 'rut';
         $label_abstract = 'abstract';
-        $label_fechap = 'fecha_publicacion';
-        $label_fechad = 'fecha_disponibilidad';
-        $label_fechae_anio = 'fecha_evaluacion';
+        $label_fechap = 'fecha_publicacion_putrido';
+        $label_fechad = 'fecha_disponibilidad_putrido';
+        $label_fechae_anio = 'fecha_evaluacion_putrido';
         $label_fichero = 'fichero';
         $label_fechae_hora = 'hora_evaluacion';
 
@@ -38,7 +38,7 @@
         );
         $fecha_evaluacion = array(
             'type' => 'text',
-            'placeholder' => '2014-05-23',
+            'placeholder' => '09 de Febrero de 2016',
             'name' => 'fecha_evaluacion',
              'class'=> 'input_date',
         );
@@ -82,25 +82,13 @@
             $rut_autor['value'] = esRut($tesis->estudiante_rut.calcularDV_rut($tesis->estudiante_rut));
             $abstract ['value'] = $tesis->abstract;
             $fecha_disponibilidad['value'] = $tesis->feha_disponibilidad;
-            $fecha_evaluacion['value'] = strptime($tesis->fecha_evaluacion, 'Y-m-d');
-            $hora_evaluacion['value'] = strptime($tesis->fecha_evaluacion, 'H-i-s');
+            $fecha_evaluacion['value'] = strptime($tesis->fecha_evaluacion, '%Y-%m-%d');
+            $hora_evaluacion['value'] = strptime($tesis->fecha_evaluacion, '%H-%i-%s');
 
             if (isset($tesis->fecha_evaluacion)) {
-                $formate = strptime($tesis->fecha_evaluacion, '%Y-%m-%d %H:%M:%S');
-
-                $anio = (int) $formate['tm_year'] + 1900;
-                $mes = (int) $formate['tm_mon'] + 1;
-                $dia = (int) $formate['tm_mday'];
-                $f_e_ano_mes_dia = $anio . '-' . $mes . '-' . $dia;
-
-                $hora = (int) $formate['tm_hour'];
-                $minu = (int) $formate['tm_min'];
-                $seg = '00';
-
-                $f_e_hora = $hora . ':' . $minu . ':' . $seg;
-
-                $fecha_evaluacion['value'] = $f_e_ano_mes_dia;
-                $hora_evaluacion['value'] = $f_e_hora;
+                $split_time = explode(' ', $tesis->fecha_evaluacion);
+                $fecha_evaluacion['value'] = $split_time[0];
+                $hora_evaluacion['value'] = $split_time[1];
             }else{
                 $f_e_ano_mes_dia = '';
                 $f_e_hora= '';

@@ -33,46 +33,4 @@ $config = array(
             'rules' => 'required|xss_clean|trim|max_length[50]'
         ),
     ),
-    'tesis/formulario' => array(
-        array(
-            'field' => 'titulo',
-            'label' => 'Titulo Tesis',
-            'rules' => 'required|xss_clean|trim|max_length[200]'
-        ),
-        array(
-            'field' => 'rut',
-            'label' => 'Rut Autor',
-            'rules' => 'required|xss_clean|trim|value_rut'
-        ),
-        array(
-            'field' => 'abstract',
-            'label' => 'Abstract',
-            'rules' => 'required|xss_clean|trim|max_length[1000]'
-        ),
-        array(
-            'field' => 'fecha_publicacion_putrido',
-            'label' => 'Fecha Publicación',
-            'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
-        ),
-        array(
-            'field' => 'fecha_evaluacion_putrido',
-            'label' => 'Fecha de Evaluación',
-            'rules' => 'xss_clean|trim|validate_fecha_anio_mes_dia'
-        ),
-        array(
-            'field' => 'hora_evaluacion',
-            'label' => 'Hora de envaluacion',
-            'rules' => 'xss_clean|trim|validate_hora_minuto_segundo'
-        ),
-        array(
-            'field' => 'fecha_disponibilidad_putrido',
-            'label' => 'Fecha de Disponibilidad',
-            'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
-        ),
-//        array(
-//            'field' => 'fichero',
-//            'label' => 'Fichero',
-//            'rules' => 'comprombar_fichero'
-//        ),
-    ),
 );

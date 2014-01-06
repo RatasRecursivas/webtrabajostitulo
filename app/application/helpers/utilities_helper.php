@@ -110,7 +110,7 @@ if (!function_exists('form_label_vandalizado')) {
         if ($tooltip != '') {
             $label .= "<span data-tooltip class=\"has-tip\" title=\"" . $tooltip . "\">";
         }
-        $label .= "$label_text</label>";
+        $label .= "</span>$label_text</label>";
 //         $label_text</label>";
 
         return $label;

@@ -36,6 +36,7 @@ class Tesis extends CI_Controller {
     var $tesis_proximasTesis = array();
     var $tesis_categorias = array();
     var $tesis_mensajeFichero = '';
+    var $validation = array();
 
     function __construct() {
         parent::__construct();
@@ -104,36 +105,36 @@ class Tesis extends CI_Controller {
     }
 
     private function getDatosPost() {
-        
+
         $config['upload_path'] = './archivos_tesis/';
         $config['allowed_types'] = 'zip|pdf';
-        $config['max_size'] = '30000';
-        
-        
+        $config['max_size'] = '30000'; // 30 MB 
+
         $this->load->library('upload', $config);
         $fichero_ubicacion = '';
 
-        if ($this->upload->do_upload()) {
+        $fechapublicacion = strtotime($this->input->post('fecha_publicacion_putrido', true));
+        
+        if ($this->upload->do_upload() && $fechapublicacion) {
             $fichero_ubicacion = $this->upload->data();
             $fichero_ubicacion = $fichero_ubicacion['full_path'];
         } else {
             $this->redireccionar_msg('tesis', 'Se le olvido adjuntar el fichero o no lo hemos recibido');
         }
-        
-        $rut_format = esRut($this->input->post('rut',TRUE));
+
+        $rut_format = esRut($this->input->post('rut', TRUE));
         $rut_format = str_replace('.', '', $rut_format); // replazamos los puntos
-        $rut_format = substr($rut_format, 0,-2); //cortamos el digito verificador y el '-' 
-        
-        if($this->input->post('fecha_evaluacion_putrido',true) == false || $this->input->post('hora_evaluacion',true) == false)
-        {
+        $rut_format = substr($rut_format, 0, -2); //cortamos el digito verificador y el '-' 
+
+        if ($this->input->post('fecha_evaluacion_putrido', true) == false || $this->input->post('hora_evaluacion', true) == false) {
             $fecha_evaluacion = null;
         } else {
-            $fecha_evaluacion = $this->input->post('fecha_evaluacion_putrido', true).' '.$this->input->post('hora_evaluacion',true);
+            $fecha_evaluacion = $this->input->post('fecha_evaluacion_putrido', true) . ' ' . $this->input->post('hora_evaluacion', true);
         }
-        
+
         $tesis = array(
             'titulo' => $this->input->post('titulo', TRUE),
-            'estudiante_rut' => $rut_format,tesis/
+            'estudiante_rut' => $rut_format,
             'abstract' => $this->input->post('abstract', TRUE),
             'fecha_publicacion' => $this->input->post('fecha_publicacion_putrido', true),
             'fecha_evaluacion' => $fecha_evaluacion,
@@ -145,6 +146,52 @@ class Tesis extends CI_Controller {
         $this->tesis_datos_post = $tesis;
     }
 
+    protected function validation() {
+        $this->validation = array(
+            array(
+                'field' => 'titulo',
+                'label' => 'Titulo Tesis',
+                'rules' => 'required|xss_clean|trim|max_length[200]'
+            ),
+            array(
+                'field' => 'fecha_evaluacion_putrido',
+                'label' => 'Fecha de Evaluación',
+                'rules' => 'xss_clean|trim|validate_fecha_anio_mes_dia'
+            ),
+            array(
+                'field' => 'fecha_disponibilidad_putrido',
+                'label' => 'Fecha de Disponibilidad',
+                'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia|compararFecha['.$this->input->post('fecha_publicacion_putrido').']',
+            ),
+            array(
+                'field' => 'rut',
+                'label' => 'Rut Autor',
+                'rules' => 'required|xss_clean|trim|value_rut'
+            ),
+            array(
+                'field' => 'abstract',
+                'label' => 'Abstract',
+                'rules' => 'required|xss_clean|trim|max_length[1000]'
+            ),
+            array(
+                'field' => 'fecha_publicacion_putrido',
+                'label' => 'Fecha Publicación',
+                'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
+            ),
+            array(
+                'field' => 'hora_evaluacion',
+                'label' => 'Hora de envaluacion',
+                'rules' => 'xss_clean|trim|validate_hora_minuto_segundo'
+            ),
+            array(
+                'field' => 'userfile',
+                'label' => 'Fichero',
+                'rultes' => 'valide_fichero['
+                . $this->input->post('fecha_publicacion_putrido').']',
+            )
+        );
+    }
+
     private function getIdPost() {
         $id = $this->input->post('id', true);
         $this->tesis_id_post = $id;
@@ -152,22 +199,22 @@ class Tesis extends CI_Controller {
 
     public function index() {
         $this->setTesis_titulo('Indice | Tesis');
-        if($this->input->get() == true){
+        if ($this->input->get() == true) {
             $consulta = array();
-            if($this->input->get('categoria')){
+            if ($this->input->get('categoria')) {
                 $consulta['categoria.nombre_categoria'] = $this->input->get('categoria');
             }
-            if($this->input->get('facultad')){
+            if ($this->input->get('facultad')) {
                 $consulta['facultad.nombre_facultad'] = $this->input->get('facultad');
             }
-            if($this->input->get('carrera')){
+            if ($this->input->get('carrera')) {
                 $consulta['carrera.nombre_carrera'] = $this->input->get('carrera');
             }
 
             $tesis = $this->Tesis_model->getFiltrarTesis($consulta);
 //            var_dump($tesis);
             $this->setTesis_todasTesis($tesis);
-        }else{
+        } else {
             $this->setTesis_todasTesis($this->Tesis_model->getTodas());
         }
         $this->setTesis_proximasTesis($this->Tesis_model->getProximasDefensas());
@@ -198,7 +245,9 @@ class Tesis extends CI_Controller {
             $this->redireccionar_msg('tesis', 'Tesis no valida para editar');
         }
         if ($this->input->post()) {
-            if ($this->form_validation->run('tesis/formulario')) {
+            $this->validation();
+            $this->form_validation->set_rules($this->validation);
+            if ($this->form_validation->run() == true) {
                 $this->getDatosPost();
                 $this->getIdPost();
 
@@ -234,7 +283,9 @@ class Tesis extends CI_Controller {
         $this->setTesis_profesores($this->Profesor_model->getProfesores());
         $this->setTesis_categorias($this->Categoria_model->getCategorias());
         if ($this->input->post()) {
-            if ($this->form_validation->run('tesis/formulario')) {
+            $this->validation();
+            $this->form_validation->set_rules($this->validation);
+            if ($this->form_validation->run() == true) {
                 $this->getDatosPost();
 
                 $guardado = $this->Tesis_model->agregar($this->tesis_datos_post);
