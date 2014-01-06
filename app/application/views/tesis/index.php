@@ -1,49 +1,64 @@
-<div class="row">
-    <div class="small-2 columns">
-        <h2>Test</h2>
-    </div>
-    <div class="small-8 columns">
-        <table>
-            <thead>
+<!--<div class="row">-->
+<div class="large-3 columns">
+    <h2>Filtros</h2>
+
+</div>
+<div class="large-6 columns">
+    <table>
+        <thead>
+        <h2> Tesis </h2>
+        <tr>
+            <th >Ver</th>
+            <th width="200">Titulo</th>
+            <th width="1">Autor</th>
+            <th width="1">Fecha de Publicacion</th>
+            <th width="500">Abstract</th>
+            <!--<th width="1">Modificar</th>-->
+            <!--<th width="1">Eliminar</th>-->
+        </tr>
+        </thead>
+        <tbody>
+            <?php $id = 1; ?>
+            <?php foreach ($query as $tesis): ?>
                 <tr>
-                    <th>id</th>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Fecha de Publicacion</th>
-                    <th>Abstract</th>
-                    <th>Modificar</th>
-                    <th>Eliminar</th>
+                    <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $id ?></a></td>
+                    <td><?php echo $tesis->titulo; ?></td>
+                    <td><?= $tesis->last_name . ', ' . $tesis->first_name; ?></td>
+                    <td><?php echo $tesis->fecha_publicacion; ?></td>
+                    <td><?php echo $tesis->abstract; ?></td>
+                    <!--<td><a class="button tiny round" href="<?php echo base_url(); ?>index.php/tesis/editar/<?php echo $tesis->id; ?>">Modificar</a></td>-->
+                    <!--<td><a class="button tiny round alert" href="<?php echo base_url(); ?>index.php/tesis/eliminar/<?php echo $tesis->id; ?>">Eliminar</a></td>-->
+                    <?php $id = $id + 1 ?>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($query as $tesis): ?>
-                    <tr>
-                        <td><?php echo $tesis->id; ?>
-                        <td><?php echo $tesis->titulo; ?></td>
-                        <td><?= $tesis->last_name . ', ' . $tesis->first_name ;?></td>
-                        <td><?php echo $tesis->fecha_publicacion; ?></td>
-                        <td><?php echo $tesis->abstract; ?></td>
-                        <td><a class="button tiny round" href="<?php echo base_url(); ?>tesis/edit/<?php echo $tesis->id; ?>">Modificar</a></td>
-                        <td><a class="button tiny round alert" href="<?php echo base_url(); ?>tesis/eliminar/<?php echo $tesis->id; ?>">Eliminar</a></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="small-2 columns">
-        <div class="defensas">
-            <h2>Próximas Defensas</h2>
-        </div>
-        <?php if($defensas): ?>
-            <?php foreach ($defensas as $tesis): ?>
-                <p>tesis"<?= $tesis->titulo;?>"</p>
-                <p>por <?= $tesis->last_name . ', ' . $tesis->first_name;?></p>
-                <p>en <?= $tesis->fecha_evaluacion;?></p>
             <?php endforeach; ?>
-        <?php else: ?>
+        </tbody>
+    </table>
+</div>
+<div class="large-3  columns">
+    <table>
+        <div class="defensas"></div>
+
+        <thead>
+        <h2>Próximas Defensas</h2>
+        <tr> 
+            <th>Defensas</th>
+            <th>Estudiante</th>
+            <th>Dia defensa</th>
+        </tr>
+        </thead>
+        <tbody>
+            <?php if ($defensas): ?>
+                <?php foreach ($defensas as $tesis): ?>
+                    <tr>          
+                <td><?= $tesis->titulo; ?></td>
+                <td><?= $tesis->last_name . ', ' . $tesis->first_name; ?></td>
+                <td><?= $tesis->fecha_evaluacion; ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <?php else: ?>
             <p>No hay defensas proximamente</p>
         <?php endif; ?>
-
-    </div>
+        </tbody>
+    </table>
 </div>
-
+<!--</div>-->

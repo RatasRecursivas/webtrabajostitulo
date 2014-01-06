@@ -2,10 +2,16 @@
 <html lang="es">
     <head>
         <title>Trabajos de titulo | <?php echo $title; ?></title>
-        <link rel="stylesheet"
+        <link rel="stylesheet" 
               href="http://foundation.zurb.com/assets/css/templates/foundation.css">
         <script
         src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
+        <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.css'; ?>" id="theme_base">
+        <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.date.css'; ?>" id="theme_date">
+        <link rel="stylesheet" href="<?= base_url() . '/css/pickadate/classic.time.css'; ?>" id="theme_time">
+        <meta charset="utf-8" />
+ 
+        
     
     </head>
     <body>

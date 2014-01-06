@@ -50,12 +50,12 @@ $config = array(
             'rules' => 'required|xss_clean|trim|max_length[1000]'
         ),
         array(
-            'field' => 'fecha_publicacion',
+            'field' => 'fecha_publicacion_putrido',
             'label' => 'Fecha Publicación',
             'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
         ),
         array(
-            'field' => 'fecha_evaluacion',
+            'field' => 'fecha_evaluacion_putrido',
             'label' => 'Fecha de Evaluación',
             'rules' => 'xss_clean|trim|validate_fecha_anio_mes_dia'
         ),
@@ -65,7 +65,7 @@ $config = array(
             'rules' => 'xss_clean|trim|validate_hora_minuto_segundo'
         ),
         array(
-            'field' => 'fecha_disponibilidad',
+            'field' => 'fecha_disponibilidad_putrido',
             'label' => 'Fecha de Disponibilidad',
             'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
         ),

@@ -34,21 +34,26 @@
             'type' => 'text',
             'placeholder' => '08 de Enero de 2014',
             'name' => 'fecha_publicacion',
+            'class'=> 'input_date',
         );
         $fecha_evaluacion = array(
             'type' => 'text',
             'placeholder' => '2014-05-23',
             'name' => 'fecha_evaluacion',
+             'class'=> 'input_date',
         );
         $hora_evaluacion = array(
             'type' => 'text',
+            'class'=> 'input_time',
             'placeholder' => '14:00:00',
             'name' => 'hora_evaluacion'
+            
         );
         $fecha_disponibilidad = array(
-            'type' => 'date',
+            'type' => 'text',
             'placeholder' => '08 de Enero de 2014',
             'name' => 'fecha_disponibilidad',
+             'class'=> 'input_date',
         );
         $subir_input = array(
             'name' => "userfile",
@@ -121,40 +126,40 @@
         <?= form_fieldset($agregar_modificar . ' Registro'); ?>
         <div class="row">
             <div class="large-12 columns">
-                <?= form_label('Titulo Tesis :', $label_tesis); ?>
+                <?= form_label_vandalizado('Titulo Tesis :', $label_tesis, array(),'Ingrese aquí el nombre de la tesis'); ?>
                 <?= form_input($nombre_tesis); ?>
                 <?= form_error_small($label_tesis); ?>
             </div>
         </div>
         <div class="row">
             <div class="large-4 columns">
-                <?= form_label('Rut Estudiante: (Con digito verificador)', $label_rut); ?>
+                <?= form_label_vandalizado('Rut Estudiante', $label_rut,array(),'Ingrese el rut del estudiante con el dígito verificador'); ?>
                 <?= form_input($rut_autor); ?>
                 <?= form_error_small($label_rut); ?>
             </div>
             <div class="large-4 columns">
-                <?= form_label('Nombre profesor:', 'nombreprofesor'); ?>
+                <?= form_label_vandalizado('Nombre profesor:', 'nombreprofesor',array(), 'Seleccione el profesor guía de la tesis '); ?>
                 <?= form_dropdown('profesor_date', $selec_profesores, $id_profesor, $dropdown_atrribut); ?>
             </div>
             <div class="large-4 columns">
-                <?= form_label('Nombre Categoria:', $label_rut); ?>
+                <?= form_label_vandalizado('Nombre Categoria:','nombrecategoria',array(),'Escoja la categoría perteneciente a la tesis'); ?>
                 <?= form_dropdown('categoria_id', $selec_categorias, $id_categoria, $dropdown_atrribut); ?>
             </div>
         </div>
         <div class="row">
-            <div class="large-4 columns">
-                <?= form_label('Fecha Publicacion:', $label_fechap); ?>
+            <div class="large-3 columns">
+                <?= form_label_vandalizado('Fecha Publicacion:', $label_fechap, array(),'Ingrese el día que estara publicada la tesis'); ?>
                 <?= form_input($fecha_publicacion); ?>
                 <?= form_error_small($label_fechap); ?>
             </div>
-            <div class="large-4 columns">
-                <?= form_label('Fecha Disponibilidad:', $label_fechad); ?>
+            <div class="large-3 columns">
+                <?= form_label_vandalizado('Fecha Disponibilidad:', $label_fechad, array(),'Ingrese el día que estara disponible la tesis'); ?>
                 <?= form_input($fecha_disponibilidad); ?>
                 <?= form_error_small($label_fechad); ?>
             </div>
-            <div class="large-4 columns">
+            <div class="large-6 columns">
                 <div class="row">
-                    <?= form_label('Fecha Evaluacion:') ?>
+                    <?= form_label_vandalizado('Fecha Evaluacion:','',array(),'Ingrese el día y la hora en que se defendera la tesis') ?>
                     <div class="large-6 columns">
                         <?= form_input($fecha_evaluacion); ?>
                         <?= form_error_small($label_fechae_anio); ?>
@@ -170,7 +175,7 @@
         </div>
         <div class="row">
             <div class="large-12 columns">
-                <?= form_label('Abstract:', $label_abstract); ?>
+                <?= form_label_vandalizado('Abstract:', $label_abstract, array(),'Ingrese aquí el abstract perteneciente a la tesis'); ?>
                 <?= form_textarea($abstract); ?>
                 <?= form_error_small($label_abstract); ?>
             </div>

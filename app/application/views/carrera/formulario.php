@@ -41,19 +41,19 @@
         <?= form_fieldset($agregar_modificar . ' Registro'); ?>
         <div class="row">
             <div class="large-6 columns">
-                <?= form_label('Nombre carrera:',$label_carrera) ?>
+                <?= form_label_vandalizado('Nombre carrera:',$label_carrera, array(),'Ingrese el nombre de la carrera') ?>
                 <?= form_input($nombre_carrera); ?>
                 <?= form_error_small($label_carrera); ?>
             </div>
             <div class="large-6 columns">
-                <?= form_label('Codigo:', $label_codigo); ?>
+                <?= form_label_vandalizado('Codigo:', $label_codigo, array(),'Ingrese el codigo al cual pertenece la carrera'); ?>
                 <?= form_input($nombre_codigo); ?>
                 <?= form_error_small($label_codigo); ?>
             </div>
         </div>
         <div class="row">
             <div class="large-12 columns">
-                <?= form_label('Nombre Facultad:', 'nombreFacultad'); ?>
+                <?= form_label_vandalizado('Nombre Facultad:', 'nombreFacultad',array(), 'Ingrese el nombre de la facultad a la que pertenece la carrera'); ?>
                 <?= form_dropdown('facultades', $selec_facultades,$id_facultad); ?>
             </div>
         </div>

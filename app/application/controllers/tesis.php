@@ -123,25 +123,26 @@ class Tesis extends CI_Controller {
         $rut_format = str_replace('.', '', $rut_format); // replazamos los puntos
         $rut_format = substr($rut_format, 0,-2); //cortamos el digito verificador y el '-' 
         
-        if($this->input->post('fecha_evaluacion',true) == false || $this->input->post('hora_evaluacion',true) == false)
+        if($this->input->post('fecha_evaluacion_putrido',true) == false || $this->input->post('hora_evaluacion',true) == false)
         {
             $fecha_evaluacion = null;
         } else {
-            $fecha_evaluacion = $this->input->post('fecha_evaluacion', true).' '.$this->input->post('hora_evaluacion',true);
+            $fecha_evaluacion = $this->input->post('fecha_evaluacion_putrido', true).' '.$this->input->post('hora_evaluacion',true);
         }
         
         $tesis = array(
             'titulo' => $this->input->post('titulo', TRUE),
             'estudiante_rut' => $rut_format,
             'abstract' => $this->input->post('abstract', TRUE),
-            'fecha_publicacion' => $this->input->post('fecha_publicacion', true),
+            'fecha_publicacion' => $this->input->post('fecha_publicacion_putrido', true),
             'fecha_evaluacion' => $fecha_evaluacion,
-            'feha_disponibilidad' => $this->input->post('fecha_disponibilidad', true),
+            'feha_disponibilidad' => $this->input->post('fecha_disponibilidad_putrido', true),
             'profesor_guia_rut' => $this->input->post('profesor_date', true),
             'ubicacion_fichero' => $fichero_ubicacion,
             'id_categoria' => $this->input->post('categoria_id', true),
         );
-        //var_dump($tesis);
+//        var_dump($tesis);
+//        redirect('asdasd');
         $this->tesis_datos_post = $tesis;
     }
 

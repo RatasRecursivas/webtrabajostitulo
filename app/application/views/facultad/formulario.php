@@ -30,7 +30,7 @@
         <?= form_fieldset($agregar_modificar . ' Registro'); ?>
         <div class="row">
             <div class="large-12 columns <?= $error ?>">
-                <?= form_label('Nombre Facultad:', $label_facultad); ?>
+                <?= form_label_vandalizado('Nombre Facultad:', $label_facultad,array(),'Ingrese aquí una facultad perteneciente a la universidad'); ?>
                 <?= form_input($nombre_facultad); ?>
                 <?= form_error_small($label_facultad); ?>  
             </div>
@@ -45,3 +45,4 @@
         <?= form_fieldset_close(); ?>
         <?= form_close(); ?>
     </div>
+</div>

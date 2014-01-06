@@ -29,12 +29,12 @@
         <?= form_fieldset($agregar_modificar . ' Registro'); ?>
         <div class="row">
             <div class="large-6 columns">
-                <?= form_label('Nombre Categoria:', $label_categoria); ?>
+                <?= form_label_vandalizado('Nombre Categoria:', $label_categoria, array(),'Ingrese el nombre de la categoría a la cual pertenece una tesis'); ?>
                 <?= form_input($nombre_categoria); ?>
                 <?= form_error_small($label_categoria); ?>
             </div>
             <div class="large-6 columns">
-                <?= form_label('Facultad:', 'nombre_facultad'); ?>
+                <?= form_label_vandalizado('Facultad:', 'nombre_facultad', array(),'Seleccione la facultad a la cual pertenece la categoría'); ?>
                 <?= form_dropdown('facultades', $select_facultad, $select_option); ?>
             </div>
         </div>

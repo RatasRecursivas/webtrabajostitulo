@@ -199,7 +199,12 @@ if (defined('ENVIRONMENT'))
  * And away we go...
  *
  */
+        if (function_exists('date_default_timezone_set')){
+            date_default_timezone_set('America/Santiago');
+        }
+        
 require_once BASEPATH.'core/CodeIgniter.php';
+
 
 /* End of file index.php */
 /* Location: ./index.php */

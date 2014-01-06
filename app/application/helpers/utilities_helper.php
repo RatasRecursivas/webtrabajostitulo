@@ -89,3 +89,31 @@ if (!function_exists('esRut')) {
     }
 
 }
+
+if (!function_exists('form_label_vandalizado')) {
+
+    function form_label_vandalizado($label_text = '', $id = '', $attributes = array(), $tooltip = '') {
+        $label = '<label';
+
+        if ($id != '') {
+            $label .= " for=\"$id\"";
+        }
+
+        if (is_array($attributes) AND count($attributes) > 0) {
+            foreach ($attributes as $key => $val) {
+                $label .= ' ' . $key . '="' . $val . '"';
+            }
+        }
+
+        $label .= ">";
+
+        if ($tooltip != '') {
+            $label .= "<span data-tooltip class=\"has-tip\" title=\"" . $tooltip . "\">";
+        }
+        $label .= "$label_text</label>";
+//         $label_text</label>";
+
+        return $label;
+    }
+
+}

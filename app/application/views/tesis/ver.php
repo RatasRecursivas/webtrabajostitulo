@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="small-3 columns">
+    <div class="small-2 columns">
         <h2>Prueba</h2>
     </div>
-    <div class="small-6 columns">
+    <div class="small-8 columns">
         <h2><?= $tesis->titulo; ?></h2>
         <table class="text-center">
             <tbody>
@@ -25,7 +25,8 @@
             </tbody>
         </table>
     </div>
-    <div class="small-3 columns">
+    <div class="small-2 columns">
         <h2>Prueba 2</h2>
     </div>
+
 </div>
