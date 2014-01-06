@@ -34,6 +34,7 @@ class Account extends CI_Controller {
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->load->helper('utilities');
     }
 
     public function index() {
@@ -63,7 +64,7 @@ class Account extends CI_Controller {
                 redirect('account/login', 'refresh');
             }
         } else { // La validacion dio un ranazo // Redireccionamos al login
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->data['msg'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             $this->data['identity'] = array('name' => 'identity',
                 'id' => 'identity',
                 'type' => 'text',
@@ -73,8 +74,9 @@ class Account extends CI_Controller {
                 'id' => 'password',
                 'type' => 'password',
             );
-
+            $this->load->view('template/head', $this->data);
             $this->load->view('account/login', $this->data);
+            $this->load->view('template/footer');
         }
     }
 
@@ -146,6 +148,7 @@ class Account extends CI_Controller {
     }
 
     public function recordar_password() {
+        $this->data['title'] = 'Olvido su password?';
         $this->form_validation->set_rules('email', $this->lang->line('forgot_password_validation_email_label'), 'required');
         if ($this->form_validation->run() == false) { // No se valido el form
             $this->data['email'] = array('name' => 'email',
@@ -159,7 +162,10 @@ class Account extends CI_Controller {
 
             // Mostramos los errores
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+            $this->load->view('template/head', $this->data);
             $this->load->view('account/recordar_password', $this->data);
+            $this->load->view('template/footer');
         } else {
             $config_tables = $this->config->item('tables', 'ion_auth');
 
@@ -242,9 +248,7 @@ class Account extends CI_Controller {
                     }
                 }
             }
-        }
-        else // El codigo es invalido, que intente de nuevo
-        {
+        } else { // El codigo es invalido, que intente de nuevo
             $this->session->set_flashdata('message', $this->ion_auth->errors());
             redirect("account/recordar_password", 'refresh');
         }

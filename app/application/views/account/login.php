@@ -1,28 +1,22 @@
-<h1><?php echo lang('login_heading');?></h1>
-<p><?php echo lang('login_subheading');?></p>
-
-<div id="infoMessage"><?php echo $message;?></div>
-
-<?php echo form_open("account/login");?>
-
-  <p>
-    <?php echo lang('login_identity_label', 'identity');?>
-    <?php echo form_input($identity);?>
-  </p>
-
-  <p>
-    <?php echo lang('login_password_label', 'password');?>
-    <?php echo form_input($password);?>
-  </p>
-
-  <p>
-    <?php echo lang('login_remember_label', 'remember');?>
-    <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
-  </p>
-
-
-  <p><?php echo form_submit('submit', lang('login_submit_btn'));?></p>
-
-<?php echo form_close();?>
-
-<p><a href="forgot_password"><?php echo lang('login_forgot_password');?></a></p>
+<div class="row">
+    <div class="small-8 columns large-centered">
+        <h1>Login</h1>
+        <p>Ingrese sus credenciales para acceder como administrador</p>
+        
+        <?= form_open("account/login"); ?>
+        <p>
+            <?= form_label_vandalizado('Usuario/Email', 'identity'); ?>
+            <?= form_input($identity); ?>
+        </p>
+        
+        <p>
+            <?= form_label_vandalizado('Password', 'password'); ?>
+            <?= form_input($password); ?>
+        </p>
+        
+        <p><?= form_submit('submit', 'Login'); ?></p>
+        <?= form_close(); ?>
+        
+        <p><?= anchor('account/recordar_password', 'Olvido su password?'); ?></p>
+    </div>
+</div>

@@ -55,7 +55,7 @@
 
         <?php if (isset($msg) and $msg): ?>
             <div class="row">
-                <div class="small-6 columns large-centered">
+                <div class="small-8 columns large-centered">
                     <div class="small-6">
                         <div data-alert class="alert-box info radius">
                             <?= $msg; ?>

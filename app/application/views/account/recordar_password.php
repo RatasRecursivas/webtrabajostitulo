@@ -1,15 +1,15 @@
-<h1><?php echo lang('forgot_password_heading');?></h1>
-<p><?php echo sprintf(lang('forgot_password_subheading'), $identity_label);?></p>
+<div class="row">
+    <div class="small-8 columns large-centered">
+        <h1>Olvido su password?</h1>
+        <p>Ingrese su email para reestablecer su password</p>
 
-<div id="infoMessage"><?php echo $message;?></div>
+        <?= form_open("account/recordar_password"); ?>
+        <p>
+            <?= form_label_vandalizado('Email', 'email'); ?>
+            <?= form_input($email); ?>
+        </p>
 
-<?php echo form_open("account/recordar_password");?>
-
-      <p>
-      	<label for="email"><?php echo sprintf(lang('forgot_password_email_label'), $identity_label);?></label> <br />
-      	<?php echo form_input($email);?>
-      </p>
-
-      <p><?php echo form_submit('submit', lang('forgot_password_submit_btn'));?></p>
-
-<?php echo form_close();?>
+        <p><?= form_submit('submit', 'Login'); ?></p>
+        <?= form_close(); ?>
+    </div>
+</div>
