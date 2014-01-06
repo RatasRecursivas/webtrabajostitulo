@@ -8,11 +8,10 @@
         <thead>
         <h2> Tesis </h2>
         <tr>
-            <th >Ver</th>
-            <th width="200">Titulo</th>
-            <th width="1">Autor</th>
-            <th width="1">Fecha de Publicacion</th>
-            <th width="500">Abstract</th>
+            <th >Titulo</th>
+            <th >Autor</th>
+            <th >Fecha de Publicacion</th>
+            <th >Abstract</th>
             <!--<th width="1">Modificar</th>-->
             <!--<th width="1">Eliminar</th>-->
         </tr>
@@ -21,9 +20,8 @@
             <?php $id = 1; ?>
             <?php foreach ($query as $tesis): ?>
                 <tr>
-                    <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $id ?></a></td>
-                    <td><?php echo $tesis->titulo; ?></td>
-                    <td><?= $tesis->last_name . ', ' . $tesis->first_name; ?></td>
+                    <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $tesis->titulo ?></a></td>
+                    <td><?= $tesis->last_name_estudiante . ', ' . $tesis->first_name_estudiante; ?></td>
                     <td><?php echo $tesis->fecha_publicacion; ?></td>
                     <td><?php echo $tesis->abstract; ?></td>
                     <!--<td><a class="button tiny round" href="<?php echo base_url(); ?>index.php/tesis/editar/<?php echo $tesis->id; ?>">Modificar</a></td>-->

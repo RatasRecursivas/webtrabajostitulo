@@ -107,7 +107,7 @@ class Tesis extends CI_Controller {
         
         $config['upload_path'] = './archivos_tesis/';
         $config['allowed_types'] = 'zip|pdf';
-        $config['max_size'] = '2048';
+        $config['max_size'] = '30000';
         
         
         $this->load->library('upload', $config);
@@ -133,7 +133,7 @@ class Tesis extends CI_Controller {
         
         $tesis = array(
             'titulo' => $this->input->post('titulo', TRUE),
-            'estudiante_rut' => $rut_format,
+            'estudiante_rut' => $rut_format,tesis/
             'abstract' => $this->input->post('abstract', TRUE),
             'fecha_publicacion' => $this->input->post('fecha_publicacion_putrido', true),
             'fecha_evaluacion' => $fecha_evaluacion,
@@ -142,8 +142,6 @@ class Tesis extends CI_Controller {
             'ubicacion_fichero' => $fichero_ubicacion,
             'id_categoria' => $this->input->post('categoria_id', true),
         );
-//        var_dump($tesis);
-//        redirect('asdasd');
         $this->tesis_datos_post = $tesis;
     }
 
@@ -154,7 +152,24 @@ class Tesis extends CI_Controller {
 
     public function index() {
         $this->setTesis_titulo('Indice | Tesis');
-        $this->setTesis_todasTesis($this->Tesis_model->getTodas());
+        if($this->input->get() == true){
+            $consulta = array();
+            if($this->input->get('categoria')){
+                $consulta['categoria.nombre_categoria'] = $this->input->get('categoria');
+            }
+            if($this->input->get('facultad')){
+                $consulta['facultad.nombre_facultad'] = $this->input->get('facultad');
+            }
+            if($this->input->get('carrera')){
+                $consulta['carrera.nombre_carrera'] = $this->input->get('carrera');
+            }
+
+            $tesis = $this->Tesis_model->getFiltrarTesis($consulta);
+//            var_dump($tesis);
+            $this->setTesis_todasTesis($tesis);
+        }else{
+            $this->setTesis_todasTesis($this->Tesis_model->getTodas());
+        }
         $this->setTesis_proximasTesis($this->Tesis_model->getProximasDefensas());
 
         $this->mostrar_vista('tesis/index');
