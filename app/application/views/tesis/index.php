@@ -1,5 +1,17 @@
 <div class="large-3 columns">
     <?php
+    $default_carrera = '';
+    $default_profesor = '';
+    $default_categoria = '';
+    $default_facultad = '';
+    if (sizeof($filtro_default)) { //habemus datos por get!
+//        var_dump($filtro_default);
+        $default_carrera = $filtro_default['carrera_default'];
+        $default_profesor = $filtro_default['profesor_default'];
+        $default_categoria = $filtro_default['categoria_default'];
+        $default_facultad = $filtro_default['facultad_default'];
+    }
+
     $select_carreras = array(
         '' => 'NO FILTRAR',
     );
@@ -16,7 +28,7 @@
         '' => 'NO FILTRAR',
     );
     foreach ($profesores as $profesor) {
-        $select_profesores[$profesor->last_name . ' ' . $profesor->first_name] = $profesor->last_name . ' ' . $profesor->first_name;
+        $select_profesores[$profesor->rut] = $profesor->last_name . ' ' . $profesor->first_name;
     }
     $select_categorias = array(
         '' => 'NO FILTRAR',
@@ -38,13 +50,13 @@
         <?= form_fieldset('Rellene los filtro') ?>
         <div class="large-12 columns">
             <?= form_label('Carrera:') ?>
-            <?= form_dropdown('Carrera', $select_carreras); ?> 
+            <?= form_dropdown('carrera', $select_carreras, $default_carrera); ?> 
             <?= form_label('Profesor:') ?>
-            <?= form_dropdown('Profesor', $select_profesores); ?> 
+            <?= form_dropdown('profesor', $select_profesores, $default_profesor); ?> 
             <?= form_label('Facultad:') ?>
-            <?= form_dropdown('facultad', $select_facultades); ?> 
+            <?= form_dropdown('facultad', $select_facultades, $default_facultad); ?> 
             <?= form_label('Categoria:') ?>
-            <?= form_dropdown('categoria', $select_categorias); ?>   
+            <?= form_dropdown('categoria', $select_categorias, $default_categoria); ?>   
             <?= form_submit($submit_filtro); ?> 
         </div>
         <?= form_fieldset_close() ?>
@@ -54,16 +66,18 @@
     <div class="row">
         <div class="large 12 columns">
             <h2>Próximas Defensas</h2>
-            <table> 
-                <thead>
-                    <tr> 
-                        <th>Defensas</th>
-                        <th>Estudiante</th>
-                        <th>Dia defensa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($defensas): ?>
+            <?php if (!$defensas): ?>
+                <p>No hay defensas proximamente</p>
+            <?php else: ?>
+                <table> 
+                    <thead>
+                        <tr> 
+                            <th>Defensas</th>
+                            <th>Estudiante</th>
+                            <th>Dia defensa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php foreach ($defensas as $tesis): ?>
                             <tr>          
                                 <td><?= $tesis->titulo; ?></td>
@@ -71,11 +85,9 @@
                                 <td><?= $tesis->fecha_evaluacion; ?></td>
                             </tr>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                    <p>No hay defensas proximamente</p>
-                <?php endif; ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            <?php endif; ?>
         </div>
     </div>
 

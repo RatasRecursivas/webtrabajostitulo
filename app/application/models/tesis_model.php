@@ -112,7 +112,7 @@ class Tesis_model extends CI_Model {
 
     public function getFiltrarTesis($array) {
 //        $array = array(
-//            'facultad.nombre_facultad' => 'Fas',
+//            'carrera.nombre_carrera' => 'INGENIERÍA EN INFORMÁTICA',
 //        );
         
 //        var_dump($array);

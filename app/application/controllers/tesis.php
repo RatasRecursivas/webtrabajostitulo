@@ -63,6 +63,7 @@ class Tesis extends CI_Controller {
     public function setTesis_agregar_modificar($agregar_modificar) {
         $this->tesis_agregar_modificar = $agregar_modificar;
     }
+
     public function setTesis_carreras($tesis_carreras) {
         $this->tesis_carreras = $tesis_carreras;
     }
@@ -71,7 +72,7 @@ class Tesis extends CI_Controller {
         $this->tesis_facultades = $tesis_facultades;
     }
 
-        public function setTesis_acction($tesis_acction) {
+    public function setTesis_acction($tesis_acction) {
         $this->tesis_acction = $tesis_acction;
     }
 
@@ -96,6 +97,30 @@ class Tesis extends CI_Controller {
     }
 
     private function mostrar_vista($vista) {
+        $datosGet = array();
+        if ($this->input->get('categoria')) {
+            $datosGet['categoria_default'] = $this->input->get('categoria');
+        } else {
+            $datosGet['categoria_default'] = null;
+        }
+        if ($this->input->get('facultad')) {
+            $datosGet['facultad_default'] = $this->input->get('facultad');
+        } else {
+            $datosGet['facultad_default'] = null;
+        }
+        if ($this->input->get('carrera')) {
+            $datosGet['carrera_default'] = $this->input->get('carrera');
+        } else {
+            $datosGet['carrera_default'] = null;
+        }
+        if ($this->input->get('profesor')) {
+            $datosGet['profesor_default'] = $this->input->get('profesor');
+        } else {
+            $datosGet['profesor_default'] = null;
+        }
+        
+        
+
         $datos_enviar = array(
             'title' => $this->tesis_titulo,
             'query' => $this->tesis_todasTesis,
@@ -107,7 +132,8 @@ class Tesis extends CI_Controller {
             'categorias' => $this->tesis_categorias,
             'carreras' => $this->tesis_carreras,
             'facultades' => $this->tesis_carreras,
-            'msg' => $this->session->flashdata('msg')
+            'msg' => $this->session->flashdata('msg'),
+            'filtro_default' => $datosGet,
         );
         $this->load->view('template/head', $datos_enviar);
         $this->load->view($vista, $datos_enviar);
@@ -129,7 +155,7 @@ class Tesis extends CI_Controller {
         $fichero_ubicacion = '';
 
         $fechapublicacion = strtotime($this->input->post('fecha_publicacion_putrido', true));
-        
+
         if ($this->upload->do_upload() && $fechapublicacion) {
             $fichero_ubicacion = $this->upload->data();
             $fichero_ubicacion = $fichero_ubicacion['full_path'];
@@ -176,7 +202,7 @@ class Tesis extends CI_Controller {
             array(
                 'field' => 'fecha_disponibilidad_putrido',
                 'label' => 'Fecha de Disponibilidad',
-                'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia|compararFecha['.$this->input->post('fecha_publicacion_putrido').']',
+                'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia|compararFecha[' . $this->input->post('fecha_publicacion_putrido') . ']',
             ),
             array(
                 'field' => 'rut',
@@ -202,7 +228,7 @@ class Tesis extends CI_Controller {
                 'field' => 'userfile',
                 'label' => 'Fichero',
                 'rultes' => 'valide_fichero['
-                . $this->input->post('fecha_publicacion_putrido').']',
+                . $this->input->post('fecha_publicacion_putrido') . ']',
             )
         );
     }
@@ -235,6 +261,9 @@ class Tesis extends CI_Controller {
             if ($this->input->get('carrera')) {
                 $consulta['carrera.nombre_carrera'] = $this->input->get('carrera');
             }
+            if ($this->input->get('profesor')) {
+                $consulta['tesis.profesor_guia_rut'] = $this->input->get('profesor');
+            }
 //            var_dump($consulta);
             $tesis = $this->Tesis_model->getFiltrarTesis($consulta);
 //            var_dump($tesis);
@@ -243,9 +272,8 @@ class Tesis extends CI_Controller {
         } else {
             $this->setTesis_todasTesis($this->Tesis_model->getTodas($this->admin));
         }
-        $this->setTesis_todasTesis($this->Tesis_model->getTodas($this->admin));
         $this->setTesis_proximasTesis($this->Tesis_model->getProximasDefensas());
-        
+
         // Si es admin le muestro una vista especial, donde se ven los botones de
         // modificar y eliminar
         $vista = ($this->admin) ? 'index_admin' : 'index';
@@ -292,7 +320,7 @@ class Tesis extends CI_Controller {
         $this->setTesis_titulo('Editar | Tesis');
         $this->setTesis_profesores($this->Profesor_model->getProfesores());
         $this->setTesis_categorias($this->Categoria_model->getCategorias());
-        $this->setTesis_getTesis($this->Tesis_model->getTesis($id,  $this->admin));
+        $this->setTesis_getTesis($this->Tesis_model->getTesis($id, $this->admin));
         $this->setTesis_acction('Editar/' . $id);
         $this->setTesis_agregar_modificar('Editar');
 
@@ -328,21 +356,20 @@ class Tesis extends CI_Controller {
         }
         $this->mostrar_vista('tesis/formulario');
     }
-    
+
     public function eliminar($id) {
         $id = (int) $id;
-        $tesis = $this->Tesis_model->getTesis($id,  $this->admin);
-        if($tesis){
+        $tesis = $this->Tesis_model->getTesis($id, $this->admin);
+        if ($tesis) {
             $eliminado = $this->Tesis_model->eliminar($id);
-            if($eliminado == true){
+            if ($eliminado == true) {
                 $this->redireccionar_msg('tesis', 'Fue exitosamente eliminado!');
             } else {
                 $this->redireccionar_msg('tesis', 'Intentelo nuevamente, Ooops :/');
             }
-        }else{
+        } else {
             $this->redireccionar_msg('tesis', 'No se enontro la tesis a eliminar');
         }
-        
     }
 
 }
