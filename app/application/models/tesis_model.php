@@ -45,6 +45,7 @@ class Tesis_model extends CI_Model {
     }
 
     public function getTesis($id, $is_admin) {
+        $now = $this->_fecha_actual();
         $this->db->
                 select('ubicacion_fichero, titulo, id_categoria, abstract,fecha_evaluacion, feha_disponibilidad, '
                         . 'fecha_publicacion, usersprofe.first_name as first_name_profe, usersprofe.last_name as last_name_profe,'
@@ -110,7 +111,11 @@ class Tesis_model extends CI_Model {
     }
 
     public function getFiltrarTesis($array) {
-//        $array = array();
+//        $array = array(
+//            'facultad.nombre_facultad' => 'Fas',
+//        );
+        
+//        var_dump($array);
         $query = $this->db->
                 select('ubicacion_fichero, titulo, id_categoria, abstract,fecha_evaluacion, feha_disponibilidad, '
                         . 'fecha_publicacion, usersprofe.first_name as first_name_profe, usersprofe.last_name as last_name_profe,'

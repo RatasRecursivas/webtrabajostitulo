@@ -35,6 +35,8 @@ class Tesis extends CI_Controller {
     var $tesis_todasTesis = null;
     var $tesis_proximasTesis = array();
     var $tesis_categorias = array();
+    var $tesis_carreras = array();
+    var $tesis_facultades = array();
     var $tesis_mensajeFichero = '';
     var $validation = array();
     var $admin;
@@ -43,6 +45,8 @@ class Tesis extends CI_Controller {
         parent::__construct();
         $this->load->model('Tesis_model');
         $this->load->model('Profesor_model');
+        $this->load->model('Facultad_model');
+        $this->load->model('Carrera_model');
         $this->load->model('Categoria_model');
         $this->load->helper('utilities');
         $this->admin = ($this->ion_auth->is_admin()) ? true : false;
@@ -59,8 +63,15 @@ class Tesis extends CI_Controller {
     public function setTesis_agregar_modificar($agregar_modificar) {
         $this->tesis_agregar_modificar = $agregar_modificar;
     }
+    public function setTesis_carreras($tesis_carreras) {
+        $this->tesis_carreras = $tesis_carreras;
+    }
 
-    public function setTesis_acction($tesis_acction) {
+    public function setTesis_facultades($tesis_facultades) {
+        $this->tesis_facultades = $tesis_facultades;
+    }
+
+        public function setTesis_acction($tesis_acction) {
         $this->tesis_acction = $tesis_acction;
     }
 
@@ -94,6 +105,8 @@ class Tesis extends CI_Controller {
             'tesis' => $this->tesis_getTesis,
             'agregar_modificar' => $this->tesis_agregar_modificar,
             'categorias' => $this->tesis_categorias,
+            'carreras' => $this->tesis_carreras,
+            'facultades' => $this->tesis_carreras,
             'msg' => $this->session->flashdata('msg')
         );
         $this->load->view('template/head', $datos_enviar);
@@ -201,6 +214,16 @@ class Tesis extends CI_Controller {
 
     public function index() {
         $this->setTesis_titulo('Indice | Tesis');
+        /*
+         * Aca va se le envia los datos para el filtro
+         */
+        $this->setTesis_categorias($this->Categoria_model->getCategorias());
+        $this->setTesis_profesores($this->Profesor_model->getProfesores());
+        $this->setTesis_facultades($this->Facultad_model->getFacultades());
+        $this->setTesis_carreras($this->Carrera_model->getCarreras());
+        /*
+         * 
+         */
         if ($this->input->get() == true) {
             $consulta = array();
             if ($this->input->get('categoria')) {
@@ -212,10 +235,11 @@ class Tesis extends CI_Controller {
             if ($this->input->get('carrera')) {
                 $consulta['carrera.nombre_carrera'] = $this->input->get('carrera');
             }
-
+//            var_dump($consulta);
             $tesis = $this->Tesis_model->getFiltrarTesis($consulta);
 //            var_dump($tesis);
             $this->setTesis_todasTesis($tesis);
+//            $this->mostrar_vista('tesis/index');
         } else {
             $this->setTesis_todasTesis($this->Tesis_model->getTodas($this->admin));
         }
