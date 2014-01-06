@@ -56,6 +56,9 @@ class Facultad extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Facultad_model');
+        if (!$this->ion_auth->is_admin()) { // wow
+            redirect('account/login');
+        }
     }
 
     public function mostrarVista($vista) {
@@ -94,18 +97,14 @@ class Facultad extends CI_Controller {
 
     public function index() {
 //        $this->llenarInfo('Indice', null, null, $this->ultimasTesis());
-        if (!$this->ion_auth->is_admin()) {
-            redirect('account/login');
-        }
+    
         $this->setFacultad_titulo('Indice | Facultada');
         $this->setFacultad_todasfacultades($this->ultimasFacultades());
         $this->mostrarVista('facultad/index');
     }
 
     public function agregar() {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('account/login');
-        }
+     
         $this->setFacultad_titulo('Agregar|Facultad');
         $this->setFacultad_acction('Agregar');
         $this->setFacultad_agregar_modificar('Agregar');
@@ -127,9 +126,7 @@ class Facultad extends CI_Controller {
     }
 
     public function editar($id = NULL) {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('account/login');
-        }
+      
         $id = (int) $id;
         if (!$id) {
             $this->redireccionar_msg('facultad', 'No especifico la facultad a editar!');
@@ -161,9 +158,7 @@ class Facultad extends CI_Controller {
     }
 
     public function eliminar($id) {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('account/login');
-        }
+       
         $id = (int) $id;
         $facultad = $this->Facultad_model->getFacultad($id);
         if ($facultad) { // existe ?

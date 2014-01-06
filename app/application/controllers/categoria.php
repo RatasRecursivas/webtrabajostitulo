@@ -47,6 +47,9 @@ class Categoria extends CI_Controller {
         parent::__construct();
         $this->load->model('Categoria_model');
         $this->load->model('Facultad_model');
+          if (!$this->ion_auth->is_admin()) {
+            redirect('account/login');
+        }
     }
 
     public function mostrarVista($vista) {
@@ -92,9 +95,7 @@ class Categoria extends CI_Controller {
     }
 
     public function index() {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+        
         $this->setCategoria_titulo('Indice|Categoria');
         $this->setCategoria_todascategorias($this->ultimasCategorias());
         $this->mostrarVista('categoria/index');
@@ -102,9 +103,7 @@ class Categoria extends CI_Controller {
     
 
     public function agregar() {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+      
         $this->setCategoria_titulo('Agregar|Categoria');
         $this->setCategoria_acction('Agregar');
         $this->setCategoria_agregar_modificar('Agregar');
@@ -129,9 +128,7 @@ class Categoria extends CI_Controller {
     }
 
     public function editar($id = NULL) {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+        
         $id = (int) $id;
         if (!$id) {
             $this->redireccionar_msg('categoria', 'No especifico la categoria a editar!');
@@ -163,9 +160,7 @@ class Categoria extends CI_Controller {
 
     }
    public function eliminar($id) {
-       if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+       
         $id = (int)$id;
         $carrera = $this->Categoria_model->getCategoria($id);
         if($carrera ){ // existe ?

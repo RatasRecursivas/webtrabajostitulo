@@ -31,12 +31,13 @@ class Estudiante extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Estudiante_model');
+          if (!$this->ion_auth->is_admin()) {
+            redirect('account/login');
+        }
     }
 
     public function index() {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+      
         $data['title'] = 'Estudiantes';
         $data['estudiantes'] = $this->Estudiante_model->getEstudiantes();
         $this->load->helper('utilities_helper');
@@ -46,9 +47,7 @@ class Estudiante extends CI_Controller {
     }
 
     public function obtener($rut = NULL) {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+        
         if (array_key_exists('rut', $this->input->get())) {
             $rut = $this->input->get('rut', true);
         }
@@ -70,9 +69,6 @@ class Estudiante extends CI_Controller {
     }
 
     public function eliminar($rut = NULL) {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('account/login');
-        }
         
         if ($rut) { // Si llega por post reviso el rut
             // Form validation ..

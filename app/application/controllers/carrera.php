@@ -50,6 +50,9 @@ class Carrera extends CI_Controller {
         parent::__construct();
         $this->load->model('Carrera_model');
         $this->load->model('Facultad_model');
+          if (!$this->ion_auth->is_admin()) {
+            redirect('account/login');
+        }
     }
 
     public function mostrarVista($vista) {
@@ -104,9 +107,7 @@ class Carrera extends CI_Controller {
     }
 
     public function agregar() {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+        
         $this->setCarrera_titulo('Agregar | Carrera');
         $this->setCarrera_acction('Agregar');
         $this->setCarrera_agregar_modificar('Agregar');
@@ -129,9 +130,7 @@ class Carrera extends CI_Controller {
     }
 
     public function editar($id = null) {
-        if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+       
         $id = (int) $id;
         if (!$id) {
             $this->redireccionar_msg('carrera', 'No especifico la carrera a editar!');
@@ -163,9 +162,7 @@ class Carrera extends CI_Controller {
         $this->mostrarVista('carrera/formulario');
     }
      public function eliminar($id) {
-         if (!$this->ion_auth->is_admin()) {
-            redirect('login');
-        }
+        
         $id = (int)$id;
         $carrera = $this->Carrera_model->getCarrera($id);
         if($carrera ){ // existe ?
