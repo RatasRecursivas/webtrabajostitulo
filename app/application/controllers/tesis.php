@@ -292,7 +292,7 @@ class Tesis extends CI_Controller {
         $this->setTesis_titulo('Editar | Tesis');
         $this->setTesis_profesores($this->Profesor_model->getProfesores());
         $this->setTesis_categorias($this->Categoria_model->getCategorias());
-        $this->setTesis_getTesis($this->Tesis_model->getTesis($id));
+        $this->setTesis_getTesis($this->Tesis_model->getTesis($id,  $this->admin));
         $this->setTesis_acction('Editar/' . $id);
         $this->setTesis_agregar_modificar('Editar');
 
@@ -327,6 +327,22 @@ class Tesis extends CI_Controller {
             }
         }
         $this->mostrar_vista('tesis/formulario');
+    }
+    
+    public function eliminar($id) {
+        $id = (int) $id;
+        $tesis = $this->Tesis_model->getTesis($id,  $this->admin);
+        if($tesis){
+            $eliminado = $this->Tesis_model->eliminar($id);
+            if($eliminado == true){
+                $this->redireccionar_msg('tesis', 'Fue exitosamente eliminado!');
+            } else {
+                $this->redireccionar_msg('tesis', 'Intentelo nuevamente, Ooops :/');
+            }
+        }else{
+            $this->redireccionar_msg('tesis', 'No se enontro la tesis a eliminar');
+        }
+        
     }
 
 }
