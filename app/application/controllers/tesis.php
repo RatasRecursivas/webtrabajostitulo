@@ -172,14 +172,17 @@ class Tesis extends CI_Controller {
         } else {
             $fecha_evaluacion = $this->input->post('fecha_evaluacion_putrido', true) . ' ' . $this->input->post('hora_evaluacion', true);
         }
+        
+        $fecha_publicacion = ($this->input->post('fecha_publicacion_putrido', true)) ? $this->input->post('fecha_publicacion_putrido', true) : null;
+        $fecha_disponibilidad = ($this->input->post('fecha_disponibilidad_putrido', true)) ? $this->input->post('fecha_disponibilidad_putrido', true) : null;
 
         $tesis = array(
             'titulo' => $this->input->post('titulo', TRUE),
             'estudiante_rut' => $rut_format,
             'abstract' => $this->input->post('abstract', TRUE),
-            'fecha_publicacion' => $this->input->post('fecha_publicacion_putrido', true),
+            'fecha_publicacion' => $fecha_publicacion,
             'fecha_evaluacion' => $fecha_evaluacion,
-            'feha_disponibilidad' => $this->input->post('fecha_disponibilidad_putrido', true),
+            'feha_disponibilidad' => $fecha_disponibilidad,
             'profesor_guia_rut' => $this->input->post('profesor_date', true),
             'ubicacion_fichero' => $fichero_ubicacion,
             'id_categoria' => $this->input->post('categoria_id', true),
@@ -202,7 +205,7 @@ class Tesis extends CI_Controller {
             array(
                 'field' => 'fecha_disponibilidad_putrido',
                 'label' => 'Fecha de Disponibilidad',
-                'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia|compararFecha[' . $this->input->post('fecha_publicacion_putrido') . ']',
+                'rules' => 'xss_clean|trim|validate_fecha_anio_mes_dia|compararFecha[' . $this->input->post('fecha_publicacion_putrido') . ']',
             ),
             array(
                 'field' => 'rut',
@@ -217,7 +220,7 @@ class Tesis extends CI_Controller {
             array(
                 'field' => 'fecha_publicacion_putrido',
                 'label' => 'Fecha Publicación',
-                'rules' => 'required|xss_clean|trim|validate_fecha_anio_mes_dia'
+                'rules' => 'xss_clean|trim|validate_fecha_anio_mes_dia'
             ),
             array(
                 'field' => 'hora_evaluacion',
