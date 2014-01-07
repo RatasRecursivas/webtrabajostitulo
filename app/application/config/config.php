@@ -224,7 +224,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'kdb7np4rq688EM3M&V9GmH3@E@6045M9';
+$config['encryption_key'] = 'CHANGEME!!!!';
 
 /*
 |--------------------------------------------------------------------------
@@ -293,7 +293,7 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_cookie_name' = The cookie name
 | 'csrf_expire' = The number in seconds the token should expire.
 */
-$config['csrf_protection'] = FALSE;
+$config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 7200;
@@ -369,8 +369,8 @@ $config['proxy_ips'] = '';
 */
 
 $config['dirdoc_ws_url'] = 'http://informatica.utem.cl:8011/dirdoc-auth/ws/auth?wsdl';
-$config['dirdoc_ws_user'] = 'pperez';
-$config['dirdoc_ws_password'] = '030844ef2e660909787442d38c986ba961e94c9c';
+$config['dirdoc_ws_user'] = 'CHANGEME';
+$config['dirdoc_ws_password'] = 'CHANGEME!!';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
