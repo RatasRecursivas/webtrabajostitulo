@@ -143,7 +143,7 @@
             <div class="large-6 columns">
                 <div class="panel">
                     <h5>Link de descarga:</h5>
-                    <p> <?= anchor(base_url('/archivos_tesis/' . str_replace(' ', '%20', $tesis->ubicacion_fichero)), 'download') ?></p>
+                    <p> <?= ($tesis->ubicacion_fichero) ? anchor(base_url('/archivos_tesis/' . str_replace(' ', '%20', $tesis->ubicacion_fichero)), 'download') : 'No disponible'; ?></p>
                 </div>
             </div>
         </div>
