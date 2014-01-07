@@ -16,8 +16,13 @@ $config = array(
         array(
             'field' => 'codigo',
             'label' => 'Codigo',
-            'rules' => 'required|xss_clean|max_length[50]|trim'
-        )
+            'rules' => 'required|integer|xss_clean|max_length[50]|trim'
+        ),
+        array(
+            'field' => 'facultades',
+            'label' => 'Facultad',
+            'rules' => 'required|integer|xss_clean|trim|existe_DB[facultad.id]',
+        ),
     ),
     'facultad/formulario' => array(
         array(
@@ -31,6 +36,11 @@ $config = array(
             'field' => 'nombre_categoria',
             'label' => 'Nombre Categoria',
             'rules' => 'required|xss_clean|trim|max_length[50]'
+        ),
+        array(
+            'field' => 'facultades',
+            'label' => 'Facultad',
+            'rules' => 'required|integer|xss_clean|trim|existe_DB[facultad.id]',
         ),
     ),
 //    'estudiante/obtener' => array(

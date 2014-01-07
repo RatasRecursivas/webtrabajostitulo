@@ -224,12 +224,22 @@ class Tesis extends CI_Controller {
                 'label' => 'Hora de envaluacion',
                 'rules' => 'xss_clean|trim|validate_hora_minuto_segundo'
             ),
+//            array(
+//                'field' => 'userfile',
+//                'label' => 'Fichero',
+//                'rules' => 'valide_fichero['
+//                . $this->input->post('fecha_publicacion_putrido') . ']',
+//            ),
             array(
-                'field' => 'userfile',
-                'label' => 'Fichero',
-                'rultes' => 'valide_fichero['
-                . $this->input->post('fecha_publicacion_putrido') . ']',
-            )
+                'field' => 'categoria_id',
+                'label' => 'Categoria',
+                'rules' => 'required|integer|xss_clean|trim|existe_DB[categoria.id]'
+            ),
+            array(
+                'field' => 'profesor_date',
+                'label' => 'Profesor',
+                'rules' => 'required|integer|xss_clean|trim|existe_DB[profesor.rut]'
+            ),
         );
     }
 

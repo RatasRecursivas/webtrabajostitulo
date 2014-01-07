@@ -37,7 +37,9 @@ class Categoria_model extends CI_Model {
                 row();
         return $query;
     }
-    
+
+
+
     public function editar($id,$data){
         return $this->db->
                 where('id', $id)->

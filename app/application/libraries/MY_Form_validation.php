@@ -35,6 +35,17 @@ class MY_Form_validation extends CI_Form_validation {
         }
     }
 
+    public function existe_DB($str, $field) {
+        list($table, $field) = explode('.', $field);
+        $query = $this->CI->db->limit(1)->get_where($table, array($field => $str));
+        if ($query->num_rows() != 1) {
+            $this->set_message('existe_DB','Esta seleccionando un rango no permitido en %s');
+            return FALSE;
+        }  else {
+            return TRUE;
+        }
+    }
+
     public function compararFecha($fecha_dis, $otra_fecha_pu) {
 
         $dispo = strptime($fecha_dis, '%Y-%m-%d');
@@ -54,7 +65,7 @@ class MY_Form_validation extends CI_Form_validation {
 //        var_dump($fecha_disponibilidad);
 //        var_dump($fecha_publica <= $fecha_disponibilidad);
         if ($fecha_publica > $fecha_disponibilidad) {
-            $this->set_message('compararFecha', 'NOOOOOOOOOOOOO el campo debe ser mayor');
+            $this->set_message('compararFecha', 'NO el campo debe ser mayor que el de fecha de publicación');
             return FALSE;
         } else {
             return TRUE;

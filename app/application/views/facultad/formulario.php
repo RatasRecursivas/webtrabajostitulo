@@ -3,9 +3,8 @@
         <?php
         $nombre_facultad = array(
             'type' => 'text',
-            'placeholder' => 'Ing...',
+            'placeholder' => 'Facultad de Ingenería',
             'name' => 'nombre_facultad',
-//            'class' => 'error'
         );
         $button = array(
             'value' => $agregar_modificar,
