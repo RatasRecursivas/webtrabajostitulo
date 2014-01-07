@@ -1,15 +1,15 @@
 <div class="large-8 columns large-centered">
     <?php if ($query): ?>
+        <h2>Tesis</h2>
         <table>
             <thead>
-            <h2>Tesis</h2>
-            <tr>
-                <th>Titulo</th>
-                <th>Autor</th>
-                <th>Fecha de Publicacion</th>
-                <th width="1">Modificar</th>
-                <th width="1">Eliminar</th>
-            </tr>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Autor</th>
+                    <th>Fecha de Publicacion</th>
+                    <th width="1">Modificar</th>
+                    <th width="1">Eliminar</th>
+                </tr>
             </thead>
             <tbody>
                 <?php foreach ($query as $tesis): ?>
