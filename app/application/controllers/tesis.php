@@ -156,7 +156,7 @@ class Tesis extends CI_Controller {
         if ($this->upload->do_upload()) {
 
             $fichero_ubicacion = $this->upload->data();
-            $fichero_ubicacion = $fichero_ubicacion['full_path'];
+            $fichero_ubicacion = $fichero_ubicacion['file_name'];
         } else {
             $fichero_ubicacion = null;
         }

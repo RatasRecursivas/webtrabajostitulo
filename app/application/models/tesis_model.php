@@ -49,7 +49,7 @@ class Tesis_model extends CI_Model {
         $this->db->
                 select('ubicacion_fichero, titulo, id_categoria, abstract,fecha_evaluacion, feha_disponibilidad, '
                         . 'fecha_publicacion, usersprofe.first_name as first_name_profe, usersprofe.last_name as last_name_profe,'
-                        . 'tesis.id, estudiante_rut, profesor_guia_rut,'
+                        . 'tesis.id, estudiante_rut, profesor_guia_rut, facultad.nombre_facultad, carrera.nombre_carrera, '
                         . 'usersestudiante.first_name as first_name_estudiante, usersestudiante.last_name as last_name_estudiante,'
                         . 'categoria.nombre_categoria')->
                 from($this->tabla)->

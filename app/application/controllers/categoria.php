@@ -96,7 +96,7 @@ class Categoria extends CI_Controller {
 
     public function index() {
         
-        $this->setCategoria_titulo('Indice|Categoria');
+        $this->setCategoria_titulo('Indice | Categoria');
         $this->setCategoria_todascategorias($this->ultimasCategorias());
         $this->mostrarVista('categoria/index');
     }
@@ -104,7 +104,7 @@ class Categoria extends CI_Controller {
 
     public function agregar() {
       
-        $this->setCategoria_titulo('Agregar|Categoria');
+        $this->setCategoria_titulo('Agregar | Categoria');
         $this->setCategoria_acction('Agregar');
         $this->setCategoria_agregar_modificar('Agregar');
         $this->setCategoria_facultades($this->todasFacultades());
@@ -148,7 +148,7 @@ class Categoria extends CI_Controller {
                 }
             }
         }
-        $this->setCategoria_titulo('Editar|Categoria');
+        $this->setCategoria_titulo('Editar | Categoria');
         $this->setCategoria_acction('Editar/'.$id);
         $this->setCategoria_agregar_modificar('Editar');
         $this->setCategoria_facultades($this->todasFacultades());
