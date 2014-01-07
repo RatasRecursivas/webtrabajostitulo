@@ -258,9 +258,9 @@ COMMENT ON COLUMN tesis.profesor_guia_rut IS 'Identifica al profesor guia de est
 
 
 
-INSERT INTO facultad (id, nombre_facultad) VALUES (1, 'Sin Facultad');
+INSERT INTO facultad (nombre_facultad) VALUES ('Sin Facultad');
 INSERT INTO carrera (codigo, nombre_carrera, id_facultad) VALUES (1, 'Sin Carrera', 1);
-INSERT INTO categoria (id, nombre_categoria, id_facultad) VALUES (1, 'Sin Categoria', 1);
+INSERT INTO categoria (nombre_categoria, id_facultad) VALUES ('Sin Categoria', 1);
 INSERT INTO groups (id, name, description) VALUES (1, 'admin', 'Administradores');
 INSERT INTO users (ip_address, username, password, salt, email, activation_code, forgotten_password_code, created_on, last_login, active, first_name, last_name, company, phone) VALUES
     ('127.0.0.1','default','','','','',NULL,'1268889823','1268889823','0','Sin','Persona','UTEM','0');
