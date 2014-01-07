@@ -101,7 +101,7 @@
                     <th>Titulo</th>
                     <th>Autor</th>
                     <th>Fecha de Publicacion</th>
-                    <th>Abstract</th>
+                    <th width="200" >Abstract</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,7 +110,7 @@
                         <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $tesis->titulo ?></a></td>
                         <td><?= $tesis->last_name_estudiante . ', ' . $tesis->first_name_estudiante; ?></td>
                         <td><?= $tesis->fecha_publicacion; ?></td>
-                        <td><?= $tesis->abstract; ?></td>
+                        <td><p class='wrapped'><?= $tesis->abstract; ?></p></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

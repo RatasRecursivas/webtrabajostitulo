@@ -123,13 +123,13 @@
             <div class="large-4 columns">
                 <div class="panel">
                     <h5>Facultad:</h5>
-                    <p><?= anchor('tesis/?facultad=' . $tesis->nombre_facultad, $tesis->nombre_facultad); ?></p>
+                    <p><?= anchor('tesis/?facultad=' . str_replace('%20', ' ', $tesis->nombre_facultad), $tesis->nombre_facultad); ?></p>
                 </div>
             </div>
             <div class="large-4 columns">
                 <div class="panel">
                     <h5>Carrera:</h5>
-                    <p><?= anchor('tesis/?carrera=' . $tesis->nombre_carrera, $tesis->nombre_carrera) ?></p>
+                    <p><?= anchor('tesis/?carrera=' . str_replace(' ', '%20', $tesis->nombre_carrera), $tesis->nombre_carrera) ?></p>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
             <div class="large-6 columns">
                 <div class="panel">
                     <h5>Link de descarga:</h5>
-                    <p> <?= anchor(base_url('/archivos_tesis/' . $tesis->ubicacion_fichero), 'download') ?></p>
+                    <p> <?= anchor(base_url('/archivos_tesis/' . str_replace(' ', '%20', $tesis->ubicacion_fichero)), 'download') ?></p>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
                 <div class="panel">
                     <h5>Abstract:</h5>
                     <div class="off-canvas-wrap">
-                        <p><?= $tesis->abstract ?></p>
+                        <p class="wrapped"><?= $tesis->abstract ?></p>
                     </div>
 
                 </div>

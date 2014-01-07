@@ -30,3 +30,8 @@
     /*overflow: hidden;*/
     /*position: relative;*/
 }
+
+.wrapped{
+    word-wrap: break-word;
+    overflow: hidden;
+}
