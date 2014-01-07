@@ -154,7 +154,7 @@ class Tesis extends CI_Controller {
         $fechapublicacion = strtotime($this->input->post('fecha_publicacion_putrido', true));
 
         if ($this->upload->do_upload()) {
-            
+
             $fichero_ubicacion = $this->upload->data();
             $fichero_ubicacion = $fichero_ubicacion['full_path'];
         } else {
@@ -319,6 +319,16 @@ class Tesis extends CI_Controller {
                 $this->getDatosPost();
                 $this->getIdPost();
 
+                // Comprobar que el estudiante este en la db
+                $this->load->model('Estudiante_model');
+                $rut = $this->tesis_datos_post['estudiante_rut'];
+                if (!$this->Estudiante_model->checkEstudiante($rut)) { // El rut no esta en la db, se lo pedimos al WS
+                    $estudiante = $this->Estudiante_model->getfromWS($rut . calcularDV_rut($rut));
+                    if (!$estudiante) {
+                        $this->redireccionar_msg('tesis', 'El estudiante no existe en dirdoc, compruebe los datos');
+                    }
+                }
+
                 $editado = $this->Tesis_model->editar($this->tesis_id_post, $this->tesis_datos_post);
                 if ($editado == true) {
                     if ($this->tesis_fichero_ubicacion == null) {
@@ -359,6 +369,16 @@ class Tesis extends CI_Controller {
             $this->form_validation->set_rules($this->validation);
             if ($this->form_validation->run() == true) {
                 $this->getDatosPost();
+
+                // Comprobar que el estudiante este en la db
+                $this->load->model('Estudiante_model');
+                $rut = $this->tesis_datos_post['estudiante_rut'];
+                if (!$this->Estudiante_model->checkEstudiante($rut)) { // El rut no esta en la db, se lo pedimos al WS
+                    $estudiante = $this->Estudiante_model->getfromWS($rut . calcularDV_rut($rut));
+                    if (!$estudiante) {
+                        $this->redireccionar_msg('tesis', 'El estudiante no existe en dirdoc, compruebe los datos');
+                    }
+                }
 
                 $guardado = $this->Tesis_model->agregar($this->tesis_datos_post);
                 if ($guardado == true) {
