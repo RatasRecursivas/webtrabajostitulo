@@ -93,25 +93,29 @@
 
 </div>
 <div class="large-9 columns">
-    <h2> Tesis </h2>
-    <table>
-        <thead>
-            <tr>
-                <th >Titulo</th>
-                <th >Autor</th>
-                <th >Fecha de Publicacion</th>
-                <th >Abstract</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($query as $tesis): ?>
+    <h2>Tesis</h2>
+    <?php if ($query): ?>
+        <table>
+            <thead>
                 <tr>
-                    <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $tesis->titulo ?></a></td>
-                    <td><?= $tesis->last_name_estudiante . ', ' . $tesis->first_name_estudiante; ?></td>
-                    <td><?= $tesis->fecha_publicacion; ?></td>
-                    <td><?= $tesis->abstract; ?></td>
+                    <th>Titulo</th>
+                    <th>Autor</th>
+                    <th>Fecha de Publicacion</th>
+                    <th>Abstract</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($query as $tesis): ?>
+                    <tr>
+                        <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $tesis->titulo ?></a></td>
+                        <td><?= $tesis->last_name_estudiante . ', ' . $tesis->first_name_estudiante; ?></td>
+                        <td><?= $tesis->fecha_publicacion; ?></td>
+                        <td><?= $tesis->abstract; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <h3>No se encontraron tesis, lo sentimos</h3>
+    <?php endif; ?>
 </div>
