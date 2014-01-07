@@ -95,26 +95,14 @@
 <div class="large-9 columns">
     <h2>Tesis</h2>
     <?php if ($query): ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Fecha de Publicacion</th>
-                    <th width="200" >Abstract</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($query as $tesis): ?>
-                    <tr>
-                        <td><a href="<?= base_url(); ?>index.php/tesis/ver/<?= $tesis->id; ?>"><?= $tesis->titulo ?></a></td>
-                        <td><?= $tesis->last_name_estudiante . ', ' . $tesis->first_name_estudiante; ?></td>
-                        <td><?= $tesis->fecha_publicacion; ?></td>
-                        <td><p class='wrapped'><?= $tesis->abstract; ?></p></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <?php foreach ($query as $tesis): ?>
+            <ul class="pricing-table">
+                <li class="title"><div class="row"><div class="large-3 columns">Titulo:</div><div class="large-9 columns"><?= anchor('/tesis/ver/' . $tesis->id, $tesis->titulo); ?></div></div></li>
+                <li class="description"><div class="row"><div class="large-3 columns">Autor:</div><div class="large-9 columns"><?= $tesis->last_name_estudiante . ', ' . $tesis->first_name_estudiante; ?></div></div></li>
+                <li class="description"><div class="row"><div class="large-3 columns">Abstract:</div><div class="large-9 columns wrapped"><?= ($tesis->abstract) ? $tesis->abstract : '-'; ?></div></div></li>
+                <li class="description"><div class="row"><div class="large-3 columns">Fecha publicación:</div><div class="large-9 columns wrapped"><?= $tesis->fecha_publicacion; ?></div></div></li>
+            </ul>
+        <?php endforeach; ?>
     <?php else: ?>
         <h3>No se encontraron tesis, lo sentimos</h3>
     <?php endif; ?>
