@@ -50,3 +50,4 @@ $lang['delete_unsuccessful'] 		 	     = 'No se ha podido Eliminar el usuario';
 $lang['email_forgotten_password_subject']    = 'Verificación de contraseña olvidada';
 $lang['email_new_password_subject']          = 'Nueva Contraseña';
 $lang['email_activation_subject']            = 'Activación de la cuenta';
+$lang['login_unsuccessful_not_active'] = 'Lo sentimos, tu usuario no puede realizar logins!';

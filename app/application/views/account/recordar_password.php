@@ -9,7 +9,7 @@
             <?= form_input($email); ?>
         </p>
 
-        <p><?= form_submit('submit', 'Login'); ?></p>
+        <p><?= form_submit('submit', 'Enviar'); ?></p>
         <?= form_close(); ?>
     </div>
 </div>

@@ -1,22 +1,21 @@
-<h1><?php echo lang('reset_password_heading');?></h1>
+<div class="row">
+    <div class="small-8 columns large-centered">
+        <h1>Cambiar password</h1>
 
-<div id="infoMessage"><?php echo $message;?></div>
-
-<?php echo form_open('account/reiniciar_password/' . $code);?>
-
-	<p>
-		<label for="new_password"><?php echo sprintf(lang('reset_password_new_password_label'), $min_password_length);?></label> <br />
-		<?php echo form_input($new_password);?>
-	</p>
-
-	<p>
-		<?php echo lang('reset_password_new_password_confirm_label', 'new_password_confirm');?> <br />
-		<?php echo form_input($new_password_confirm);?>
-	</p>
-
-	<?php echo form_input($user_id);?>
-	<?php echo form_hidden($csrf); ?>
-
-	<p><?php echo form_submit('submit', lang('reset_password_submit_btn'));?></p>
-
-<?php echo form_close();?>
+        <?= form_open('account/reiniciar_password/' . $code); ?>
+        <p>
+            <?= form_label_vandalizado('Password nueva de a lo menos ' . $min_password_length . ' caracteres', 'new_password'); ?>
+            <?= form_input($new_password); ?>
+        </p>
+        
+        <p>
+            <?= form_label_vandalizado('Confirmar nueva password', 'new_password_confirm'); ?>
+            <?= form_input($new_password_confirm); ?>
+        </p>
+        <?= form_submit($user_id); ?>
+        <?= form_hidden($csrf); ?>
+        
+        <p><?= form_submit('submit', 'Go!'); ?></p>
+        <?= form_close(); ?>
+    </div>
+</div>
