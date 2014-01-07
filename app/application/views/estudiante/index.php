@@ -59,7 +59,7 @@ $label_rut = 'rut';
         <?= form_fieldset('Obtiene a un estudiante desde Dirdoc'); ?>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('RUT:', 'rut', $field_attributes); ?>
+                <?= form_label_vandalizado('RUT:', 'rut', $field_attributes, 'Ingrese el rut sin digito verificador, puntos ni guion'); ?>
             </div>
             <div class="small-6 columns">
                 <?= form_input($rut); ?>

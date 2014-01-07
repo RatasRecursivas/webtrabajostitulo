@@ -53,7 +53,7 @@ $submit_button = array(
         <?= form_fieldset('Obtiene a un profesor desde Dirdoc'); ?>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label('RUT:', 'rut', $field_attributes); ?>
+                <?= form_label_vandalizado('RUT:', 'rut', $field_attributes, 'Ingrese el rut sin digito verificador, puntos ni guion'); ?>
             </div>
             <div class="small-6 columns">
                 <?= form_input($rut); ?>
