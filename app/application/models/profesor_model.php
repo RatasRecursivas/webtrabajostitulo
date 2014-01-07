@@ -58,7 +58,6 @@ class Profesor_model extends CI_Model {
 
         if ($profesor) { // Obtuvimos un array no vacio, veamos ...
             $esta_en_db = $this->checkProfesor(substr($rut, 0, -1));
-            echo var_dump($esta_en_db);
             $data_user = array(
                 'first_name' => $profesor->nombres,
                 'last_name' => $profesor->apellidoPaterno . ' ' . $profesor->apellidoMaterno,

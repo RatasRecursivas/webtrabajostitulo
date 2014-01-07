@@ -146,7 +146,7 @@ class Tesis extends CI_Controller {
     private function getDatosPost() {
 
         $config['upload_path'] = './archivos_tesis/';
-        $config['allowed_types'] = 'zip|pdf';
+        $config['allowed_types'] = 'zip|pdf|doc|docx';
         $config['max_size'] = '30000'; // 30 MB 
 
         $this->load->library('upload', $config);
