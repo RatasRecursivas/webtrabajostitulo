@@ -4,9 +4,14 @@
     <div class="large-12 columns">
         <hr>
         <div class="row">
-            <div class="large-6 columns">
-                <p>Copyright Las Ratas Recursivas 2013</p>
+            <div class="small-6 columns left">
+                <p>Unidad de Informática UTEM</p>
             </div>
+            <?php if(!$this->ion_auth->is_admin()): ?>
+                <div class="small-6 columns right">
+                    <?= anchor('/account/login', 'Login'); ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </footer>
