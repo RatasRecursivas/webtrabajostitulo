@@ -172,7 +172,7 @@ class Tesis extends CI_Controller {
         } else {
             $fecha_evaluacion = $this->input->post('fecha_evaluacion_putrido', true) . ' ' . $this->input->post('hora_evaluacion', true);
         }
-        
+
         $fecha_publicacion = ($this->input->post('fecha_publicacion_putrido', true)) ? $this->input->post('fecha_publicacion_putrido', true) : null;
         $fecha_disponibilidad = ($this->input->post('fecha_disponibilidad_putrido', true)) ? $this->input->post('fecha_disponibilidad_putrido', true) : null;
 
@@ -298,6 +298,35 @@ class Tesis extends CI_Controller {
         if (!$id) {
             $this->redireccionar_msg('tesis', 'No especifico la tesis a mostrar!');
         }
+        /*
+         * Aca va se le envia los datos para el filtro
+         */
+        $this->setTesis_categorias($this->Categoria_model->getCategorias());
+        $this->setTesis_profesores($this->Profesor_model->getProfesores());
+        $this->setTesis_facultades($this->Facultad_model->getFacultades());
+        $this->setTesis_carreras($this->Carrera_model->getCarreras());
+        /*
+         * 
+         */
+        if ($this->input->get() == true) {
+            $consulta = array();
+            if ($this->input->get('categoria')) {
+                $consulta['categoria.nombre_categoria'] = $this->input->get('categoria');
+            }
+            if ($this->input->get('facultad')) {
+                $consulta['facultad.nombre_facultad'] = $this->input->get('facultad');
+            }
+            if ($this->input->get('carrera')) {
+                $consulta['carrera.nombre_carrera'] = $this->input->get('carrera');
+            }
+            if ($this->input->get('profesor')) {
+                $consulta['tesis.profesor_guia_rut'] = $this->input->get('profesor');
+            }
+//            var_dump($consulta);
+            $tesis = $this->Tesis_model->getFiltrarTesis($consulta);
+        }
+//            var_dump($tesis);
+//            $this->setTesis_todasTesis($tesis);
         $this->setTesis_getTesis($this->Tesis_model->getTesis($id, $this->admin));
         if ($this->tesis_getTesis) { //existe tesis
             $this->setTesis_titulo($this->tesis_getTesis->titulo);

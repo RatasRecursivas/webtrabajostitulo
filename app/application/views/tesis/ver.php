@@ -63,34 +63,6 @@
         <?= form_close() ?>
     </div>
 
-    <div class="row">
-        <div class="large 12 columns">
-            <h2>Próximas Defensas</h2>
-            <?php if (!$defensas): ?>
-                <p>No hay defensas proximamente</p>
-            <?php else: ?>
-                <table> 
-                    <thead>
-                        <tr> 
-                            <th>Defensas</th>
-                            <th>Estudiante</th>
-                            <th>Dia defensa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($defensas as $tesis): ?>
-                            <tr>          
-                                <td><?= $tesis->titulo; ?></td>
-                                <td><?= $tesis->last_name . ', ' . $tesis->first_name; ?></td>
-                                <td><?= $tesis->fecha_evaluacion; ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
-        </div>
-    </div>
-
 </div>
 <div class="large-9 columns">
     <div class="row">
@@ -152,7 +124,7 @@
                 <div class="panel">
                     <h5>Abstract:</h5>
                     <div class="off-canvas-wrap">
-                        <p class="wrapped"><?= $tesis->abstract ?></p>
+                        <p class="wrapped"><?= ($tesis->abstract)? $tesis->abstract : 'No disponible'; ?></p>
                     </div>
 
                 </div>
