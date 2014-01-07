@@ -262,10 +262,10 @@ INSERT INTO facultad (id, nombre_facultad) VALUES (1, 'Sin Facultad');
 INSERT INTO carrera (codigo, nombre_carrera, id_facultad) VALUES (1, 'Sin Carrera', 1);
 INSERT INTO categoria (id, nombre_categoria, id_facultad) VALUES (1, 'Sin Categoria', 1);
 INSERT INTO groups (id, name, description) VALUES (1, 'admin', 'Administradores');
-INSERT INTO users (id, ip_address, username, password, salt, email, activation_code, forgotten_password_code, created_on, last_login, active, first_name, last_name, company, phone) VALUES
-    (1, '127.0.0.1','default','','','','',NULL,'1268889823','1268889823','0','Sin','Persona','UTEM','0');
-INSERT INTO users (id, ip_address, username, password, salt, email, activation_code, forgotten_password_code, created_on, last_login, active, first_name, last_name, company, phone) VALUES
-    (2, '127.0.0.1','ptorrealba','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','9462e8eee0','ptorrealba@utem.cl','',NULL,'1268889823','1268889823','1','Pamela','Torrealba','UTEM','0');
+INSERT INTO users (ip_address, username, password, salt, email, activation_code, forgotten_password_code, created_on, last_login, active, first_name, last_name, company, phone) VALUES
+    ('127.0.0.1','default','','','','',NULL,'1268889823','1268889823','0','Sin','Persona','UTEM','0');
+INSERT INTO users (ip_address, username, password, salt, email, activation_code, forgotten_password_code, created_on, last_login, active, first_name, last_name, company, phone) VALUES
+    ('127.0.0.1','ptorrealba','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','9462e8eee0','ptorrealba@utem.cl','',NULL,'1268889823','1268889823','1','Pamela','Torrealba','UTEM','0');
 INSERT INTO users_groups (user_id, group_id) VALUES (2, 1);
 INSERT INTO estudiante (rut, anio_ingreso, codigo_carrera, user_id) VALUES (12345678, 1970, 1, 1);
 INSERT INTO profesor (rut, user_id) VALUES (12345678, 1);
