@@ -22,9 +22,16 @@
                                 <a href="<?php echo site_url(); ?>">Trabajos de Titulacion</a>
                             </h1>
                         </li>
-                        <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
                     </ul>
-
+                    <ul id="otros_drop" class="tiny f-dropdown" data-dropdown-content>
+                        <li><?= anchor('/carrera', 'Carreras'); ?></li>
+                        <li><?= anchor('/categoria', 'Categorias'); ?></li>
+                        <li><?= anchor('/facultad', 'Facultades'); ?></li>
+                    </ul>
+                    <ul id="account_drop" class="tiny f-dropdown" data-dropdown-content>
+                        <li><?= anchor('/account/cambiar_password', 'Cambiar password'); ?></li>
+                        <li><?= anchor('/account/logout', 'Logout'); ?></li>
+                    </ul>
                     <section class="top-bar-section">
                         <ul class="left">
                             <li><?= anchor('/tesis', 'Home'); ?></li>
@@ -32,20 +39,13 @@
                                 <li><?= anchor('/estudiante', 'Estudiantes'); ?></li>
                                 <li><?= anchor('/profesor', 'Profesores'); ?></li>
                                 <li><?= anchor('#', 'Otros &raquo;', array('data-options' => 'is_hover:true', 'data-dropdown' => 'otros_drop')); ?></li>
-                                <ul id="otros_drop" class="tiny f-dropdown" data-dropdown-content>
-                                    <li><?= anchor('/carrera', 'Carreras'); ?></li>
-                                    <li><?= anchor('/categoria', 'Categorias'); ?></li>
-                                    <li><?= anchor('/facultad', 'Facultades'); ?></li>
-                                </ul>
+
                             <?php endif; ?>
                         </ul>
                         <?php if ($this->ion_auth->is_admin()): ?>
                             <ul class="right">
                                 <li><?= anchor('#', $this->ion_auth->user()->row()->username . ' &raquo;', array('data-options' => 'is_hover:true', 'data-dropdown' => 'account_drop')); ?></li>
-                                <ul id="account_drop" class="tiny f-dropdown" data-dropdown-content>
-                                    <li><?= anchor('/account/cambiar_password', 'Cambiar password'); ?></li>
-                                    <li><?= anchor('/account/logout', 'Logout'); ?></li>
-                                </ul>
+
                             </ul>
                         <?php endif; ?>
                     </section>
