@@ -1,5 +1,11 @@
 <div class="row">
     <div class="small-8 columns large-centered">
+        <?php
+            $submit = array(
+                'value' => 'Enviar',
+                'class' => 'button green'
+            );
+        ?>
         <h1>Olvido su password?</h1>
         <p>Ingrese su email para reestablecer su password</p>
 
@@ -9,7 +15,7 @@
             <?= form_input($email); ?>
         </p>
 
-        <p><?= form_submit('submit', 'Enviar'); ?></p>
+        <p><?= form_submit($submit); ?></p>
         <?= form_close(); ?>
     </div>
 </div>

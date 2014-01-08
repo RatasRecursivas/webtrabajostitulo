@@ -1,5 +1,11 @@
 <div class="row">
     <div class="small-8 columns large-centered">
+        <?php
+            $submit = array(
+                'value' => 'Cambiar',
+                'class' => 'button green'
+            );
+        ?>
         <h1>Cambiar password</h1>
         <p>Ingrese sus credenciales para acceder como administrador</p>
 
@@ -21,7 +27,7 @@
         
 
         <?= form_submit($user_id); ?>
-        <p><?= form_submit('submit', 'Go!'); ?></p>
+        <p><?= form_submit($submit); ?></p>
         <?= form_close(); ?>
 
         <p><?= anchor('account/recordar_password', 'Olvido su password?'); ?></p>
