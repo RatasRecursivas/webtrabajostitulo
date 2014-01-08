@@ -1,7 +1,7 @@
 <?php
 $rut = array(
     'type' => 'text',
-    'placeholder' => '12345678',
+    'placeholder' => '17.958.150-7',
     'name' => 'rut'
 );
 
@@ -34,8 +34,8 @@ $submit_button = array(
                             <tr>
                                 <td><?= format_rut($profesor->rut); ?></td>
                                 <td><?= $profesor->first_name . ' ' . $profesor->last_name; ?></td>
-                                <td><?= anchor('profesor/obtener/' . $profesor->rut, 'Actualizar', 'class="button tiny"'); ?></td>
-                                <td><?= anchor('profesor/eliminar/' . $profesor->rut, 'Eliminar', 'class="button tiny alert"'); ?></td>
+                                <td><?= anchor('profesor/obtener/' . $profesor->rut.  calcularDV_rut($profesor->rut), 'Actualizar', 'class="button tiny"'); ?></td>
+                                <td><?= anchor('profesor/eliminar/' . $profesor->rut. calcularDV_rut($profesor->rut), 'Eliminar', 'class="button tiny alert"'); ?></td>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -53,11 +53,11 @@ $submit_button = array(
         <?= form_fieldset('Obtiene a un profesor desde Dirdoc'); ?>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label_vandalizado('RUT:', 'rut', $field_attributes, 'Ingrese el rut sin digito verificador, puntos ni guion'); ?>
+                <?= form_label_vandalizado('RUT:', 'rut', $field_attributes, 'Ingrese el rut con digito verificador'); ?>
             </div>
             <div class="small-6 columns">
                 <?= form_input($rut); ?>
-                <?php if($error_rut): echo '<small class="error">Ingrese bien el rut Sin digito verificar ni puntos ni guion</small>';  endif?>
+                <?php if($error_rut): echo '<small class="error">Ingrese bien el rut Con digito verificar</small>';  endif?>
             </div>
             <div class="small-4 columns">
                 <?= form_submit($submit_button); ?>

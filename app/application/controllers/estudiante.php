@@ -78,14 +78,12 @@ class Estudiante extends CI_Controller {
     }
 
     public function obtener($rut = NULL) {
-        if (array_key_exists('rut', $this->input->get())) {
+        if ($this->input->get('rut'))  {
             $rut = $this->input->get('rut', true);
         }
         if ($rut) {
-            $patron = "/^[[:digit:]]+$/";
-            if (preg_match($patron, $rut)) {
-//                $this->estudiante_rut = $rut . calcularDV_rut($rut);
-                $this->setEstudiante_rut($rut.calcularDV_rut($rut));
+            if (esRut($rut)) {
+                $this->setEstudiante_rut($rut);
                 $agregado = $this->Estudiante_model->getfromWS($this->estudiante_rut); // Obtener desde el WS
                 if ($agregado) {
                     $this->redireccionar_msg('estudiante', 'El registro con rut ' . esRut($this->estudiante_rut) . ' está ingresado en la base de datos');
@@ -93,7 +91,7 @@ class Estudiante extends CI_Controller {
                     $this->redireccionar_msg('estudiante', 'Ups el rut ingresado no es un estudiante');
                 }
             } else {
-                $this->setError_rut('Rut mal ingresado ');
+                $this->setError_rut(TRUE);
             }
             $this->setEstudiante_titulo('Estudiante');
             $this->setEstidiante_todosEstudiante($this->Estudiante_model->getEstudiantes());
@@ -106,16 +104,14 @@ class Estudiante extends CI_Controller {
     public function eliminar($rut = NULL) {
         if ($rut) { // Si llega por post reviso el rut
             // Form validation ..
-            $rut = (int) $rut;
 
             $estudiante = $this->Estudiante_model->checkEstudiante($rut);
 
             if ($estudiante) { // Veo si el estudiante esta en la db
                 $this->Estudiante_model->eliminar($rut);
-                $this->setEstudiante_rut($rut.calcularDV_rut($rut));
-                $this->redireccionar_msg('estudiante', 'Estudiante con Rut: ' . esRut($this->estudiante_rut) . ' ha sido eliminado!');
+                $this->redireccionar_msg('estudiante', 'Estudiante con Rut: ' . esRut($rut) . ' ha sido eliminado!');
             } else {
-                $this->redireccionar_msg('estudiante', 'No existe el Rut: ' . $rut . ' en la base de datos');
+                $this->redireccionar_msg('estudiante', 'No existe el Rut en la base de datos');
             }
         } else { // Epa! este metodo no es accesible por get
             $this->redireccionar_msg('estudiante', 'Que esta haciendo ?');

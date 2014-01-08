@@ -41,8 +41,7 @@ class Profesor extends CI_Controller {
     public function setError_rut($error_rut) {
         $this->error_rut = $error_rut;
     }
-    
-    
+
     public function mostrar_view($vista) {
         $info_view = array(
             'title' => $this->profesor_titulo,
@@ -54,8 +53,8 @@ class Profesor extends CI_Controller {
         $this->load->view($vista, $info_view);
         $this->load->view('template/footer');
     }
-    
-    public function redireccionar_msg($link,$menjase){
+
+    public function redireccionar_msg($link, $menjase) {
         $this->session->set_flashdata('msg', $menjase);
         redirect($link);
     }
@@ -67,14 +66,12 @@ class Profesor extends CI_Controller {
             redirect('account/login');
         }
     }
-    
-    
-    
+
     public function setProfesorrut($profesorrut) {
         $this->profesorrut = $profesorrut;
     }
 
-        public function index() {
+    public function index() {
 //        $data['title'] = 'Profesores';
 //        $data['profesores'] = $this->Profesor_model->getProfesores();
 //        $this->load->helper('utilities');
@@ -85,24 +82,22 @@ class Profesor extends CI_Controller {
         $this->setProfesor_todoProfesores($this->Profesor_model->getProfesores());
 //        $this->mostrar_view('profesor/index');
         $this->mostrar_view('profesor/index');
-        
     }
 
     public function obtener($rut = NULL) {
-        if (array_key_exists('rut', $this->input->get())) {
+        if ($this->input->get('rut')) {
             $rut = $this->input->get('rut', true); // Hackish
         }
         if ($rut) {
 //            $this->load->helper('utilities');
             // Validar parametro
-            $patron = "/^[[:digit:]]+$/";
-            if (preg_match($patron, $rut)) {
-                
-                $this->setProfesorrut($rut.calcularDV_rut($rut));
+            if (esRut($rut)) {
+
+                $this->setProfesorrut($rut);
                 $agregado = $this->Profesor_model->getfromWS($this->profesorrut); // Obtener desde el WS
                 if ($agregado) {
 //                echo "Insertado correctamente";
-                    $this->redireccionar_msg('profesor', 'El registro con rut '.esRut($this->profesorrut).' está ingresado en la base de datos');
+                    $this->redireccionar_msg('profesor', 'El registro con rut ' . esRut($this->profesorrut) . ' está ingresado en la base de datos');
                 } else {
 //                echo "fail!";
                     $this->redireccionar_msg('profesor', 'Ups el Rut ingresado no es un profesor');
@@ -121,14 +116,14 @@ class Profesor extends CI_Controller {
     public function eliminar($rut = NULL) {
         if ($rut) {
             // Form validation ..
-            $rut = (int)$rut;
+            
             $profesor = $this->Profesor_model->checkProfesor($rut);
 
             if ($profesor) { // Veo si el profesor esta en la db
                 $this->Profesor_model->eliminar($rut);
-                $this->redireccionar_msg('profesor', 'El Profesor con Rut: '. $rut.' ha sido eliminado!');
+                $this->redireccionar_msg('profesor', 'El Profesor con Rut: ' . esRut($rut) . ' ha sido eliminado!');
             } else {
-                $this->redireccionar_msg('profesor', 'No existe el Rut: '. $rut .' en la base de datos');
+                $this->redireccionar_msg('profesor', 'No existe el Rut: ' . esRut($rut) . ' en la base de datos');
             }
         } else { // Epa! este metodo no es accesible por get
             $this->redireccionar_msg('profesor', 'Que esta haciendo ?');

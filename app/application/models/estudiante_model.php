@@ -51,7 +51,7 @@ class Estudiante_model extends CI_Model {
                         ->result();
     }
 
-    public function getfromWS($rut) { // Se va al WS y carga al wilson
+    public function getfromWS($rut) { // Se va al WS y carga al wilson con digito verificador
         // Puede añadir o actualizar a un individuo
         // Recibir con dv
         $this->load->library('ws_dirdoc');
@@ -124,6 +124,8 @@ class Estudiante_model extends CI_Model {
         $rut = decode_rut($rut);
         // Ver el usuario asociado al rut
         if ($this->checkEstudiante($rut)) {
+            $rut = decode_rut($rut);
+            $rut = substr($rut, 0, -1);
             $user_id = $this->db->where('rut', $rut)->select('user_id')
                             ->from($this->tabla_estudiante)->get()->row()->user_id;
             $d1 = $this->db->where('rut', $rut)->delete($this->tabla_estudiante);
@@ -137,6 +139,8 @@ class Estudiante_model extends CI_Model {
 
     // Retorna si un estudiante existe o no en db
     public function checkEstudiante($rut) {
+        $rut = decode_rut($rut);
+        $rut = substr($rut, 0, -1);
         $count = $this->db->select('rut')->from($this->tabla_estudiante)
                 ->where('rut', $rut)
                 ->count_all_results();

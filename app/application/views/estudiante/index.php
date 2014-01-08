@@ -1,7 +1,7 @@
 <?php
 $rut = array(
     'type' => 'text',
-    'placeholder' => '12345678',
+    'placeholder' => '18.048.821-9',
     'name' => 'rut'
 );
 
@@ -40,8 +40,8 @@ $label_rut = 'rut';
                                 <td><?= $estudiante->first_name . ' ' . $estudiante->last_name; ?></td>
                                 <td><?= $estudiante->carrera; ?></td>
                                 <td><?= ($estudiante->email) ? mailto($estudiante->email) : 'No hay email registrado'; ?></td>
-                                <td><?= anchor('estudiante/obtener/' . $estudiante->rut, 'Actualizar', 'class="button tiny"'); ?></td>
-                                <td><?= anchor('estudiante/eliminar/' . $estudiante->rut, 'Eliminar', 'class="button tiny alert"'); ?></td>
+                                <td><?= anchor('estudiante/obtener/' . $estudiante->rut.  calcularDV_rut($estudiante->rut), 'Actualizar', 'class="button tiny"'); ?></td>
+                                <td><?= anchor('estudiante/eliminar/' . $estudiante->rut. calcularDV_rut($estudiante->rut), 'Eliminar', 'class="button tiny alert"'); ?></td>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -59,11 +59,11 @@ $label_rut = 'rut';
         <?= form_fieldset('Obtiene a un estudiante desde Dirdoc'); ?>
         <div class="row">
             <div class="small-2 columns">
-                <?= form_label_vandalizado('RUT:', 'rut', $field_attributes, 'Ingrese el rut sin digito verificador, puntos ni guion'); ?>
+                <?= form_label_vandalizado('RUT:', 'rut', $field_attributes, 'Ingrese el rut con digito verificador'); ?>
             </div>
             <div class="small-6 columns">
                 <?= form_input($rut); ?>
-                <?php if($error_rut): echo '<small class="error">Ingrese bien el rut Sin digito verificar ni puntos ni guion</small>';  endif?>
+                <?php if($error_rut): echo '<small class="error">Ingrese bien el rut Con digito verificar</small>';  endif?>
             </div>
             <div class="small-4 columns">
                 <?= form_submit($submit_button); ?>

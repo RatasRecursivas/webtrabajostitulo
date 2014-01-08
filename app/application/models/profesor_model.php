@@ -57,7 +57,7 @@ class Profesor_model extends CI_Model {
         date_default_timezone_set('America/Santiago'); // Se usa la funcion time()
 
         if ($profesor) { // Obtuvimos un array no vacio, veamos ...
-            $esta_en_db = $this->checkProfesor(substr($rut, 0, -1));
+            $esta_en_db = $this->checkProfesor($rut);
             $data_user = array(
                 'first_name' => $profesor->nombres,
                 'last_name' => $profesor->apellidoPaterno . ' ' . $profesor->apellidoMaterno,
@@ -68,7 +68,7 @@ class Profesor_model extends CI_Model {
                 'created_on' => time(),
                 'active' => 0 // Los academicos tampoco pueden hacer login
             ); // Con esto ya podria llenar a un usuario
-            
+
             $data_profesor = array(
                 'rut' => $profesor->rut
             );
@@ -94,34 +94,37 @@ class Profesor_model extends CI_Model {
         }
         return !$fail; // Not fail :)
     }
-    
+
     public function eliminar($rut) {
-        if($rut == 12345678) // Vandal!
+        if ($rut == 12345678) // Vandal!
             return false;
-        
+
         $this->load->helper('utilities');
-        $rut = decode_rut($rut);
+//        $rut = decode_rut($rut);
+        // sacamos el difito verificador por que en la db esta sin este valor
         // Ver el usuario asociado al rut
-        if($this->checkProfesor($rut))
-        {
+        if ($this->checkProfesor($rut)) {
+            $rut = decode_rut($rut);
+            $rut = substr($rut, 0, -1);
             $user_id = $this->db->where('rut', $rut)->select('user_id')
-                ->from($this->tabla_profesor)->get()->row()->user_id;
+                            ->from($this->tabla_profesor)->get()->row()->user_id;
             $d1 = $this->db->where('rut', $rut)->delete($this->tabla_profesor);
             $d2 = $this->db->where('id', $user_id)->delete($this->tabla_users);
             $fail = !$d1 or !$d2;
-        }
-        else
-        {
+        } else {
             $fail = true;
         }
         return !$fail;
     }
-    
+
     // Retorna si un profesor existe o no en db
     public function checkProfesor($rut) {
+        // en la db esta sin digito verificador ¬¬
+        $rut = decode_rut($rut);
+        $rut = substr($rut, 0, -1);
         $count = $this->db->select('rut')->from($this->tabla_profesor)
-                    ->where('rut', $rut)
-                    ->count_all_results();
+                ->where('rut', $rut)
+                ->count_all_results();
         return (bool) $count;
     }
 
