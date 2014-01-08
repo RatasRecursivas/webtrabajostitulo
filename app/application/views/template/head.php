@@ -35,6 +35,9 @@
                     <section class="top-bar-section">
                         <ul class="left">
                             <li><?= anchor('/tesis', 'Home'); ?></li>
+                            <?php if (!$this->ion_auth->is_admin()): ?>
+                                <li><?= anchor('/account/login', 'Login'); ?></li>
+                            <?php endif; ?>
                             <?php if ($this->ion_auth->is_admin()): ?>
                                 <li><?= anchor('/estudiante', 'Estudiantes'); ?></li>
                                 <li><?= anchor('/profesor', 'Profesores'); ?></li>

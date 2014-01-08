@@ -105,7 +105,7 @@ class Facultad extends CI_Controller {
 
     public function agregar() {
      
-        $this->setFacultad_titulo('Agregar|Facultad');
+        $this->setFacultad_titulo('Agregar | Facultad');
         $this->setFacultad_acction('Agregar');
         $this->setFacultad_agregar_modificar('Agregar');
         $this->setFacultad_todasfacultades($this->ultimasFacultades());
@@ -116,9 +116,9 @@ class Facultad extends CI_Controller {
                 $guardado = $this->Facultad_model->agregar($this->facultad_datos);
 
                 if ($guardado == true) {
-                    $this->redireccionar_msg('facultad ', 'Se agrego correctamente la Facu :)');
+                    $this->redireccionar_msg('facultad ', 'Se agrego correctamente la Facultad');
                 } else {
-                    $this->redireccionar_msg('facultad', 'No se agrego correctamente ');
+                    $this->redireccionar_msg('facultad', 'No se agrego correctamente');
                 }
             }
         }
@@ -139,13 +139,13 @@ class Facultad extends CI_Controller {
                 $editado = $this->Facultad_model->editar($this->facultad_id, $this->facultad_datos);
 
                 if ($editado == True) {
-                    $this->redireccionar_msg('facultad', 'Se modifico correctamente el registro');
+                    $this->redireccionar_msg('facultad', 'Se modifico correctamente la facultad');
                 } else {
-                    $this->redireccionar_msg('facultad', 'Hubo un error modificando el registro');
+                    $this->redireccionar_msg('facultad', 'Hubo un error al modificar la facultad');
                 }
             }
         }
-        $this->setFacultad_titulo('Editar|Facultad');
+        $this->setFacultad_titulo('Editar | Facultad');
         $this->setFacultad_acction('Editar/' . $id);
         $this->setFacultad_getfalcultad($this->Facultad_model->getFacultad($id));
         $this->setFacultad_agregar_modificar('Editar');
@@ -164,7 +164,7 @@ class Facultad extends CI_Controller {
         if ($facultad) { // existe ?
             $eliminado = $this->Facultad_model->eliminar($id);
             if ($eliminado == true) {
-                $this->redireccionar_msg('facultad', 'Fue exitosamente eliminado!');
+                $this->redireccionar_msg('facultad', 'Fue exitosamente eliminado');
             } else {
                 $this->redireccionar_msg('falcultad', 'Intentelo nuevamente, Ups');
             }
