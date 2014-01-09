@@ -138,33 +138,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="large-3 columns">
-                <?= form_label_vandalizado('Fecha Publicacion:', $label_fechap, array(), 'Ingrese el día que estara publicada la tesis'); ?>
-                <?= form_input($fecha_publicacion); ?>
-                <?= form_error_small($label_fechap); ?>
-            </div>
-            <div class="large-3 columns">
-                <?= form_label_vandalizado('Fecha Disponibilidad:', $label_fechad, array(), 'Ingrese el día que estara disponible la tesis'); ?>
-                <?= form_input($fecha_disponibilidad); ?>
-                <?= form_error_small($label_fechad); ?>
-            </div>
-            <div class="large-6 columns">
-                <div class="row">
-                    <?= form_label_vandalizado('Fecha Evaluacion:', '', array(), 'Ingrese el día y la hora en que se defendera la tesis') ?>
-                    <div class="large-6 columns">
-                        <?= form_input($fecha_evaluacion); ?>
-                        <?= form_error_small($label_fechae_anio); ?>
-                    </div>
-                    <div class="large-6 columns">
-                        <?= form_input($hora_evaluacion); ?>
-                        <?= form_error_small($label_fechae_hora); ?>
-                    </div>
-                </div>
-            </div>
-            <!--<div class="large-4 columns">-->
-            <!--</div>-->
-        </div>
-        <div class="row">
             <div class="large-12 columns">
                 <?= form_label_vandalizado('Abstract:', $label_abstract, array(), 'Ingrese aquí el abstract perteneciente a la tesis'); ?>
                 <?= form_textarea($abstract); ?>
@@ -172,12 +145,55 @@
             </div>
         </div>
         <div class="row">
+            <div class="large-6 columns">
+                <?= form_label_vandalizado('Fecha Publicacion:', $label_fechap, array(), 'Ingrese el día que estara publicada la tesis'); ?>
+                <?= form_input($fecha_publicacion); ?>
+                <?= form_error_small($label_fechap); ?>
+            </div>
+            <div class="large-6 columns">
+                <?= form_label_vandalizado('Fecha Disponibilidad:', $label_fechad, array(), 'Ingrese el día que estara disponible la tesis'); ?>
+                <?= form_input($fecha_disponibilidad); ?>
+                <?= form_error_small($label_fechad); ?>
+            </div>
+        </div>
+        <div class="row">
             <div class="large-2 columns">
-
-                <?= form_label('Adjunte el Fichero:', '', array(), 'No debe superar los 30 mb'); ?>
+                <?= form_label_vandalizado('Adjunte el Fichero:', $label_fichero, array(), 'No debe superar los 30 mb'); ?>
             </div>
             <div class="large-10 columns">
                 <?= form_upload($subir_input) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <?= form_fieldset('Registro de comisión(no es necesaria)'); ?>
+                <div class="large-4 columns">
+                    <?= form_label_vandalizado('Comisión', '', array(), 'Ingrese el día y la hora en que se defendera la tesis') ?>
+                    <?= form_multiselect('ruts_profesores_comision', $selec_profesores); ?>
+                    <?= form_error_small($label_fechae_anio); ?>
+                </div>
+                <div class="large-8 columns">
+                    <div class="row">
+                        <div clas="row">
+                            <div class="large-6 columns">
+                                <?= form_label_vandalizado('Fecha Evaluacion:', '', array(), 'Ingrese el día y la hora en que se defendera la tesis') ?>
+                                <?= form_input($fecha_evaluacion); ?>
+                                <?= form_error_small($label_fechae_anio); ?>
+                            </div>
+                            <div class="large-6 columns">
+                                <?= form_label_vandalizado('Fecha Evaluacion:', '', array(), 'Ingrese el día y la hora en que se defendera la tesis') ?>
+                                <?= form_input($hora_evaluacion); ?>
+                                <?= form_error_small($label_fechae_hora); ?>
+                            </div>
+                        </div>
+                        <div class="large-12 columns">
+                            <?= form_label_vandalizado('Lugar:', '', array(), 'Ingrese el día y la hora en que se defendera la tesis') ?>
+                            <?= form_input(array('type' => 'text', 'placeholder' => 'M1-305')); ?>
+                            <?= form_error_small($label_fechae_hora); ?>
+                        </div>
+                    </div>
+                </div>
+                <?= form_fieldset_close() ?>
             </div>
         </div>
         <div class="row">

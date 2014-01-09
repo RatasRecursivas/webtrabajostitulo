@@ -147,7 +147,7 @@ class Tesis extends CI_Controller {
 
         $config['upload_path'] = './archivos_tesis/';
         $config['allowed_types'] = 'zip|pdf|doc|docx';
-        $config['max_size'] = '30000'; // 30 MB 
+        $config['max_size'] = '30000'; // 30 MB
 
         $this->load->library('upload', $config);
 
@@ -186,6 +186,7 @@ class Tesis extends CI_Controller {
             'profesor_guia_rut' => $this->input->post('profesor_date', true),
             'ubicacion_fichero' => $fichero_ubicacion,
             'id_categoria' => $this->input->post('categoria_id', true),
+            'ruts_profesores_comision' => $this->input->post('ruts_profesores_comision', true), // Me imagino que si no selecciona profesores para la comision revisora llegara un array vacio, right? right?
         );
         $this->tesis_datos_post = $tesis;
     }
@@ -442,5 +443,9 @@ class Tesis extends CI_Controller {
             $this->redireccionar_msg('tesis', 'No se enontro la tesis a eliminar');
         }
     }
-
+    
+    public function patoh() {
+        $this->load->model('Comision_model');
+        $this->Comision_model->agregar(array('ruts' => array('5000233', '10471648')));
+    }
 }

@@ -84,7 +84,7 @@ class Estudiante_model extends CI_Model {
                     );
                     $this->Carrera_model->agregar($data);
                 }
-            } else { // Data rara desde el WS, wow!
+            } else { // Data rara desde el WS, wow! such fail!
                 $codigo_carrera = 1; // El default
             }
 

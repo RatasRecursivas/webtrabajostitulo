@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS login_attempts;
 DROP TABLE IF EXISTS profesor;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS users_groups;
+DROP TABLE IF EXISTS comision;
+DROP TABLE IF EXISTS comision_profesor;
 
 
 
@@ -30,6 +32,8 @@ DROP SEQUENCE IF EXISTS login_attempts_id_seq;
 DROP SEQUENCE IF EXISTS tesis_id_seq;
 DROP SEQUENCE IF EXISTS users_groups_id_seq;
 DROP SEQUENCE IF EXISTS users_id_seq;
+DROP SEQUENCE IF EXISTS comision_id_seq;
+DROP SEQUENCE IF EXISTS comision_profesor_id_seq;
 
 
 
@@ -125,8 +129,10 @@ CREATE TABLE tesis
 	id_categoria int DEFAULT 1 NOT NULL,
 	-- Identifica al estudiante que realiza el trabajo de titulo
 	estudiante_rut int DEFAULT 12345678 NOT NULL,
-	-- Identifica al profesor guia de este trabajod de titulo
+	-- Identifica al profesor guia de este trabajo de titulo
 	profesor_guia_rut int DEFAULT 12345678 NOT NULL,
+        -- Identifica la comision que evalua este trabajo de titulo
+        id_comision int,
 	CONSTRAINT tesis_pkey PRIMARY KEY (id)
 ) WITHOUT OIDS;
 
@@ -163,8 +169,44 @@ CREATE TABLE users_groups
 ) WITHOUT OIDS;
 
 
+CREATE TABLE comision
+(
+	id serial NOT NULL,
+        created_on int,
+        CONSTRAINT comision_pkey PRIMARY KEY (id)
+) WITHOUT OIDS;
+
+
+CREATE TABLE comision_profesor
+(
+	id serial NOT NULL,
+        -- Identifica a que comision pertenece el profesor indicado
+        id_comision int NOT NULL,
+        -- Identifica que profesor participa de la comision indicada
+        rut_profesor int NOT NULL,
+        CONSTRAINT comision_profesor_pkey PRIMARY KEY (id)
+) WITHOUT OIDS;
+
 
 /* Create Foreign Keys */
+
+ALTER TABLE tesis
+    ADD CONSTRAINT comision_tesis_fk FOREIGN KEY (id_comision)
+    REFERENCES comision (id)
+;
+
+ALTER TABLE comision_profesor
+        ADD CONSTRAINT comision_comision_profesor_fk FOREIGN KEY (id_comision),
+        REFERENCES comision (id)
+        ON DELETE CASCADE -- Si doy un delete al row comision deberian irse al cuerno las comision_profesor asociadas
+;
+
+
+ALTER TABLE comision_profesor
+        ADD CONSTRAINT profesor_comision_profesor_fk FOREIGN KEY (rut_profesor),
+        REFERENCES profesor (rut)
+;
+
 
 ALTER TABLE estudiante
 	ADD CONSTRAINT carrera_estudiante_fk FOREIGN KEY (codigo_carrera)
@@ -269,4 +311,3 @@ INSERT INTO users (ip_address, username, password, salt, email, activation_code,
 INSERT INTO users_groups (user_id, group_id) VALUES (2, 1);
 INSERT INTO estudiante (rut, anio_ingreso, codigo_carrera, user_id) VALUES (12345678, 1970, 1, 1);
 INSERT INTO profesor (rut, user_id) VALUES (12345678, 1);
-

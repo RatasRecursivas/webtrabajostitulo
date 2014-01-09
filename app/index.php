@@ -199,10 +199,10 @@ if (defined('ENVIRONMENT'))
  * And away we go...
  *
  */
-        if (function_exists('date_default_timezone_set')){
-            date_default_timezone_set('America/Santiago');
-        }
-        
+if (function_exists('date_default_timezone_set')) { // Me huele a hackish, pero bueh
+    date_default_timezone_set('America/Santiago');
+}
+
 require_once BASEPATH.'core/CodeIgniter.php';
 
 

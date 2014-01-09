@@ -40,10 +40,6 @@ class Tesis_model extends CI_Model {
         return mdate($format, $time);
     }
 
-    public function insert($param) {
-        return $this->db->insert($param);
-    }
-
     public function getTesis($id, $is_admin) {
         $now = $this->_fecha_actual();
         $this->db->
@@ -102,6 +98,20 @@ class Tesis_model extends CI_Model {
     }
 
     public function agregar($data) {
+        // $data['ruts_profesores_comision'] contiene un array de ruts de profesores
+        $comision = false;
+        if($data['ruts_profesores_comision'])
+        { // Vienen profesores en el array
+            $this->load->model('Comision_model');
+            $comision = $this->Comision_model->agregar($data);
+            unset($data['ruts_profesores_comision']);
+        }
+        if($comision) // Agrego el parametro id_comision
+        {
+            // La comision se inserto, veamos que id le dio la secuencia
+            $data['id_comision'] = $this->db->select('last_value')
+                    ->from('comision_id_seq')->get()->row()->last_value;
+        }
         return $this->db->insert($this->tabla, $data);
     }
 
@@ -111,11 +121,6 @@ class Tesis_model extends CI_Model {
     }
 
     public function getFiltrarTesis($array) {
-//        $array = array(
-//            'carrera.nombre_carrera' => 'INGENIERÍA EN INFORMÁTICA',
-//        );
-        
-//        var_dump($array);
         $query = $this->db->
                 select('ubicacion_fichero, titulo, id_categoria, abstract,fecha_evaluacion, feha_disponibilidad, '
                         . 'fecha_publicacion, usersprofe.first_name as first_name_profe, usersprofe.last_name as last_name_profe,'
